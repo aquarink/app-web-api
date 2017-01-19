@@ -1,0 +1,283 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+
+
+#####################################
+## Frontend Page
+
+## Home page
+GET     /	                                   				controllers.Main.index()
+GET     /dashboard                          				controllers.Dashboard.index()
+GET     /dashboard/statistics/:id/performances.json        	controllers.Dashboard.userPerformances(id)
+GET     /dashboard/statistics/:id/volumes.json             	controllers.Dashboard.userVolumes(id)
+GET     /dashboard/statistics/:id               			controllers.Dashboard.statistics(id)
+GET     /news/content/:id                               	controllers.Dashboard.news(id:Long)
+
+
+## Authentication
+GET     /login                              				controllers.Login.login()
+POST    /login                              				controllers.Login.authenticate()
+GET     /logout                             				controllers.Login.logout()
+POST    /forget-password                    				controllers.Login.forgetPassword()
+GET     /reset-password/:key                				controllers.Login.resetPassword(key: String)
+POST    /reset-password                     				controllers.Login.resetPasswordSubmit()
+GET     /changeLang/:langId/login           				controllers.Login.setLang(langId: String)
+GET     /changeLang/:langId/admin/login     				controllers.Login.setLangAdmin(langId: String)
+
+## User Management
+GET     /corporates/:c/users/me								controllers.User.index(c:String)
+GET     /corporates/:c/users/:id/users						controllers.User.list(c:String, id:Long)
+GET     /corporates/:c/users/new/:role						controllers.User.newCreate(c:String, role:String, supervisorId: Long)
+GET     /corporates/:c/users/:id/edit 						controllers.User.edit(c:String, id:Long)
+POST    /corporates/:c/users								controllers.User.create(c:String)
+POST    /corporates/:c/users/:id 							controllers.User.update(c:String, id:Long)
+DELETE  /corporates/:c/users/:id 							controllers.User.destroy(c:String, id:Long)
+GET     /corporates/:c/users/:id							controllers.User.show(c:String, id:Long)
+GET     /corporates/:c/users/:id/password					controllers.User.changePassword(c:String, id:Long)
+POST    /corporates/:c/users/:id/password					controllers.User.saveChangePassword(c:String, id:Long)
+GET     /corporates/:c/users/:id/status						controllers.User.updateStatus(c:String, id:Long, ta:Boolean ?= true)
+POST    /corporates/:c/users/:id/role/promote				controllers.User.updateRolePromote(c:String, id:Long)
+POST    /corporates/:c/users/:id/role/demote				controllers.User.updateRoleDemote(c:String, id:Long)
+GET     /corporates/:c/users/:id/role/demoteForm			controllers.User.updateRoleDemoteForm(c:String, id:Long)
+
+
+## Customer Management
+GET      /customer                           controllers.Customer.list(p:Int ?= 0, s ?= "id", o ?= "desc", f ?= "")
+GET      /customer.csv                       controllers.Customer.csv(s ?= "id", o ?= "asc", f ?= "")
+
+# Create
+GET      /customer/create                    controllers.Customer.create()
+POST     /customer/create                    controllers.Customer.save()
+GET      /customer/:id/summary               controllers.Customer.summary(id:Long)
+GET      /customer/:id/edit                  controllers.Customer.edit(id:Long)
+POST     /customer/:id/edit                  controllers.Customer.update(id:Long)
+#POST    /customer/:id/delete                controllers.Customer.delete(id:Long)
+GET      /customer/relate                    controllers.Customer.relate(id:Long, p:Int ?= 0, s ?= "id", o ?= "desc", f ?= "")
+GET      /customer/addrelate                 controllers.Customer.addRelate(id:Long, p:Int ?= 0, s ?= "id", o ?= "desc", f ?= "")
+POST     /customer/addrelateaction           controllers.Customer.addRelateAction()
+GET      /customer/deleterelate              controllers.Customer.deleteRelate(id:Long, idRelate:Long)
+
+## Transaction Send Money
+GET     /send                              controllers.Send.create()
+GET     /send/inquiry                      controllers.Send.inquiry()
+GET     /send/inquiryBillPayment           controllers.Send.inquiryBillPayment()
+GET     /send/customer-lookup              controllers.Send.customerLookup()
+GET     /send/customer-lookupRelate        controllers.Send.customerLookupRelate()
+POST    /send/verify                       controllers.Send.verify()
+POST    /send/confirm                      controllers.Send.confirm()
+POST    /send/confirmBillPayment           controllers.Send.confirmBillPayment()
+POST    /send/process                      controllers.Send.process()
+POST    /send/processBillPayment           controllers.Send.processBillPayment()
+GET     /send/:id/receipt                  controllers.Send.receipt(id)
+GET     /send/:id/receiptBillPayment       controllers.Send.receiptBillPayment(id)
+GET     /send/:id/send-email               controllers.Send.sendTransactionViaEmail(id: String, recipient = null)
+GET     /send/:id/send-email/:recipient    controllers.Send.sendTransactionViaEmail(id: String, recipient:String)
+POST    /send/summary                      controllers.Send.summary()
+GET     /send/customer/new                 controllers.Send.customerNew()
+GET     /send/customer/search/:query       controllers.Send.customerSearch(query:String)
+GET     /send/customer/:id/edit            controllers.Send.customerEdit(id: String)
+POST    /send/customer/save                controllers.Send.customerSave()
+#PUT     /send/customer/save                controllers.Send.customerSave()
+GET     /send/:id/receipt-print            controllers.Send.receiptPrint(id: String)
+GET     /send/:id/receipt-email            controllers.Send.receiptEmail(id: String)
+
+## Transaction Receive Money
+GET     /receive                           controllers.Receive.create()
+GET     /receive/:id                       controllers.Receive.inquiry(id)
+POST    /receive/:id/verify                controllers.Receive.verify(id)
+POST    /receive/:id/validate              controllers.Receive.validate(id)
+POST    /receive/:id/process               controllers.Receive.process(id)
+GET     /receive/:id/receipt               controllers.Receive.receipt(id)
+GET     /receive/:id/receipt-print         controllers.Receive.receiptPrint(id)
+GET     /receive/:id/receipt-email         controllers.Receive.receiptEmail(id)
+GET     /receive/:id/send-email            controllers.Receive.sendTransactionViaEmail(id: String)
+
+#GET     /transaction/:id        		    controllers.Transaction.show(id)
+
+## Transaction View Status
+GET      /transaction                          controllers.Transaction.list(p:Int ?= 0, s ?= "cashInTime", o ?= "desc", filterTransId ?= "")
+GET      /transaction/refund                   controllers.Transaction.refund()
+GET      /transaction/refund/:idToken          controllers.Transaction.refundDetail(idToken:String)
+POST     /transaction/refund/:idToken          controllers.Transaction.refundProcess(idToken:String)
+GET      /transaction/refund/:idToken/receipt  controllers.Transaction.refundReceipt(idToken:String)
+GET      /transaction/change                   controllers.Transaction.change()
+GET      /transaction/change/:idToken          controllers.Transaction.changeDetail(idToken:String)
+POST     /transaction/change/:idToken          controllers.Transaction.changeProcess(idToken:String)
+GET      /transaction/change/:idToken/receipt  controllers.Transaction.changeReceipt(idToken:String)
+GET      /transaction/unlock                   controllers.Transaction.unlock()
+GET      /transaction/unlock/:idToken          controllers.Transaction.unlockDetail(idToken:String)
+POST     /transaction/unlock/:idToken          controllers.Transaction.unlockProcess(idToken:String)
+GET      /transaction/:id                      controllers.Transaction.show(id:String)
+
+## Report
+GET      /report                        controllers.Report.list(p:Int ?= 0, s ?= "id", o ?= "desc")
+GET      /report/pdf                    controllers.Report.pdf()
+GET      /report/excel                  controllers.Report.excel()
+#POST   /report/result                  controllers.Report.list_result()
+
+
+# Some tools
+GET     /tools/checkRate                controllers.Tools.checkRate()
+POST    /tools/checkRate                controllers.Tools.checkRateSubmit()
+
+## Help
+GET     /feedback                           controllers.Tools.feedback()
+POST    /feedback                           controllers.Tools.feedbackSubmit()
+GET     /documentation                      controllers.Tools.documentation()
+
+## News
+GET     /news/list                         controllers.News.list(p:Int ?= 0, s ?= "id", o ?= "desc")
+GET     /news/create                       controllers.News.create()
+POST    /news/save                         controllers.News.save()
+GET     /news/edit/:id                         controllers.News.edit(id:Long)
+POST    /news/update/:id                       controllers.News.update(id:Long)
+GET     /news/status/:id/:status           controllers.News.status(id:Long, status:String)
+
+## FOrex
+GET     /forexs/:c/table                      controllers.Forex.table(c: String)
+
+GET     /corporates/:id/logo                controllers.Corporate.logo(id:String, s:String ?= "medium")
+GET     /users/:id/photo                    controllers.User.photo(id:Long, s:String ?= "medium")
+GET     /users/:id/css                      controllers.User.css(id:Long)
+GET     /helpers/currencies.json            controllers.Helpers.currencies()
+GET     /helpers/cities.json                controllers.Helpers.cities()
+GET     /helpers/banks.json                 controllers.Helpers.banks()
+GET     /helpers/banks/:id.json             controllers.Helpers.banks_detail(id:String)
+
+
+
+
+#####################################
+## Backend Page
+## Admin page
+GET    /admin                               controllers.Main.admin_index()
+GET    /admin/dashboard                     controllers.Dashboard.admin_index()
+
+
+## Admin Authentication
+GET     /admin/login                        controllers.Login.admin_login()
+POST    /admin/login                        controllers.Login.admin_authenticate()
+GET     /admin/logout                       controllers.Login.admin_logout()
+
+
+## Corporate Management
+GET    /admin/corporates                   controllers.Corporate.admin_index(p:Int ?= 0, s ?= "code", o ?= "asc", f ?= "")
+GET    /admin/corporates/new               controllers.Corporate.admin_new()
+POST   /admin/corporates                   controllers.Corporate.admin_create()
+GET    /admin/corporates/:id               controllers.Corporate.show(id:String)
+GET    /admin/corporates/:id/edit          controllers.Corporate.admin_edit(id:String)
+POST   /admin/corporates/:id/edit          			controllers.Corporate.admin_update(id:String)
+
+## Corporate Configuration Stevano Added 19 Jun 2015
+#GET    /admin/corporates/channelcode	   controllers.Corporate.getChannelCode()
+
+
+## Corporate Fees Management
+GET     /admin/corporates/:c/fees        			controllers.Fee.admin_index(c:String)
+POST    /admin/corporates/:c/fees        			controllers.Fee.create(c:String)
+DELETE  /admin/corporates/:c/fees/:id    			controllers.Fee.destroy(c:String, id:Long)
+
+## Corporate Credit Management
+GET     /admin/corporates/:c/credit        			controllers.Credit.admin_index(c:String)
+PUT     /admin/corporates/:c/credit        			controllers.Credit.admin_update(c:String)
+
+## Corporate Forex Management
+GET     /admin/corporates/DOK/forex             	controllers.Forex.admin_index_main()
+GET     /admin/corporates/:c/forex                  controllers.Forex.admin_index(c:String, origin:String ?= "", destination:String ?= "")
+POST    /admin/corporates/:c/forex                  controllers.Forex.admin_create(c:String)
+PUT     /admin/corporates/:c/forex/:id              controllers.Forex.admin_update(c:String, id:Long)
+DELETE  /admin/corporates/:c/forex/:id              controllers.Forex.admin_destroy(c:String, id:Long)
+
+## Audit
+GET     /admin/audit                  				controllers.Audit.admin_index(p:Int ?= 0, s ?= "id", o ?= "desc", filterUserId ?= null, filterTag ?= null)
+
+## Customer ban
+GET     /admin/customerbans                        	controllers.CustomerBan.admin_list(p:Int ?= 0, s ?= "id", o ?= "desc", f ?= "")
+POST    /admin/customerbans                        	controllers.CustomerBan.admin_add()
+GET     /admin/customerbans/:id/unban              	controllers.CustomerBan.admin_unban(id:Long)
+GET     /admin/customerbans/interdictions          	controllers.CustomerBan.admin_interdictions(p:Int ?= 0, s ?= "country.code", o ?= "asc", f ?= "")
+POST    /admin/customerbans/interdictions          	controllers.CustomerBan.admin_interdictionsUpload()
+DELETE  /admin/customerbans/interdictions/:id      	controllers.CustomerBan.admin_interdictionsDelete(id:Long)
+GET     /admin/suspicious                          	controllers.Suspicious.admin_index(p:Int ?= 0, s ?= "id", o ?= "desc", f ?= "")
+GET     /admin/suspicious.csv                      	controllers.Suspicious.csv(s ?= "id", o ?= "asc", f ?= "")
+
+
+## Transaction management
+GET      /admin/transactions                 		controllers.Transaction.admin_list(p:Int ?= 0, s ?= "cashInTime", o ?= "desc", f ?= "")
+
+## Full Refund
+GET      /admin/transaction/refund                 	controllers.Transaction.admin_refund()
+GET      /admin/transaction/refund/:idToken        	controllers.Transaction.admin_refundDetail(idToken:String)
+POST     /admin/transaction/refund/:idToken        	controllers.Transaction.admin_refundProcess(idToken:String)
+
+
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               				controllers.Assets.at(path="/public", file)
+
+#*       /                           module:secure
+
+
+#SETLEMENT REPORT
+GET     /admin/viewsharesetting                     controllers.SetupShareSetting.view(name:String)
+POST    /admin/savesharesetting                     controllers.SetupShareSetting.save()
+GET     /admin/viewcutofftime                       controllers.SetupCutOffTime.view()
+POST    /admin/savecutofftime                       controllers.SetupCutOffTime.save()
+GET     /admin/settlementreport                     controllers.SettlementReport.list()
+POST    /admin/settlementreport                     controllers.SettlementReport.listView()
+GET     /admin/settlementreport/:name               controllers.SettlementReport.download(name:String)
+POST    /admin/settlementreports/:id                controllers.SettlementReport.generateById(id:Long)
+
+#NETELIS
+POST	/translate/pinyin							controllers.Translate.getPinyin()
+POST	/translate/tcode							controllers.Translate.getTCode()
+
+POST 	/getprovincebank							controllers.GetBank.getProvinceBank()
+POST 	/getcitybank								controllers.GetBank.getCityBank()
+POST	/getbank									controllers.GetBank.getBank()
+POST	/getcountrybank								controllers.GetBank.getGroupBank()
+POST 	/validatevoucher							controllers.ValidateVoucher.getVoucher()
+
+#OPERASIONAL
+GET     /corporates/:c/usersoperasional				controllers.User.indexOperasional(c:String)
+GET     /corporates/:c/usersoperasional/users		controllers.User.listOperasional(c:String)
+POST    /corporates/:c/usersoperasional/:id 		controllers.User.updateOperasional(c:String, id:Long)
+GET     /corporates/:c/usersoperasional/:id/edit 	controllers.User.editOperasional(c:String, id:Long)
+
+## Transaction Send Money
+GET     /sendBillPayment                            controllers.Send.createBillPayment()
+
+## Banks Management
+GET     /banks                           			controllers.Banks.list(p:Int ?= 0, s ?= "id", o ?= "desc", f ?= "")
+GET     /banks.csv                       			controllers.Banks.csv(s ?= "id", o ?= "asc", f ?= "")
+GET     /banks/:id/summary               			controllers.Banks.summary(id:String)
+GET     /banks/:id/edit                  			controllers.Banks.edit(id:String)
+POST    /banks/:id/edit                  			controllers.Banks.update(id:String)
+GET     /banks/create                    			controllers.Banks.create()
+POST    /banks/create                    			controllers.Banks.save()
+GET     /banks/delete/:id                    		controllers.Banks.delete(id:String)
+
+## Channels Management
+GET     /channels                           		controllers.Channels.list(p:Int ?= 0, s ?= "code", o ?= "asc", f ?= "")
+GET     /channels/:code/summary               		controllers.Channels.summary(code:String)
+GET     /channels/:code/edit                  		controllers.Channels.edit(code:String)
+POST    /channels/:code/edit                  		controllers.Channels.update(code:String)
+GET     /channels/delete/:code                    	controllers.Channels.delete(code:String)
+
+GET		/kaptcha									controllers.Login.captcha()
+
+GET		/batchupload								controllers.BatchUpload.viewUpload()
+POST	/dobatchupload								controllers.BatchUpload.actionUpload()
+GET     /transactionInquiry                			controllers.Transaction.listBatchInquiry(p:Int ?= 0, s ?= "id", o ?= "desc", filter ?= "")
+GET     /batch/:id                     				controllers.Transaction.showBatch(id:Int)
+GET     /batchDetail/:batchId/:m                 	controllers.Transaction.showBatchDetail(batchId:Int, p:Int ?= 0, filter ?= "", m:String)
+POST	/dobatchremit/:token/:batchId				controllers.BatchUpload.actionRemit(token:String, batchId:Int)
+GET		/viewbatchupload/:batchId					controllers.BatchUpload.viewResultBatchUpload(batchId:Int)
+GET		/viewbatchuploadfailed						controllers.BatchUpload.viewResultBatchUploadFailed(fileName ?= "", totalRow:Int ?= 0, description ?= "")
+
+GET      /transactionbatch/:batchId                 controllers.Transaction.showBatchDetailTransaction(p:Int ?= 0, s ?= "id", o ?= "desc", filterTransId ?= "", batchId:Int)
+
+GET     /print/:id/:type                  			controllers.Transaction.receipt(id,type)

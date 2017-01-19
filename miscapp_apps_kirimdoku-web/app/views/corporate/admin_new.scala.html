@@ -1,0 +1,50 @@
+@(myForm: Form[models.Corporate])
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Corporate new") {
+<div class="page-header">
+	<h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG191","Add new Corporate")</h1>
+</div>
+
+@partial.flash_alert()
+
+@helper.form(routes.Corporate.admin_create(), 'method -> "POST", 'enctype -> "multipart/form-data", 'class -> "form-vertical") {
+	<div class="row">
+		<div class="span6 control-group">
+			@inputText(myForm("code"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG316","Corporate code"), 
+			'_showConstraints -> false, 'class -> "code required", 'minlength ->"3", 'maxlength -> "3", 'placeholder -> "3 Char identifier Corporate Code")
+		</div>
+	</div>
+	<div class="row">
+		<div class="span6 control-group">
+			@inputText(myForm("name"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG295","Name"), 
+			'_showConstraints -> false, 'class -> "required", 'minlength ->"3", 'maxlength -> "32", 'placeholder -> "Corporate Name...")
+		</div>
+	</div>
+	<div class="row">
+		<div class="span6 control-group">
+			@select(myForm("country.code"), options(models.Country.options), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country"), 
+			'class -> "country", '_showConstraints -> false)
+		</div>
+	</div>
+	<div class="row">
+		<div class="span6 control-group">
+			@select(myForm("currency.code"), options(models.Currency.options), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG087","Currency"), 
+			'class -> "currency", '_showConstraints -> false)
+		</div>
+	</div>
+
+	<div class="span12">
+		<div class="form-actions">
+			<button class="btn btn-inverse btn-back"><i class="icon-remove icon-white"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</button>
+			<button class="btn btn-primary" type="submit"><i class="icon-plus icon-white"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG353","Add")</button>
+		</div>
+	</div>
+}
+<script src="@routes.Assets.at("javascripts/corporate.js")" type="text/javascript"></script>
+}

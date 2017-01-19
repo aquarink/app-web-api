@@ -1,0 +1,30 @@
+@(corporate:models.Corporate, role: models.SecurityRole, myForm: Form[models.User])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Create User", Seq(
+    routes.Corporate.admin_index().toString -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG354","Corporate Management")
+    , "" -> corporate.name
+    , "" -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG374","Add new user")
+)) {
+<div class="page-header">
+	<h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG375","Add new") @role.description</h1>
+</div>
+
+@partial.flash_alert()
+
+@form(routes.User.create(corporate.code),
+'class -> "form-vertical form-user form-horizontal",
+'enctype -> "multipart/form-data",
+'autocomplete -> "off"
+) {
+<input type="hidden" name="id" value="@myForm("id").value"/>
+
+@user.formBody(role, myForm, true)
+
+}
+} {
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/user.js")'></script>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.chainedSelects.js")'></script>
+}

@@ -1,0 +1,563 @@
+@(transactionForm: Form[models.forms.CashInForm], channelCode: String, channels: TreeMap[String, String])
+
+@import helper._
+@import helper.twitterBootstrap._
+@import partial._
+
+@layout("Bill Payment") {
+
+<div class="page-header">
+	<h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG010","Bill Payment")</h1>
+</div>
+
+@partial.flash_alert()
+
+<style>
+	.ui-autocomplete {
+		max-height: 200px;
+		overflow-y: auto;
+		/* prevent horizontal scrollbar */
+		overflow-x: hidden;
+	}
+	
+	/* IE 6 doesn't support max-height
+	* we use height instead, but this forces the menu to always be this tall
+	*/
+	* html .ui-autocomplete {
+		height: 200px;
+	}
+	.ui-autocomplete-loading {
+		background: white url("@routes.Assets.at("images/ui-anim_basic_16x16.gif")") right center no-repeat;
+	}
+</style>
+<div class="container-transaction-send-inner">
+	@helper.form(routes.Send.confirmBillPayment, 'id -> "form-cashin", 'autocomplete -> "on", 'class -> "row form form-horizontal", Symbol("data-url-verify") -> routes.Send.verify.url) {
+		<div class="hide">
+			<input type="hidden" name="trackingId" id="trackingId" value="@transactionForm.get().trackingId" />
+			<input type="hidden" name="sender.id" id="sender_id" />
+			<input type="hidden" name="beneficiary.id" id="beneficiary_id" />
+			<input type="hidden" name="agent.id" id="user_id" value='@session.get("userId")' />
+			<input type="hidden" name="corporate.code" id="corporate_code" value='@session.get("corporateCode")' />
+			<input type="hidden" name="billPayment.selectOperatorName" id="billPayment_selectOperatorName" value='' />
+			<input type="hidden" name="billPayment.selectDenomName" id="billPayment_selectDenomName" value='' />
+			<input type="hidden" name="billPayment.amount" id="billPayment_amount" value='' />
+			<input type="hidden" name="billPayment.accountName" id="billPayment_accountName" value='' />
+		</div>
+		<div class="span12">
+			<p>
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG037","Please fill all the mandatory fields highlighted with the bold labels below")
+			</p>
+		</div>
+
+		<fieldset class="span12 form-cashin-info">
+			<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG038","Transaction information")</legend>
+			<div class="row hide">
+				<div class="control-group span4 well">
+					<input type="text" name="idToken" class="required"/>
+					@select(transactionForm("beneficiaryCurrency.code"),
+						options("IDR" -> "IDR"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG220","Receive currency"),
+						'class -> "currency",
+						'_showConstraints -> false)
+					@inputText(transactionForm("fundSource"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG219","Source of fund"),
+						'class -> "input-large",
+						'_help -> "(Optional field)"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12 container-info"></div>
+				<div class="control-group span4">
+					@helper.select(transactionForm("channel.code"),
+						options(channels), 
+							'_class -> "",
+							'readOnly -> true,
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG039","Service")
+						)
+				</div>
+				<div class="control-group span4">
+					@select(
+						transactionForm("senderCountry.code"),
+						options(transactionForm("senderCountry.code").value -> transactionForm("senderCountry.name").value),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG040","Sending country"),
+						'readOnly -> true,
+						'_showConstraints -> false, 'class -> "required"
+					)
+				</div>
+				<div class="control-group span4 hide">
+					@select(transactionForm("senderCurrency.code"),
+						options(transactionForm("senderCurrency.code").value -> transactionForm("senderCurrency.code").value),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG218","Sender currency"),
+						'class -> "currency disabled",
+						'readOnly -> true,
+						'_showConstraints -> false)
+				</div>
+				<div class="control-group span4">
+					@helper.inputText(transactionForm("rate"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG045","Exchange rate"),
+						'_class -> "",
+						'class -> "rate amount",
+						'readOnly -> "true",
+						'_help -> "",
+						'alt -> "amount",
+						'tabindex -> "-1",
+						'_showConstraints -> false
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="control-group span4">
+					@helper.select(transactionForm("beneficiaryCountry.code"),
+						options(models.Country.optionsBeneficiaryCountryBillPayment(transactionForm("senderCountry.code").value)),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG027","Receive country"),
+						'_showConstraints -> false,
+						'class -> "country_id",
+						'_class -> "",
+						'class -> "required",
+						'readOnly -> "true"
+					)
+				</div>
+				<div class="control-group span4">
+					@helper.input(transactionForm("beneficiaryCity"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG217","Receive city"),
+						'class -> "",
+						'_help -> "",
+						'value -> "Jakarta",
+						'readonly -> "true",
+						'_showConstraints -> false
+					) { (id, name, value, args) =>
+							<input type="text" id="@id" name="@name" @toHtmlArgs(args)>
+					}
+				</div>
+				<div class="control-group span4">
+					@helper.inputText(transactionForm("feesTotal"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG145","Fee"),
+						'_class -> "",
+						'class -> "amount",
+						'readOnly -> "readonly",
+						'tabindex -> "-1",
+						'_help -> "",
+						'_showConstraints -> false
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="control-group span4">
+					@helper.input(transactionForm("senderAmount")
+						, '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG042","Sending amount")
+						, '_class -> "required"
+						, 'class -> "required amount input-block-level"
+						, 'readOnly -> true
+						, '_help -> ""
+						, '_showConstraints -> false
+						, 'maxLength -> 14
+					) { (id, name, value, args) =>
+			            <div class="input-prepend input-append">
+			            	<span class="add-on"></span>
+							<input type="text" id="@id" name="@name" value="@value" read @toHtmlArgs(args)>
+							<span class="add-on currency-code" style="font-size:11px">@transactionForm("senderCurrency.code").value</span>
+						</div>
+					}
+				</div>
+				<div class="control-group span4">
+					@helper.input(transactionForm("beneficiaryAmount")
+						, '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG043","Receive amount")
+						, '_class -> "required"
+						, 'class -> "amount"
+						, 'style -> "width:71%"
+						, 'readOnly -> true
+						, '_help -> ""
+						, '_showConstraints -> false
+						, 'maxLength -> 14
+					) { (id, name, value, args) =>
+			            <div class="input-prepend input-append">
+							<span class="add-on"><input type="hidden" name="sendType" value="beneficiaryAmount"/></span>
+							<input type="text" id="@id" name="@name" value="@value" @toHtmlArgs(args)>
+							<span class="add-on currency-code" style="font-size:11px">IDR</span>
+						</div>
+					}
+				</div>
+				<div class="control-group span4">
+					@helper.inputText(transactionForm("additionalFee"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG047","Additional Fee"),
+						'_class -> "",
+						'class -> "amount",
+						'readOnly -> "readonly",
+						'tabindex -> "-1",
+						'_help -> "",
+						'_showConstraints -> false
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="control-group span4">
+					@helper.input(transactionForm("collectAmount")
+						, '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG044","Amount to collect")
+						, '_class -> "required"
+						, 'class -> "required"
+						, 'class -> "amount input-block-level"
+						, 'readOnly -> "true"
+						, 'style -> "width:95%"
+						, '_help -> ""
+						, 'tabindex -> "-1"
+						, '_showConstraints -> false
+					) { (id, name, value, args) =>
+			            <div class="input-append">
+							<input type="text" id="@id" name="@name" value="@value" @toHtmlArgs(args)>
+							<span class="add-on currency-code" style="font-size:11px">@transactionForm("senderCurrency.code").value</span>
+						</div>
+					}
+				</div>
+				<div class="control-group span8">
+					@helper.input(transactionForm("senderNote"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG048","Sending purpose"),
+						'class -> "input-xlarge",
+						'style -> "width: 95%",
+						'value -> "Beli Pulsa & Bayar Tagihan",
+						'readOnly -> "true"
+					) { (id, name, value, args) =>
+							<input type="text" id="@id" name="@name" @toHtmlArgs(args)>
+					}
+				</div>
+			</div>
+
+			<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG081","Bill information")</legend>
+			<div class="row">
+				<div class="span12 container-info"></div>
+				<div class="control-group span4">
+					@helper.select(transactionForm("billPayment.billPaymentService"),
+						options(
+							"" -> "-- Bill Payment Service --"
+						), 
+							'_class -> "required",
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG082","Bill Payment Service")
+						)
+				</div>
+				<div class="control-group span4">
+					@helper.select(transactionForm("billPayment.selectBill"),
+						options(), 
+							'_class -> "required",
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG083","Select Bill"),
+							'autofocus -> "true"
+						)
+				</div>
+				<div class="control-group span4">
+					@helper.inputText(
+						transactionForm("billPayment.accountNumber")
+						, '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG084","Phone Number / Subscriber ID")
+						, '_showConstraints -> false
+						, '_class -> "required"
+						, 'class -> "required"
+						, 'style -> "width:80%"
+						, 'type -> "tel"
+						, 'value -> ""
+						, 'onkeypress -> "return numbersonly(this, event)"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="control-group span4">
+					@helper.select(transactionForm("billPayment.selectOperator"),
+						options(), 
+						'_class -> "required",
+						'class -> "required",
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG085","Select Operator")
+					)
+				</div>
+				<div class="control-group span4">
+					@helper.select(transactionForm("billPayment.selectDenom"),
+						options(), 
+							'_class -> "required",
+							'class -> "required",
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG086","Select Denom")
+						)
+				</div>
+			</div>
+		</fieldset>
+
+		<div class="span12">
+            <div class="form-actions">
+				<button type="reset" class="btn"><i class="icon-repeat"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG068","Reset")</button>
+				<button type="submit" id="btn-send-primary" class="btn btn-primary btn-next" data-loading-text="Loading..." data-disable-with="Sending..." data-enable-with="Sent">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG067","Send") <i class="icon-white icon-arrow-right"></i></button>
+            </div>
+		</div>
+	}
+	
+
+	<div id="sendModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="Send dialog" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Verification failure</h3>
+		</div>
+		<div class="modal-body">
+			<p>One fine body…</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+
+	<div id="checkPinyin" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="Check Code Pinyin" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Check Code Pinyin</h3>
+		</div>
+		<div class="modal-body">
+			<p id="pageCheckPinyin"></p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+
+    </div>
+</div>
+} {
+<script src="@routes.Assets.at("javascripts/numbersonly.js")" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+	var denomList = null;
+	var listBiller = '@transactionForm.get().channel.additionalParam';
+	var arrSelectorBillPayment = jQuery.parseJSON(listBiller.replace(/&quot;/g,'"'));
+	
+	(function() {
+	  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+	  $.fn.infoForm = function() {
+	    var additionalFeeField, beneficiaryAmountField, beneficiaryCountryField, beneficiaryCurrencyField, channelField, collectAmountField, feeField, inquiryIdField, rateField, sendAmountField;
+	    channelField = this.find("select[name='channel.code']");
+	    beneficiaryCountryField = this.find("select[name='beneficiaryCountry.code']");
+	    beneficiaryCurrencyField = this.find("select[name='beneficiaryCurrency.code']");
+	    sendAmountField = this.find("input[name='senderAmount']");
+	    beneficiaryAmountField = this.find("input[name='beneficiaryAmount']");
+	    inquiryIdField = this.find("input[name='idToken']");
+	    rateField = this.find("input[name='rate']");
+	    feeField = this.find("input[name='feesTotal']");
+	    additionalFeeField = this.find("input[name='additionalFee']");
+	    collectAmountField = this.find("input[name='collectAmount']");
+	    
+	    billPayment_billPaymentService = $('#billPayment_billPaymentService');
+	    billPayment_selectBill = $('#billPayment_selectBill');
+	    billPayment_selectDenom = $('#billPayment_selectDenom');
+	    billPayment_selectDenomName = $('#billPayment_selectDenomName');
+	    billPayment_selectOperator = $('#billPayment_selectOperator');
+	    billPayment_selectOperatorName = $('#billPayment_selectOperatorName');
+	    billPayment_amount = $('#billPayment_amount');
+	    billPayment_accountNumber = $('#billPayment_accountNumber');
+	    billPayment_accountName = $('#billPayment_accountName');
+	    
+		$.each(arrSelectorBillPayment.billPaymentService, function(index, items) {   
+			billPayment_billPaymentService
+		         .append($("<option></option>")
+		                    .attr("value", items.billPaymentServiceName)
+		                    .text(items.billPaymentServiceName)); 
+		     console.log( index +" " + items.billPaymentServiceName)
+		});
+	    
+	    var inquiryType = "";
+	    this.submitInquiry = __bind(function(params, cb) {
+	      this.updateInquiry(null);
+	      return $.ajax({
+	        type: 'GET',
+	        url: '/send/inquiryBillPayment',
+	        data: $(this).serialize(),
+			error: __bind(function(err, msg) {
+			    return billPayment_selectDenom.removeClass('ui-autocomplete-loading');
+			}, this),
+			beforeSend: __bind(function(xhr) {
+			    return billPayment_selectDenom.addClass('ui-autocomplete-loading');
+			}, this),
+	        success: __bind(function(result) {
+	        	billPayment_selectDenom.removeClass('ui-autocomplete-loading');
+	          	return cb(null, result);
+	        }, this)
+	      });
+	    }, this);
+	    this.updateInquiry = function(result) {
+	      var collectAmount;
+	      if (result && result.inquiry && result.status == 0) {
+	        inquiryIdField.val(result.inquiry.idToken);
+	        rateField.val(Number(result.inquiry.forexReference.rate).toFixed(6)).trigger('keyup');
+	        feeField.val(result.inquiry.fund.fees.total);
+	        feeField.inputmask("money");
+	        additionalFeeField.val(result.inquiry.fund.fees.additionalFee);
+	        //additionalFeeField.inputmask("money");
+	        sendAmountField.val(result.inquiry.fund.origin.amount);
+	        beneficiaryAmountField.val(Number(result.inquiry.fund.destination.amount));
+	        collectAmount = Number(result.inquiry.fund.origin.amount) + Number(result.inquiry.fund.fees.total);
+	        collectAmountField.val(collectAmount).trigger('keyup');
+	        billPayment_accountName.val(result.billPayment.subscriber_NAME);
+	        
+	        return collectAmountField.inputmask("money");
+	      } else if (result && result.message) {
+	        $(this).find('.container-info').alert('error', result.message, 3000);
+	        rateField.val("");
+	        return feeField.val("");
+	      }
+	    };
+	    
+	    
+	    this.updateInquiryBillPayment = function(result) {
+	      var collectAmount;
+	      if (result && result.inquiry) {
+	        if (result.billPayment != null) {
+	        	inquiryIdField.val(result.inquiry.idToken);
+	        	denom = result.billPayment.biller_NAME;
+	        	billPayment_selectDenom.append('<option selected="selected" value="">Select Denom '+denom+'</option>');
+		        $.each(result.billPayment.billdetails, function(index, items) {   
+		        	billPayment_selectDenom
+				         .append($("<option></option>")
+				                    .attr("value", index)
+				                    .text(items.title)); 
+				     console.log( items.billid + " " + items.title)
+				});
+		        denomList = result.billPayment.billdetails;
+		        rateField.val(Number(result.inquiry.forexReference.rate).toFixed(6)).trigger('keyup');
+		        feeField.val(result.inquiry.fund.fees.total);
+		        feeField.inputmask("money");
+		        additionalFeeField.val(result.inquiry.fund.fees.additionalFee);
+	        } else {
+	        	billPayment_selectDenom.append('<option selected="selected" value="">No Available Denom</option>')
+	        }
+	        return collectAmountField.inputmask("money");
+	      } else if (result && result.message) {
+	        $(this).find('.container-info').alert('error', result.message, 3000);
+	        rateField.val("");
+	        return feeField.val("");
+	      }
+	    };
+	    
+	    billPayment_billPaymentService.on('change', __bind(function(e) {
+	    	billPayment_selectBill.empty();
+	    	billPayment_selectOperator.empty();
+	    	billPayment_selectDenom.empty();
+	    	if (billPayment_billPaymentService.val() != '') {
+		    	billPayment_selectBill.append('<option selected="selected" value="">-- Choose an Bill --</option>');
+		        $.each(arrSelectorBillPayment.billPaymentService[$("#billPayment_billPaymentService option:selected").index()-1].biller, function(index, items) {    
+		        	billPayment_selectBill
+				         .append($("<option></option>")
+				                    .attr("value", items.billName)
+				                    .text(items.billName)); 
+				    console.log( index +" " + items.billName)
+				});
+		        billPayment_selectBill.focus();
+	  		}
+		}, this));
+	    
+	    billPayment_selectBill.on('change', __bind(function(e) {
+	    	billPayment_selectOperator.empty();
+	    	billPayment_selectDenom.empty();
+	    	if (billPayment_selectBill.val() != '') {
+		    	billPayment_selectOperator.append('<option selected="selected" value="">-- Choose an Operator --</option>');
+		        $.each(arrSelectorBillPayment.billPaymentService[$("#billPayment_billPaymentService option:selected").index()-1].biller[$("#billPayment_selectBill option:selected").index()-1].operator, function(index, items) {    
+		        	billPayment_selectOperator
+				         .append($("<option></option>")
+				                    .attr("value", items.billerCode)
+				                    .text(items.operatorName)); 
+				    console.log( index +" " + items.billerCode + " " + items.operatorName)
+				});
+		    	billPayment_accountNumber.focus();
+	    	}
+		}, this));
+	    
+	    billPayment_selectOperator.on('change', __bind(function(e) {
+	    	billPayment_selectDenom.empty();
+			sendAmountField.val('');
+	    	collectAmountField.val('');
+			beneficiaryAmountField.val('');
+			billPayment_selectOperatorName.val('');
+			denomList = null;
+			if ($.trim( billPayment_accountNumber.val() ) == '') {
+				billPayment_selectOperator.val('');
+	    		billPayment_selectDenom.val('');
+	    		alert("Input phone number / subscriber ID first then select operator");
+	    		billPayment_accountNumber.focus();
+			} else {
+			    	if (billPayment_selectOperator.val() != "") {
+			    	  beneficiaryAmountField.val('1');
+			    	  var datas = $(this).serialize();
+			    	  beneficiaryAmountField.val('');
+			    	  console.log('Operator '+$('#billPayment_selectOperator option:selected' ).text())
+			    	  billPayment_selectOperatorName.val($('#billPayment_selectOperator option:selected' ).text());
+			    	  $.ajax({
+					        type: 'GET',
+					        url: '/send/inquiryBillPayment',
+					        data: datas,
+							error: __bind(function(err, msg) {
+							    return billPayment_selectDenom.removeClass('ui-autocomplete-loading');
+							}, this),
+							beforeSend: __bind(function(xhr) {
+							    return billPayment_selectDenom.addClass('ui-autocomplete-loading');
+							}, this),
+					        success: __bind(function(result) {
+					        	billPayment_selectDenom.removeClass('ui-autocomplete-loading');
+					        	this.updateInquiryBillPayment(result);
+					        }, this)
+					      });
+			    	}
+			}
+		}, this));
+	    
+	    
+	    billPayment_selectDenom.on('change', __bind(function(e) {
+	    	if ($('#billPayment_selectDenom option:selected' ).val() != "") {
+		    	if (billPayment_accountNumber.val() != "") {
+			    	console.log('billid             : '+denomList[$('#billPayment_selectDenom option:selected' ).val()].billid);
+			    	console.log('descriptions key   : '+denomList[$('#billPayment_selectDenom option:selected' ).val()].descriptions[0].key);
+			    	console.log('descriptions value : '+denomList[$('#billPayment_selectDenom option:selected' ).val()].descriptions[0].value);
+			    	console.log('title              : '+denomList[$('#billPayment_selectDenom option:selected' ).val()].title);
+			    	console.log('totalamount        : '+denomList[$('#billPayment_selectDenom option:selected' ).val()].totalamount);
+			    	console.log('originTotalAmount  : '+denomList[$('#billPayment_selectDenom option:selected' ).val()].originTotalAmount);
+			    	
+			    	beneficiaryAmountField.val(Number(denomList[$('#billPayment_selectDenom option:selected').val()].totalamount));
+			    	billPayment_selectDenomName.val(denomList[$('#billPayment_selectDenom option:selected' ).val()].title);
+			    	billPayment_amount.val(denomList[$('#billPayment_selectDenom option:selected' ).val()].totalamount);
+			    	sendAmountField.val('');
+				    return this.submitInquiry({}, __bind(function(err, result) {
+				        if (err) {
+				          console.log("submit inq err", err);
+				          console.log("submit inq res", result);
+				          return $(this).find('.container-info').alert('error', err, 5000);
+				        } else {
+				          this.updateInquiry(result);
+				        }
+				      }, this));
+		    	} else {
+		    		billPayment_selectDenom.val('');
+		    		alert("Input phone number / subscriber ID first");
+		    		billPayment_accountNumber.focus();
+		    	}
+	    	}
+		}, this));
+	    
+	    this.isValid = function() {
+	      return inquiryIdField.val().length > 0;
+	    };
+	    return this;
+	  };
+	  $(function() {
+	    var extractLast, extractLastPy, infoForm, split, splitpy, splitzh;
+	    infoForm = $("form#form-cashin .form-cashin-info").infoForm();
+	    split = function(val) {
+	      return val.split(/,\s*/);
+	    };
+	    splitpy = function(val) {
+	      return val.split(';');
+	    };
+	    splitzh = function(val) {
+	      return val.split('');
+	    };
+	    extractLast = function(term) {
+	      return split(term).pop();
+	    };
+	    extractLastPy = function(term) {
+	      return splitpy(term).pop();
+	    };
+	  });
+	}).call(this);
+
+	
+	
+//-->
+</script>
+}

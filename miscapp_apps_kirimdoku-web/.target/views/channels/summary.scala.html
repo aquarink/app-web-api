@@ -1,0 +1,17 @@
+@(channel:models.Channel)
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/customer.css")">
+
+<dl class="dl-horizontal dl-aligned">
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG398","Service Id"): </dt>
+	<dd>@channel.code</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG399","Service Name"): </dt>
+	<dd>@channel.name</dd>
+	<dt>CFNames: </dt>
+	<dd>@channel.cfnames</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG030","Status"): </dt>
+	<dd>@channel.status</dd>
+	<dt>CID: </dt>
+	<dd>@channel.cid</dd>
+	<dt>Acc Id: </dt>
+	<dd>@channel.accountId</dd>
+</dl>

@@ -1,0 +1,56 @@
+@(myForm: Form[models.News])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Add News") {
+	@partial.flash_alert()
+    <div class="span6 offset3">
+        @helper.form(routes.News.update(Long.parseLong(myForm("id").value))) {
+            <div class="page-subheader">
+                <h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG491","Edit News")</h3>
+            </div>
+
+			<div class="control-group">
+				<div class="row-fluid">
+					<div class="span12">
+						<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG460","Content")</label>
+						<textarea name="content" id="content" class="span12" cols="80" rows="20">@myForm("content").value</textarea>
+					 </div>
+				</div>
+			</div>
+
+			<!--div class="control-group">
+				<div class="row-fluid">
+					<div class="span12">
+						@select(
+						myForm("status"),
+						options(models.News.options),
+						'_label -> "Status",
+						'_showConstraints -> false,
+						'class -> "status required"
+						)
+					</div>
+				</div>
+			</div-->
+			<input type="hidden" name="corporate.code" value='@session.get("corporateCode")' />
+            <div class="form-actions">
+                <a href="@routes.News.list()" class="btn btn-inverse">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+                <button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG126","Save")</button>
+            </div>
+        }
+    </div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var published = @myForm("published").value;
+			if(published){
+				$("#status").val("1");
+				console.log("Set Published");
+			}else{
+				$("#status").val("0");
+				console.log("Set Not Published");
+			}
+		});
+	</script>
+}

@@ -1,0 +1,130 @@
+@(result: org.codehaus.jackson.JsonNode)
+<div style="font-family:helveticaneue-light; font-size: 14px; padding: 3em; color: #000;">
+
+	<div>
+		@defining(result.path("transaction")) { trx =>
+		@defining(trx.path("sender")) { sender =>
+		<div>
+			<p>Dear @sender.path("firstName").getTextValue @sender.path("lastName").getTextValue, </p>
+			<br/>
+			<p>Thank you for using our service</p>
+			<p>By this email, we would like to inform that we have received the money that you were sent,
+				and our operator at destination country is ready to disbursement of money.</p>
+	
+			<p>Congratulations! You just got the unique number from us to facilitate of sending money.
+				Just mention your <strong>Member ID</strong> for next transaction.</p><br/>
+			<p style="font-weight: bold;">Member ID &nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;
+			<span style="color: red;">@sender.path("id").getTextValue</span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span style="font-size: 12px; font-weight: normal;"><sup>*Please be sure to keep your ID.</sup></span></p>
+		</div>
+		}
+		<br/>
+		@defining(trx.path("fund")) { fund =>
+		<h4>Sending Money</h4><hr style="margin-top: -13px;"/>
+		<table style="width: 60%; font-family: helveticaneue-light; font-size: 12px;">
+			<tr>
+				<td width="160px">Agent ID</td>
+				<td align="center">:</td>
+				<td>@trx.path("agent").path("code").getTextValue</td>
+			</tr>
+			<tr>
+				<td>Transaction Code</td>
+				<td align="center">:</td>
+				<td><b>@trx.path("id").getTextValue</b></td>
+			</tr>
+				<td>Send Purpose</td>
+				<td align="center">:</td>
+				<td>@trx.path("senderNote").getTextValue()</td>
+			</tr>
+			<tr>
+				<td>Status</td>
+				<td align="center">:</td>
+				<td><strong>@models.Transaction.statusText(trx.path("status").getIntValue).toUpperCase()</strong></td>
+			</tr>
+		</table>
+
+
+		<h4>Amount</h4><hr style="margin-top: -13px;"/>
+		<table style="width: 60%; font-family: helveticaneue-light; font-size: 12px;">
+		<tr>
+			<td width="160px">Sent Amount</td>
+			<td align="center">:</td>
+			<td align="right" width="160px">@models.Currency.format(
+				fund.path("origin").path("amount").getNumberValue,
+				fund.path("origin").path("currency").getTextValue)
+			</td>
+			<td>@fund.path("origin").path("currency").getTextValue</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Fee</td>
+			<td align="center">:</td>
+			<td align="right">@models.Currency.format(fund.path("fees").path("total").getNumberValue, fund.path("fees").path("currency").getTextValue)</td>
+			<td>@fund.path("fees").path("currency").getTextValue</td>
+		</tr>
+		<tr>
+			<td>Total Amount</td>
+			<td align="center">:</td>
+			@defining(fund.path("origin").path("amount").getDoubleValue()+fund.path("fees").path("total").getDoubleValue()) { total =>
+			<td align="right">@models.Currency.format(total, trx.path("fund").path("origin").path("currency").getTextValue())</td>
+			<td>@fund.path("origin").path("currency").getTextValue()</td>
+			}
+		</tr>
+		<tr>
+			<td>Receive Ammount</td>
+			<td align="center">:</td>
+			<td align="right">@models.Currency.format(
+				fund.path("destination").path("amount").getNumberValue,
+				fund.path("destination").path("currency").getTextValue)
+			</td>
+			<td>@fund.path("destination").path("currency").getTextValue</td>
+		</tr>
+		<tr>
+		</table>
+		<br/>
+		<h4>Receiver</h4><hr style="margin-top: -13px;"/>
+		<table style="width: 60%; font-family: helveticaneue-light; font-size: 12px;">
+			<tr>
+				<td width="160px">Full Name</td>
+				<td align="center">:</td>
+				<td>@trx.path("beneficiary").path("firstName").getTextValue @trx.path("beneficiary").path("lastName").getTextValue</td>
+			</tr>
+			<tr>
+				<td>Address</td>
+				<td align="center">:</td>
+				<td>@trx.path("beneficiary").path("address").getTextValue</td>
+			</tr>
+			<tr>
+				<td>Mobile Phone</td>
+				<td align="center">:</td>
+				<td>@trx.path("beneficiary").path("phoneNumber").getTextValue</td>
+			</tr>
+			<tr>
+				<td>Email</td>
+				<td align="center">:</td>
+				<td>@trx.path("beneficiary").path("email").getTextValue</td>
+			</tr>
+		</table>
+		}
+		}
+	</div>
+	
+	<br/>
+	<br/>
+	<br/>
+	<div>
+		<center><p style="font-weight: bold; font-size: 18px;">Send Money Made Easy</p></center> <br/>
+		<p align="center" style="margin-top: -30px; font-size: 11px; font-weight: normal;">"Thank you for using our services and have a nice day"</p>
+		<p align="right"><b>Customer Care DOKU</b>  +62 21 555 666 (Monday - Sunday)</p>
+		<hr/>
+		<p style="font-size: 11px;"><b>Copyright @@ 2012 DOKU</b> Please be sure to keep your <b>transaction and verification code (PIN)</b>.
+			Make sure you send the codes to the person that registered in the data sender or receiver. <b>Strictly prohibited</b> to give
+			<b>the transaction code and verification code (PIN)</b> to unregistered person in the data sender or receiver. All kinds of offenses or omission will be dealt according to company rules and remittance regulations.
+			Content of this email and all attachment is intended for the email recipient only. Any opinions that contained in this email, is the personal opinion
+			of the sender and not the representation of <b>DOKU</b>. If you are not the recepient of this email, you have no right to copying and showing this email to another person.
+			Please contact the sender of this email, if you are sure that this email is not intende for you.
+			</p><hr/>
+
+	</div>
+</div>
+

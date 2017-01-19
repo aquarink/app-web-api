@@ -1,0 +1,120 @@
+@(myForm: Form[models.Bank], edit:Boolean=false)
+@import helper._
+@import helper.twitterBootstrap._
+
+@import be.objectify.deadbolt.java.DeadboltViewSupport
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@readOnly = {
+	@if(edit && !DeadboltViewSupport.viewRestrict(la(as("doku"), as("mainagent"), as("supervisor")), null)) {
+	readonly="readonly"
+	} else {
+	}
+}
+
+@if(myForm.hasGlobalErrors) {
+<p class="error">
+    @myForm.globalError.message
+</p>
+}
+
+@if(flash.contains("success")) {
+<p class="success">
+    @flash.get("success")
+</p>
+}
+
+@input(myForm("agent.id"), '_label -> null) {(id, name, value, args) =>
+<input type="hidden" name="@name" value="@{value ?: session.get("userId")}"/>
+}
+
+<div class="well">
+	<fieldset class="fieldset">
+	<div class="control-group">
+		<div class="row-fluid">
+			<div class="span6">
+				@input(myForm("name"),
+				'_showConstraints -> false,
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG060","Bank Name"),
+				'_class -> "required",
+				'placeholder -> "Bank Name"
+				) { (id, name, value, args) =>
+				<input type="text" id="@id" name="@name" value="@value" @toHtmlArgs(args)>
+				}
+			</div>
+			<div class="span6">
+				@input(myForm("groupBank"),
+				'_showConstraints -> false,
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG394","Group Name"),
+				'_class -> "required",
+				'placeholder -> "Group Name"
+				) { (id, name, value, args) =>
+				<input type="text" id="@id" name="@name" value="@value" @toHtmlArgs(args)>
+				}
+			</div>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="row-fluid">
+			<div class="span6">
+				@input(myForm("id"),
+				'_showConstraints -> false,
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG365","ID"),
+				'_class -> "required",
+				'placeholder -> "Bank ID"
+				) { (id, name, value, args) =>
+				<input type="number" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+				}
+			</div>
+			<div class="span6">
+				@input(myForm("code"),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG064","SWIFT Code"),
+				'_showConstraints -> false,
+				'_class -> "required",
+				'placeHolder -> "Bank SWIFT Code") { (id, name, value, args) =>
+				<input type="text" id="@id" name="@name" value="@value" @toHtmlArgs(args)>
+				}
+			</div>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="row-fluid">
+			<div class="span6">
+				@input(myForm("city"),
+				'_showConstraints -> false,
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG062","City"),
+				'class -> "",
+				'placeholder -> "City"
+				) { (id, name, value, args) =>
+				<input type="text" id="@id" name="@name" value="@value" @toHtmlArgs(args)>
+				}
+			</div>
+			<div class="span6">
+				@input(myForm("province"),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG061","Province"),
+				'_showConstraints -> false,
+				'class -> "",
+				'placeHolder -> "Province") { (id, name, value, args) =>
+				<input type="text" id="@id" name="@name" value="@value" @toHtmlArgs(args)>
+				}
+			</div>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="row-fluid">
+			<div class="control-group span6">
+				@select(
+					myForm("countryCode"),
+					options(models.Country.options),
+					'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country"),
+					'_showConstraints -> false, 
+					'_class -> "required",
+					'_default -> "-- Choose a country --"
+				)
+			</div>
+		</div>
+	</div>
+	</fieldset>
+</div>
+

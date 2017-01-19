@@ -1,0 +1,132 @@
+@(currentPage: com.avaje.ebean.Page[models.Customer], currentSortBy: String, currentOrder: String, currentFilter: String)
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+        }
+        } else {
+            order = "asc"
+        }
+    }
+    routes.Customer.list(newPage, sortBy, order, currentFilter)
+}
+
+@header(key:String, title:String) = {
+<th class="@key" style="text-align: center;">
+	@if(key && key.length > 0) {
+		<a href="@link(currentPage.getPageIndex, key)">@title</a>
+	} else {
+		@title
+	}
+</th>
+}
+
+@layout("Customers Management"){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG278","Customers Management")</h1>
+</div>
+
+<div class="row">
+	<div class="span12">
+		<div class="well">
+			<form action="@link(0, "name")" method="GET" class="form-search">
+				<div class="input-append">
+					<input type="search" id="searchbox" name="f" class="search-query span4" value="@currentFilter" placeholder='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG109","Filter by Personal ID / Name...")'>
+					<button type="submit" class="btn" style="border-radius:0px;"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+					<a class="btn success" href="@routes.Customer.create()"><i class="icon-plus"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG375","Add new")</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@partial.flash_alert()
+
+<div class="row">
+    <div class="span7">
+
+        @if(currentPage.getTotalRowCount == 0){
+            <div class="well">
+                <em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG280","Data results are not found")</em>
+            </div>
+        } else {
+            <table class="customer table table-bordered table-striped table-condensed">
+                <thead>
+                    <tr>
+                        @header("id", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID"))
+                        @header("country", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG056","Nationality"))
+                        @header("firstName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG051","First Name"))
+                        @header("lastName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG052","Last Name"))
+                        @header("phoneNumber", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone Number"))
+                        @header("action", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG105","Action"))
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(customer <- currentPage.getList) {
+                        <tr>
+                            <td>@customer.getIdToken</td>
+							<td>@customer.country.name</td>
+                            <td>@customer.firstName</td>
+                            <td>@customer.lastName</td>
+                            <td>@customer.phoneNumber</td>
+							<td class="actions">
+								<a href="@routes.Customer.summary(customer.id)" class="btn-detail btn-customer-detail" data-remote="true">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG108","Detail")</a>
+								<a href="@routes.Customer.edit(customer.id)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG112","Edit")</a>
+								<a href='@routes.Customer.relate(customer.id, 0, "", "", "")'>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG522","Relate")</a>
+							</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div id="pagination" class="pagination pagination-right">
+                <ul>
+					<li>
+						<a class="btn" href="@routes.Customer.csv().toString()"><i class="icon-download-alt"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG128","Export as CSV")</a>
+					</li>
+                    @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    } else {
+                    <li class="prev">
+                        <a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    }
+
+                   <li class="current">
+                       <a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+                   </li>
+
+                    @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    } else {
+                    <li class="next">
+                        <a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+	<div class="span5">
+	   <div class="well" id="customer-detail-container">
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG281","You can view detail of customer by clicking 'Detail' on the desired row of customer")
+		</div>
+    </div>
+</div>
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/customer.js")'></script>
+}

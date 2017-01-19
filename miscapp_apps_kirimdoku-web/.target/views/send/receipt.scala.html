@@ -1,0 +1,187 @@
+@(err: String, transaction: models.Transaction)
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Transaction send receipt"){
+
+<div id="send-receipt" class="body-print">
+<div class="page-header" style="margin: 0px; background: none; border: none; padding: 0px;">
+	<!-- Stevano Edited 17 Jun 2015 -->
+	
+    <h2 class="center" style="margin: 0px;">
+    <img src="@routes.Corporate.logo(session.get("corporateCode"), "small")" style="float:left;height:50px; width: auto;"/>
+    @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG075","SEND MONEY RECEIPT")
+    <img src="/assets/images/doku_small.png" style="float:right;height:50px; width: auto;"/>
+    </h2>
+    
+    <!-- End Edited -->
+</div>
+@partial.flash_alert()
+
+<div class="container-send-inner">
+@if(err) {
+	<div class="row">
+		<div class="span12">
+			<div class="alert alert-error">@err</div>
+		</div>
+	</div>
+} else {
+	<div>
+		<div class="receipt-head">
+		
+			<table style="width: 100%; font-size: 9pt;" border="0">
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						@transaction.agent.corporate.name
+						<hr style="margin: 5px 0px;border: 0;border-bottom: 1px dashed #ccc;background: #999;">
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 70%; vertical-align: top;">
+						@transaction.corporate.address, @transaction.agent.country.name
+						<br>
+						@transaction.corporate.phoneNumber
+					</td>
+					<td style="text-align: right; width: 30%; vertical-align: top;">
+						@transaction.agent.idToken
+						<br>
+						@transaction.agent.fullName
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<hr style="margin: 5px 0px;border: 0;border-bottom: 1px dashed #ccc;background: #999;">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<dl class="dl-horizontal dl-aligned" style="margin: 0px;">
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG042","Sending Amount")</dt>
+							<dd>: @transaction.senderAmountFormat @transaction.senderCurrency.code</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG045","Exchange Rate")</dt>
+							<dd>: @transaction.forexReference.rateFormat @transaction.beneficiaryCurrency.code</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG206","Admin Fee")</dt>
+							<dd>: @transaction.feesTotalFormat @transaction.senderCurrency.code</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG047","Additional Fee")</dt>
+							<dd>: @transaction.additionalFeesTotalFormat</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG044","Amount to Collect")</dt>
+							<dd>: @transaction.collectAmountFormat</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG207","Amount to Receive")</dt>
+							<dd>: @transaction.beneficiaryAmountFormat @transaction.beneficiaryCurrency.code</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG048","Sending Purpose")</dt>
+							<dd>: @transaction.senderNote</dd>
+						</dl>
+					</td>
+					<td style="text-align: right; vertical-align: top;">
+						<div class="span6" style="margin: 0px; width: 100%;">
+							<div class="well well-receipt well-print" style="width: 110px;padding: 7px;height: 50px;display: inline-block;text-align: left;">
+								<div class="well-inner">
+									<label style="margin-bottom: 0px;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG026","Transaction ID"):</label>
+									<h3 style="margin: 0px; font-size: 12pt;">@transaction.idToken</h3>
+								</div>
+							</div>
+						</div>
+						<div class="span6" style="margin: 0px; width: 100%;">
+							<div class="well well-receipt well-print" style="width: 110px;padding: 7px;height: 40px;display: inline-block;text-align: left;">
+								<div class="well-inner">
+									<h3 style="margin: 0px; font-size: 12pt;">@transaction.statusText</h3>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<hr style="margin: 0px;border: 0;border-bottom: 1px dashed #ccc;background: #999;">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<dl class="dl-horizontal dl-aligned" style="margin: 0px;">
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG039","Service")</dt>
+							<dd>: @transaction.channel.name</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG208","Transaction Time")</dt>
+							<dd>: @transaction.createdFormat</dd>
+						</dl>
+						<dl class="dl-horizontal dl-aligned" style="margin: 0px;">
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG199","Sender Name")</dt>
+							<dd>: @transaction.sender.fullName</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG209","Sender CID")</dt>
+							<dd>: @transaction.sender.idToken</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG210","Sender ID")</dt>
+							<dd>: @transaction.sender.personalId</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG211","Sender Phone")</dt>
+							<dd>: @transaction.sender.phoneNumber</dd>
+						</dl>
+						<dl class="dl-horizontal dl-aligned" style="margin: 0px;">
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG201","Receiver Name")</dt>
+							<dd>: @transaction.beneficiary.fullName</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG212","Receiver CID")</dt>
+							<dd>: @transaction.beneficiary.idToken</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG213","Receiver Phone")</dt>
+							<dd>: @transaction.beneficiary.phoneNumber</dd>
+						</dl>
+						@if(transaction.channel.code == "21" || transaction.channel.code == "22") {
+						<dl class="dl-horizontal dl-aligned" style="margin: 0px;">
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG213","Voucher Code")</dt>
+							<dd>:
+								@if(transaction.voucherCode != null && transaction.voucherCode != "") {
+									@transaction.voucherCode
+								}else{
+									-
+								}
+							</dd>
+						</dl>
+						}
+						@if(transaction.channel.code == "04") {
+						<dl class="dl-horizontal dl-aligned" style="margin: 0px;">
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG215","Doku Wallet Id")</dt>
+							<dd>: @transaction.beneficiaryWalletId</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG216","Doku Wallet Name")</dt>
+							<dd>: @transaction.beneficiaryWalletName</dd>
+						</dl>
+						}
+						@defining(transaction.beneficiaryAccount) { account =>
+						@if((account != null) && (account.number)) {
+						<dl class="dl-horizontal dl-aligned" style="margin: 0px;">
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG060","Bank Name")</dt>
+							<dd>: @account.bank.code - @account.bank.name</dd>
+							<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG065","Account Number")</dt>
+							<dd>: @account.number</dd>
+							@if(transaction.channel.code == "07") {
+								<dt style="text-align: left;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG065","Account Name")</dt>
+								<dd>: @account.name</dd>
+							}
+						</dl>
+						}
+						}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<hr style="margin: 0px;border: 0;border-bottom: 1px dashed #ccc;background: #999;">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: left;;"><small>
+						@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG078","We are hereby acknowledge this is valid transaction receipt. Please keep this receipt for your reference If you need further assistance, please call the phone number above and mention your Transaction ID.")
+						</small>
+					</td>
+				</tr>
+			</table>
+		
+
+		</div>
+	</div>
+}
+</div>
+</div>
+<div class="span12" style="margin: 0px;">
+	<div class="form-actions invisible-print noprint">
+		<button class="btn btn-print" type="print" data-target="#send-receipt"><i class="icon-print"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG079","Print")</button>
+		<a class="btn" href="@routes.Send.create()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG080","Send another money") <i class="icon-arrow-right"></i></a>
+	</div>
+</div>
+} {
+<script type="text/javascript" src='@routes.Assets.at("javascripts/transaction.js")'></script>
+}

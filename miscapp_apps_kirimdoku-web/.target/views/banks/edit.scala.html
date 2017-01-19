@@ -1,0 +1,19 @@
+@(id:String, myForm: Form[models.Bank])
+
+@layout("Bank") {
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/customer.css")">
+    <div class="span8 offset2">
+        @helper.form(routes.Banks.update(id), 'autoComplete -> "off") {
+            <div class="page-subheader">
+                <h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG395","Edit Bank")</h3>
+            </div>
+
+            @banks.formBody(myForm, true)
+
+            <a href="@routes.Banks.list()" class="btn btn-inverse">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+            <button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG396","Update")</button>
+        }
+    </div>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.chainedSelects.js")'></script>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/customer.js")'></script>
+}

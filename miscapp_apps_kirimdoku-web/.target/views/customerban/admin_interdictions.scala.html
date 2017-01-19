@@ -1,0 +1,152 @@
+@(filterForm: Form[models.Customer], currentPage: com.avaje.ebean.Page[models.CustomerBan], currentSortBy: String, currentOrder: String, currentFilter: String)
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Interdiction list") {
+<div class="page-header">
+  <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG481","Interdiction list")</h1>
+</div>
+
+@partial.flash_alert()
+
+<div class="common-container">
+	<div class="well common-container-filter">
+		@form(action = routes.CustomerBan.admin_interdictions(), 'id -> "customer-ban-filter-form", 'class -> "form form-horizontal row") {
+			<div class="control-group span12">
+				@input(filterForm("f"), '_showConstraints -> false, '_class -> "span4 nolabel", '_label -> "", 'class -> "input-xlarge", 'placeholder -> "Filter by First & Last name") { (id, name, value, args) =>
+				<div class="input-append">
+					<input type="search" name="@name" value="@value" @toHtmlArgs(args)>
+				</div>
+				}
+				@input(filterForm("customer.birthday"), '_showConstraints -> false, '_class -> "span4 nolabel", '_label -> "", 'class -> "datepicker", 'placeholder -> "") { (id, name, value, args) =>
+					<div class="input-append">
+						<input type="date" name="@name" value="@value" @toHtmlArgs(args)>
+						<button type="submit" class="btn"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+					</div>
+				}
+			</div>
+		}
+
+		<div>
+			<a href="#interdiction-upload-dialog" class="btn btn-upload" role="button" data-toggle="modal"><i class="icon-plus"></i>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG482","Upload new interdiction data")</a>
+		</div>
+	</div>
+
+	<div class="common-container-inner">
+		<div class="clearfix"></div>
+		@if(currentPage.getTotalRowCount == 0){
+		<div class="well">
+			<em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG459","There are no news data to be displayed")</em>
+		</div>
+		} else {
+            <table class="customer table table-bordered table-striped table-condensed">
+                <thead>
+                    <tr>
+                        @header("customer.country", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG056","Nationality"))
+                        @header("customer.firstName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG051","First name"))
+                        @header("customer.lastName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG052","Last name"))
+                        @header("customer.birthDate", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG057","Date of birth"))
+                        @***header(null, "Action")***@
+                    </tr>
+                </thead>
+                <tbody>
+					@for(ban <- currentPage.getList) {
+                        <tr>
+							<td>@if(ban.country != null) {
+							@ban.country.code
+							}</td>
+                            <td>@ban.firstName</td>
+                            <td>@ban.lastName</td>
+                            <td>@ban.birthDateFormat</td>
+							<!--td class="actions">
+								<a href="@routes.CustomerBan.admin_interdictionsDelete(ban.id)" class="btn-delete" data-remote="true" data-method="DELETE" data-confirm="Are you sure you want to remove this interdiction?"><i class="icon-remove"></i>Delete</a>
+							</td-->
+                        </tr>
+                    }
+                </tbody>
+            </table>
+		
+            <div id="pagination" class="pagination pagination-right">
+                <ul>
+                    @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    } else {
+                    <li class="prev">
+                        <a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    }
+
+                   <li class="current">
+                       <a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+                   </li>
+
+                    @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    } else {
+                    <li class="next">
+                        <a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+		}
+	</div>
+</div>
+
+<div class="modal fade hide" id="interdiction-upload-dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG483","Interdiction upload")</h3>
+    </div>
+	@form(action=routes.CustomerBan.admin_interdictionsUpload, 'class -> "form-horizontal", 'enctype -> "multipart/form-data") {
+	<div class="modal-body">
+		<div class="control-groups">
+			<p>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG484","Upload your interdiction file CSV file here, please ensure you have the correct format and template. Only registered country code are allowed in our system")</p>
+		</div>
+		<hr/>
+		<input type="file" name="uploadFile"/>
+		<p class="container-info"></p>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+		<button type="submit" class="btn btn-primary" data-disable-with="Processing..." data-enable-with="Proceed">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG074","Proceed")</button>
+	</div>
+	}
+</div>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/customer.js")'></script>
+}
+
+
+@header(key:String, title:String) = {
+<th class="@key">
+	@if(key && key.length > 0) {
+	<a href="@link(currentPage.getPageIndex, key)">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+        }
+        } else {
+            order = "asc"
+        }
+    }
+    routes.CustomerBan.admin_interdictions(newPage, sortBy, order, currentFilter)
+}

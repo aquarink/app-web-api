@@ -1,0 +1,258 @@
+@(myForm: Form[models.Customer], edit:Boolean=false)
+@import helper._
+@import helper.twitterBootstrap._
+
+@import be.objectify.deadbolt.java.DeadboltViewSupport
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@readOnly = {
+	@if(edit && !DeadboltViewSupport.viewRestrict(la(as("doku"), as("mainagent"), as("supervisor")), null)) {
+	readonly="readonly"
+	} else {
+	}
+}
+
+@if(myForm.hasGlobalErrors) {
+<p class="error">
+    @myForm.globalError.message
+</p>
+}
+
+@if(flash.contains("success")) {
+<p class="success">
+    @flash.get("success")
+</p>
+}
+
+@input(myForm("agent.id"), '_label -> null) {(id, name, value, args) =>
+<input type="hidden" name="@name" value="@{value ?: session.get("userId")}"/>
+}
+
+<fieldset class="fieldset form-cashin-info">
+	<div class="control-group span12">
+		<div class="clearfix  " id="firstName_field">
+		<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG051","First Name") <b style="color: red">*</b></label>
+			@input(myForm("firstName"),
+			'_showConstraints -> false,
+			'_label -> null,
+			'class -> "required firstName",
+			'placeholder -> "First name"
+			) { (id, name, value, args) =>
+			<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+			}
+		</div>
+	</div>
+	
+	<div class="control-group span12">
+		<div class="clearfix  " id="lastName_field">
+		<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG052","Last Name") <b style="color: red">*</b></label>
+			@input(myForm("lastName"),
+			'_label -> null,
+			'_showConstraints -> false,
+			'class -> "required lastName",
+			'placeHolder -> "Last Name") { (id, name, value, args) =>
+			<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+			}
+		</div>
+	</div>
+	
+	<div class="control-group span12">
+		<div class="clearfix  " id="phoneNumber_field">
+			<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG111","Phone Number") <b style="color: red">*</b></label>
+			@input(myForm("phoneNumber"),
+			'_label -> null,
+			'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG111","Phone Number"),
+			'class -> "required",
+			'_showConstraints -> false) { (id, name, value, args) =>
+			<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+			}
+		</div>
+	</div>
+	
+	<div class="control-group span12">
+		<div class="clearfix  " id="personalIdType_field">
+			<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG054","ID Type") <b style="color: red">*</b></label>
+			@if(edit && !DeadboltViewSupport.viewRestrict(la(as("doku"), as("mainagent"), as("supervisor")), null)) {
+				@input(
+				myForm("personalIdType"), 
+				'_label -> null, 
+				'_showConstraints -> false) {(id, name, value, args) =>
+				<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+				}
+			} else {
+				@select(
+				myForm("personalIdType"),
+				options(models.Customer.optionsPersonalIdType),
+				'_label -> null, 
+				'_default -> "-- Choose Personal ID Type --",
+				'_showConstraints -> false,
+				'class -> "personal_id_type required"
+				)
+			}
+		</div>
+	</div>
+	
+	<div class="control-group span12">
+		<div class="clearfix  " id="personalId_field">
+			<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG055","ID Number") <b style="color: red">*</b></label>
+			@input(myForm("personalId"),
+			'_label -> null,
+			'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG055","ID Number"),
+			'rel -> "popover") { (id, name, value, args) =>
+			<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+			}
+		</div>
+	</div>
+	
+	<div class="control-group span12 hide">
+		@if(edit && !DeadboltViewSupport.viewRestrict(la(as("doku"), as("mainagent"), as("supervisor")), null)) {
+			@input(myForm("gender"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG117","Gender"), 
+			'_showConstraints -> false) {(id, name, value, args) =>
+			<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+			}
+		} else {
+			@select(myForm("gender"),
+			options(models.Customer.Gender.values().toList.map(_.toString)),
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG117","Gender"),
+			'_showConstraints -> false)
+		}
+	</div>
+	
+	<div class="control-group span12">
+		<div class="clearfix  " id="country.name_field">
+			<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG530","Nationality") <b style="color: red">*</b></label>
+			@if(edit && !DeadboltViewSupport.viewRestrict(la(as("doku"), as("mainagent"), as("supervisor")), null)) {
+				<input type="hidden" name="country.code" value="@myForm("country.code").value"/>
+				@input(myForm("country.name"), 
+				'_label -> null, 
+				'_showConstraints -> false) {(id, name, value, args) =>
+				<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+				}
+			} else {
+				@select(
+				myForm("country.code"),
+				options(models.Country.options),
+				'_label -> null, 
+				'_default -> "-- Choose a country --",
+				'_showConstraints -> false,
+				'class -> "country_id required"
+				)
+			}
+		</div>
+	</div>
+	
+	<div class="control-group span12">
+		<div class="clearfix" style="margin-left: -20px;" id="birthDate_field">
+		    <label style="margin-left: 20px" for="birthDate">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG057","Date of Birth") <b style="color: red">*</b></label>
+		    <div class="input">
+				<div class="input" id="birthDate" data-date="@myForm("birthDate").valueOr("1970-01-01")" data-date-format="yyyy-mm-dd">
+		    		<input name="birthDate" size="16" type="date" value="@myForm("birthDate").value" @readOnly>
+		    	</div>
+<!-- 		
+		        <span class="help-inline"></span>
+		        <span class="help-block"></span>  -->
+		    </div>
+		</div>
+	</div>
+	
+	<div class="control-group span12">
+		<div class="clearfix  " id="occupation_field">
+			<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG124","Occupation")</label>
+			@inputText(myForm("occupation"), 
+			'_label -> null,
+			'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG124","Occupation")
+			)
+		</div>
+	</div>
+	
+	<div class="control-group span12">
+		<div class="clearfix  " id="cityName_field">
+			<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG124","Occupation") <b style="color: red">*</b></label>
+			@input(myForm("cityName"),
+			'_label -> null,
+			'_showConstraints -> false,
+			'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG119","City"),
+			'class -> "input-city"
+			) { (id, name, value, args) =>
+			<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+			}
+		</div>
+	</div>
+	
+	<div class="control-group span12 hide">
+		@input(myForm("personalIdIssueDate"),
+		'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG120","Issue Date"),
+		'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG120","Issue Date"),
+		'_showConstraints -> false) { (id, name, value, args) =>
+		<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+		}
+	</div>
+	
+	<div class="control-group span12 hide">
+		@input(myForm("personalIdExpireDate"),
+		'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG121","Expired Date"),
+		'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG121","Expired Date"),
+		'_showConstraints -> false) { (id, name, value, args) =>
+		<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+		}
+	</div>
+	
+	<div class="control-group span12 hide"><legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG284","Additional Info")</legend></div>
+	
+	<div class="control-group span12 hide">
+		@inputText(myForm("email"), 
+		'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG002","Email"), 
+		'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG002","Email"),
+		'class -> "email")
+		@inputText(myForm("postalCode"), 
+		'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG123","Postal Code"), 
+		'_showConstraints -> false
+		)
+	</div>
+	
+	<div class="control-group span12">
+		<div class="clearfix  " id="address_field">
+			<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG122","Address") <b style="color: red">*</b></label>
+			@textarea(myForm("address"), 
+			'_label -> null, 
+			'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG122","Address"),
+			'rows -> "5", 
+			'style -> "min-height:90px"
+			)
+		</div>
+	</div>
+	
+	<div class="control-group span12 hide">
+		@inputText(myForm("taxId"), 
+		'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG125","Tax ID"),
+		'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG125","Tax ID")
+		)
+	</div>
+	
+	<div class="control-group span12"><legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG531","Bank Info")</legend></div>
+	
+	<div class="control-group span12">
+		<div class="clearfix  " id="beneficiaryAccount.bank.codefield">
+			<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG063","Bank Name")</label>
+			@select(myForm("beneficiaryAccount.bank.code"),
+			options(models.Bank.optionsBankId()),
+			'_label -> null,
+			'_showConstraints -> false
+			)
+		</div>
+	</div>
+	
+	<div class="control-group span12">
+		<div class="clearfix  " id="beneficiaryAccount.bank.codefield">
+			<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG065","Account Number")</label>
+			@inputText(myForm("accountNumber"), 
+			'_label -> null, 
+			'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG065","Account Number")
+			)
+		</div>
+	</div>
+	
+	<b style="color: red">* ) Mandatory</b>
+</fieldset>

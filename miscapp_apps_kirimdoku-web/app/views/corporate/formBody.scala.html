@@ -1,0 +1,469 @@
+@(myForm: Form[models.Corporate], isEditable: Boolean, channels: List[models.Channel], mapChannel: Map[String, String])
+@import helper._
+@import twitterBootstrap._
+
+@import java.math.BigInteger
+
+<div class="hidden">
+@input(myForm("creditLimit")) { (id, name, value, args) =>
+<input type="hidden" name="@name" value="@value"/>
+}
+@input(myForm("creditAlertLimit")) { (id, name, value, args) =>
+<input type="hidden" name="@name" value="@value"/>
+}
+@input(myForm("customerSendLimit")) { (id, name, value, args) =>
+<input type="hidden" name="@name" value="@value"/>
+}
+@input(myForm("operation.id")) { (id, name, value, args) =>
+<input type="hidden" name="@name" value="@value"/>
+}
+@input(myForm("finance.id")) { (id, name, value, args) =>
+<input type="hidden" name="@name" value="@value"/>
+}
+@input(myForm("settlement.id")) { (id, name, value, args) =>
+<input type="hidden" name="@name" value="@value"/>
+}
+</div>
+
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#basic" data-toggle="tab">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG318","Corporate information")</a></li>
+	<li><a href="#operation" data-toggle="tab">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG319","Operation information")</a></li>
+	<li><a href="#finance" data-toggle="tab">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG320","Finance information")</a></li>
+	<li><a href="#settlement" data-toggle="tab">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG321","Bank information")</a></li>
+	<li><a href="#configuration" data-toggle="tab">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG322","Configuration")</a></li>
+</ul>
+
+<div class="tab-content">
+	<div class="tab-pane active" id="basic">
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("code"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG316","Corporate code"), 
+				'_showConstraints -> false, '_class -> "required", 'class -> "code required", 'minlength ->"3", 'maxlength -> "3", 'placeholder -> "3 Char identifier Corporate Code", 'readOnly -> true)
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("encryptionKey"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG323","Encryption Key"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "code required", 'placeholder -> "Encryption Key", 'readOnly -> true)
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("name"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG324","Legal name"), 
+				'_showConstraints -> false, '_class -> "required", 'class -> "required", 'minlength ->"3", 'maxlength -> "64", 'placeholder -> "Corporate name")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("tradeName"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG325","Trade name"), 
+				'_showConstraints -> false, 'class -> "", 'minlength ->"3", 'maxlength -> "64", 'placeholder -> "(optional)")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("businessType"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG326","Business type"), 
+				'_showConstraints -> false, 'class -> "", 'minlength ->"3", 'maxlength -> "64")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@select(myForm("licenseType"), options("REMITTANCELICENSE" -> "Remittance License"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG327","License type"), 
+				'class -> "", '_showConstraints -> false)
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("licenseNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG328","License number"), 
+				'_showConstraints -> false, 'class -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@select(myForm("country.code"), options(models.Country.options), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country"), 
+				'class -> "country", '_showConstraints -> false)
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("cityName"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG119","City"), 
+				'_showConstraints -> false, 'class -> "", 'minlength ->"3", 'maxlength -> "64")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@select(myForm("currency.code"), options(models.Currency.options), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG087","Currency"), 
+				'class -> "currency", '_showConstraints -> false)
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@textarea(myForm("address"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG122","Address"), 
+				'_showConstraints -> false, 'class -> "", 'minlength ->"3", 'maxlength -> "64")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("postalCode"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG123","Postal code"), 
+				'_showConstraints -> false, 'class -> "postcode", 'minlength ->"4", 'maxlength -> "6")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("phoneNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG111","Phone Number"), 
+				'_showConstraints -> false, 'class -> "phone", 'minlength ->"4")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("faxNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG329","Fax Number"), 
+				'_showConstraints -> false, 'class -> "phone", 'minlength ->"4")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("email"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG330","Email address"), 
+				'_showConstraints -> false, 'class -> "", 'minlength ->"4", 'maxlength -> "46")
+			</div>
+		</div>
+	</div>
+
+	<div class="tab-pane" id="operation">
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("operation.name"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG331","PIC name"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("operation.phoneNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "phone", 'placeholder -> "(+62) 21345678")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("operation.mobileNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG297","Mobile number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "phone", 'placeholder -> "(+62) 812345667")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("operation.emailAddress"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG330","Email address"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("operation.faxNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG329","Fax number"), 
+				'_showConstraints -> false, 
+				'_class -> "phone", 'class -> "phone", 'placeholder -> "(+62) 21345678")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@select(myForm("operation.country.code"), options(models.Country.options), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("operation.city"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG119","City"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@textarea(myForm("operation.address"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG122","Address"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("operation.postalCode"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG123","Postal code"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "postcode", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("operation.csPhoneNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG332","CS Phone number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "phone", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("operation.tollPhoneNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG333","CS Toll number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "phone", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("operation.csFaxNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG334","CS Fax number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "phone", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("operation.csEmailAddress"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG335","CS Email address"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "email", 'placeholder -> "")
+			</div>
+		</div>
+	</div>
+	<div class="tab-pane" id="finance">
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("finance.name"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG331","PIC name"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("finance.phoneNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "phone", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("finance.mobileNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG297","Mobile number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "phone", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("finance.emailAddress"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG330","Email address"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("finance.faxNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG329","Fax number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "phone", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@select(myForm("finance.country.code"), options(models.Country.options), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("finance.city"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG119","City"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@textarea(myForm("finance.address"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG122","Address"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("finance.postalCode"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG123","Postal code"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "postcode", 'placeholder -> "")
+			</div>
+		</div>
+	</div>
+	<div class="tab-pane" id="settlement">
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("settlement.bankName"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG060","Bank name"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("settlement.accountName"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG336","Account name"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("settlement.accountNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG065","Account number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("settlement.swiftCode"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG064","Swift code"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("settlement.name"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG331","PIC name"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("settlement.phoneNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "phone", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("settlement.faxNumber"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG329","Fax number"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "phone", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@select(myForm("settlement.currency.code"), options(models.Currency.options), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG337","Settlement currency"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@textarea(myForm("settlement.bankAddress"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG338","Bank address"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@select(myForm("settlement.country.code"), options(models.Country.options), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+			<div class="span6 control-group">
+				@inputText(myForm("settlement.province"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG061","Province"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+		<div class="row">
+			<div class="span6 control-group">
+				@inputText(myForm("settlement.city"), 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG062","City"), 
+				'_showConstraints -> false, '_class -> "", 'class -> "", 'placeholder -> "")
+			</div>
+		</div>
+	</div>
+	<div class="tab-pane" id="configuration">
+		<div class="control-group">
+			<div class="clearfix" id="configuration_field">
+				<label for="configuration">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG339","Channel option")</label>
+				<div class="input">
+					@for(channel <- channels){
+						@if(channel.code.equals("10")) {
+							<div style="width: 100%;float: left; height: 5px;">&nbsp;</div>
+						}
+						<label class="checkbox inline">
+							<input type="checkbox" name="channel[]" id="channel@channel.code" value="@channel.code" @if(mapChannel.containsKey(channel.code)){ checked="checked" }/>@channel.name
+						</label>
+					}
+				</div>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			@input(myForm("permission"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG340","Permission"), 
+			'class -> "") { (id, name, value, args) =>
+				<label class="checkbox inline">
+					<input type="checkbox" name="permission_send" value="@models.Corporate.PERMISSION_SEND" @{if(value && (Integer.parseInt(value.get) & models.Corporate.PERMISSION_SEND) != 0) "checked=\"checked\""}> Sender agent
+				</label>
+				<label class="checkbox inline">
+					<input type="checkbox" name="permission_receive" value="@models.Corporate.PERMISSION_RECEIVE" @{if(value && (Integer.parseInt(value.get) & models.Corporate.PERMISSION_RECEIVE) != 0) "checked=\"checked\""}> Receiver agent
+				</label>
+			}
+		</div>
+
+		<div class="control-group">
+			@checkbox(myForm("configuration.allowHighValueTransfer"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG341","High Value Transfer"), 
+			'class -> "", '_text -> "Allow")
+		</div>
+
+		<div class="control-group">
+			@select(myForm("settlement.settlementPeriodDay"), options("1" -> "Daily", "7" -> "Weekly", "30" -> "Monthly"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG342","Settlement option"), 
+			'class -> "", '_showConstraints -> false)
+		</div>
+		<div class="control-group">
+			@inputDate(myForm("settlement.agreementDate"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG343","Agreement date"), 
+			'class -> "date", 'maxlength -> "10", '_showConstraints -> false)
+		</div>
+		<div class="control-group">
+			@input(myForm("settlement.agreementYear"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG344","Years terms"), 
+			'class -> "", '_showConstraints -> false) { (id, name, value, args) =>
+				<input type="number" name="@name" value="@value" @toHtmlArgs(args)/>
+			}
+		</div>
+		<div class="control-group">
+			@inputDate(myForm("settlement.agreementExpiredDate"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG121","Expired date"), 
+			'class -> "", 'readOnly -> true, '_showConstraints -> false)
+		</div>
+		<div class="control-group">
+			@inputDate(myForm("settlement.agreementReminderDate"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG345","Agreement Reminder date"), 
+			'class -> "date",  'maxlength -> "10", '_showConstraints -> false)
+		</div>
+		<div class="control-group">
+		</div>
+		<div class="control-group">
+			@input(myForm("configuration.notifyUrl"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG346","Outgoing Callback URL"), 
+			'class -> "", '_showConstraints -> false) { (id, name, value, args) =>
+				<input type="text" name="@name" value="@value" @toHtmlArgs(args) style="width: 500px;"/>
+			}
+		</div>
+		<div class="control-group">
+			@input(myForm("configuration.sharedKey"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG347","Shared Key Callback"), 
+			'class -> "", '_showConstraints -> false) { (id, name, value, args) =>
+				<input type="text" name="@name" value="@value" @toHtmlArgs(args)/>
+			}
+		</div>
+		<div class="control-group">
+			@input(myForm("configuration.primaryColor"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG348","Primary color")
+			) { (id, name, value, args) =>
+				<div class="input-append color colorpicker" data-color="@value" data-color-format="hex">
+					<input type="text" id="@id" class="" name="@name" class="span2" value="@value"/>
+					<span class="add-on"><i style="background-color: #333333"></i></span>
+				</div>
+				<span class="help-block">(@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG349","used mostly by navigation header colors, etc"))</span>
+			}
+		</div>
+
+		<div class="control-group">
+			@input(myForm("configuration.secondaryColor"), 'class -> "required", 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG350","Secondary color")
+			) { (id, name, value, args) =>
+				<div class="input-append color colorpicker" data-color="@value" data-color-format="hex">
+					<input type="text" id="@id" class="" name="@name" class="span2" value="@value"/>
+					<span class="add-on"><i style="background-color: #333333"></i></span>
+				</div>
+				<span class="help-block">(@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG349","used mostly by navigation font colors, etc"))</span>
+			}
+		</div>
+
+		<div class="control-group">
+			@inputFile(myForm("configuration.logoPath"), 
+			'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG351","Logo File"), 
+			'class -> "", '_help -> "(optimized size for logo is 120 x 120)")
+		</div>
+	</div>
+</div>
+
+
+<div class="form-actions">
+	<button class="btn btn-inverse btn-back"><i class="icon-remove icon-white"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</button>
+	<button class="btn btn-primary" type="submit"><i class="icon-plus icon-white"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG126","Save")</button>
+</div>
+
+<script src="@routes.Assets.at("javascripts/corporate.js")" type="text/javascript"></script>

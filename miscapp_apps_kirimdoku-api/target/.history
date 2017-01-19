@@ -1,0 +1,6 @@
+clean
+compile
+run 9000
+clean
+compile
+run 9000

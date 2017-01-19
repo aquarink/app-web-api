@@ -1,0 +1,106 @@
+@(corporateForm: Form[models.Corporate])
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@layout("Credit setting", Seq(
+routes.Corporate.admin_index().toString -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG354","Corporate management"),
+"" -> corporateForm.get.name,
+"" -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG425","Credit setting")
+)) {
+<div class="page-header">
+	<h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG426","Credit setting for") @corporateForm.get.name</h1>
+</div>
+
+
+<div class="common-container">
+    <div class="well">
+		@defining(corporateForm.get) {corporate =>
+		<dl class="dl-horizontal dl-horizontal-aligned">
+			<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG316","Corporate code")</dt>
+			<dd>@corporate.code</dd>
+			<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG225","Corporate name")</dt>
+			<dd>@corporate.name</dd>
+			@defining(corporate.getOperatorStatistic) { (operatorStatistic) =>
+			@if(operatorStatistic != null) {
+			<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG427","Number of operators")</dt>
+			<dd>@operatorStatistic.totalOperator</dd>
+			<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG428","Total credit operators")</dt>
+			<dd>@models.Currency.format(operatorStatistic.totalCreditLimit, corporate.currency.code) </dd>
+			}
+			}
+			<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG032","Credit limit")</dt>
+			<dd>@models.Currency.format(corporate.creditLimit, corporate.currency.code)</dd>
+			<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG429","Credit usage")</dt>
+			<dd>@models.Currency.format(corporate.getStatistic.totalUnsettledSenderAmount, corporate.currency.code)</dd>
+			<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG430","Credit balance")</dt>
+			<dd>@models.Currency.format(corporate.getStatistic.remainingLimit, corporate.currency.code)</dd>
+		</dl>
+		}
+    </div>
+
+	<div class="common-container-inner">
+		<div class="row">
+			<div class="span6">
+				@partial.flash_alert()
+
+				@helper.form(action = routes.Credit.admin_update(corporateForm.get.code), 'id -> "corporate-credit-form", 'class -> "form-ajax form-horizontal", Symbol("data-remote") -> "true") {
+				@defining(corporateForm.get) {corporate =>
+				<input type="hidden" name="code" value="@corporateForm("code").value"/>
+				<input type="hidden" name="name" value="@corporateForm("code").name"/>
+				<div class="control-group">
+					@input(corporateForm("creditLimit"), 
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG431","Accumulation limit")
+						, '_showConstraints -> false
+						, 'class -> "required amount"
+						) { (id, name, value, args) =>
+						<div class="input-append">
+							<input type="text" name="@name" value="@value" @toHtmlArgs(args)/>
+							<span class="add-on">@corporate.currency.code</span>
+						</div>
+						}
+				</div>
+				<div class="control-group">
+					@input(corporateForm("creditAlertLimit"), 
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG432","Accumulation alert")
+						, '_showConstraints -> false
+						, 'class -> "required amount"
+						) { (id, name, value, args) =>
+						<div class="input-append">
+							<input type="text" name="@name" value="@value" @toHtmlArgs(args)/>
+							<span class="add-on">@corporate.currency.code</span>
+						</div>
+						}
+				</div>
+				<div class="control-group">
+					@input(corporateForm("customerSendLimit"), 
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG433","Customer accumulation limit")
+						, '_showConstraints -> false
+						, 'class -> "required amount"
+						) { (id, name, value, args) =>
+						<div class="input-append">
+							<input type="text" name="@name" value="@value" @toHtmlArgs(args)/>
+							<span class="add-on">@corporate.currency.code</span>
+						</div>
+						}
+				</div>
+
+				<div class="form-actions">
+					<button type="reset" class="btn"><i class="icon-repeat"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG068","Reset")</button>
+					<button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG126","Save")</button>
+				</div>
+				}
+				}
+			</div>
+			<div class="span6">
+				<div class="well">
+					<p>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG434","Formula for Credit Score: 2 x total credit of operators limit accumulation")</p>
+					<p>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG435","Formula for Alert Limit: 1/4 of Credit Score")</p>
+					<!--<p>Customer accumulation limit is transaction limit accumulation for Sender or Receiver in 3 days for the same occuring Sender or Receiver</p>-->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+} {
+}

@@ -1,0 +1,25 @@
+@(errType: String, err: String, debug: String = "")
+
+<div id="alert-container">
+	@if(errType.equals("error")) {
+	<div class="row-fluid">
+		<div class="span12 alert alert-error">
+			@Html(err)
+		</div>
+	</div>
+	}
+	@if(errType.equals("success")) {
+	<div class="row-fluid">
+		<div class="span12 alert alert-success">
+			@Html(err)
+		</div>
+	</div>
+	}
+	@if(errType.equals("warn")) {
+	<div class="row-fluid">
+		<div class="span12 alert alert-warning">
+			@Html(err)
+		</div>
+	</div>
+	}
+</div>

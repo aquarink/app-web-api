@@ -1,0 +1,94 @@
+@(corporate:models.Corporate, parent:models.User, currentPage: com.avaje.ebean.Page[models.User])
+
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+<div class="page-subheader">
+	<h4>
+		@if(parent.id != Long.parseLong(session.get("userId"))) {
+			<small><a class="slide" data-slide-operation="prev" href=""><i class="icon-chevron-left"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG131","Back")</a></small>
+		} else {
+			@restrict(la(as("admin"), as("admin_operasional"))) {
+			<small><a href="@routes.Corporate.admin_index(0, "code", "asc", "")"><i class="icon-chevron-left"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG131","Back")</a></small>
+			}
+		}
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG373","List of") 
+		@if(parent.hasRole("admin")) {MainAgents}
+		@if(parent.hasRole("mainagent")) {Supervisors}
+		@if(parent.hasRole("supervisor")) {Operators}
+		@if(parent.hasRole("admin_operasional")) {Operators}
+		@if(!parent.hasRole("admin") && !parent.hasRole("admin_operasional")) { @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG492","under") @parent.fullName }
+	</h4>
+</div>
+
+<div class="container-user-childrens-inner">
+@if(currentPage.getTotalRowCount == 0){
+<div class="well">
+	<em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG286","Results are empty")</em>
+</div>
+} else {
+<table class="table-bordered table-striped table-condensed table-users" style="width:100%;">
+	<thead>
+		<tr>
+			<th>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG365","ID")</th>
+			<th>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG294","Username / Email")</th>
+			<th>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG295","Name")</th>
+			<th>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG105","Action")</th>
+		</tr>
+	</thead>
+	<tbody>
+	@for(user <- currentPage.getList) {
+	<tr>
+		<td>@user.getIdToken</td>
+		<td>@user.email</td>
+		<td>@user.fullName</td>
+		<td class="actions">
+			<a href="@routes.User.show(corporate.code, user.id)" class="btn-link btn-detail">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG108","Detail")</a>
+
+			@restrict(la(as("admin"), as("mainagent"))) {
+			@***
+			@if(user.isActive) {
+			<a href="@routes.User.updateStatus(corporate.code, user.id, Boolean.FALSE)" class="btn-op-status btn-op-ban">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG366","Ban")</a>
+			@if(user.hasRole("agent")){
+			<a href="@routes.User.updateRolePromote(corporate.code, user.id)" class="btn-op-promote">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG367","Promote")</a>
+			} else {
+			@if(user.hasRole("supervisor")) {
+			<a href="@routes.User.updateRoleDemoteForm(corporate.code, user.id)" class="btn-op-demote">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG368","Demote")</a>
+			}
+			}
+			} else {
+			<a href="@routes.User.updateStatus(corporate.code, user.id, Boolean.TRUE)" class="btn-op-status btn-op-unban">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG369","Unban")</a>
+			}
+			***@
+			}
+
+			@if(user.hasRole("mainagent")) {
+			<a href="@routes.User.list(corporate.code, user.id)" class="btn-link slide" data-slide-operation="next">Superv<i class="icon-chevron-right"></i></a>
+			}
+			@if(user.hasRole("supervisor")) {
+			<a href="@routes.User.list(corporate.code, user.id)" class="btn-link slide" data-slide-operation="next">Operat<i class="icon-chevron-right"></i></a> 
+			}
+		</td>
+	</tr>
+	}
+	</tbody>
+</table>
+
+}
+<div class="form-actions">
+	<div class="pull-right">
+		@dynamic("allowCreateUser") {
+		@if(parent.hasRole("admin")) {
+			<a class="btn" href="@routes.User.newCreate(corporate.code, "mainagent", parent.id)"><i class="icon-plus"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG370","Add New MainAgent")</a>
+		}
+		@if(parent.hasRole("mainagent")) {
+			<a class="btn" href="@routes.User.newCreate(corporate.code, "supervisor", parent.id)"><i class="icon-plus"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG371","Add New Supervisor")</a>
+		}
+		@if(parent.hasRole("supervisor")) {
+			<a class="btn" href="@routes.User.newCreate(corporate.code, "operator", parent.id)"><i class="icon-plus"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG372","Add New Operator")</a>
+		}
+		}
+	</div>
+</div>
+</div>

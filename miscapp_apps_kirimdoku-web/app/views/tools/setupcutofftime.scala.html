@@ -1,0 +1,58 @@
+@(cutOffTime: String)
+@import helper._
+@import helper.twitterBootstrap._
+
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@import java.util.Calendar
+@import java.text.SimpleDateFormat
+
+@dateFormat(d:Date) = @{
+    new SimpleDateFormat("yyyy-MM-dd") format d
+}
+
+@layout("Setup Cut-Off Time", Seq(
+routes.SetupCutOffTime.view().toString -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG442","Setup Cut-Off Time")
+)){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG442","Setup Cut-Off Time")</h1>
+</div>
+
+<div>
+	@partial.flash_alert()
+	
+	<div class="well">
+		<form action="@routes.SetupCutOffTime.save()" enctype="application/x-www-form-urlencoded" method="post">
+		<table cellpadding="3" cellspacing="2">
+			<tr>
+				<td colspan="2"><b>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG442","Setup Cut-Off Time")</b></td>
+			</tr>
+			<tr>
+				<td>
+					@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG443","Cut Off Time")
+				</td>
+				<td>
+					<input type="text" name="cutOffTime" value="@cutOffTime" style="width: 130px;">&nbsp;GMT + 7.00  <font color="#0000ff" style="font-size: 9pt;">( <b>ex.</b> 16:25:00 )</font>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					&nbsp;
+				</td>
+				<td>
+					<button class="btn btn-primary" type="submit"><i class="icon-ok icon-white"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG126","Save")</button>
+					<a class="btn" href="@routes.SetupCutOffTime.view()"><i class="icon-repeat"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+				</td>
+			</tr>
+		</table>
+		</form>
+		<br>&nbsp;
+	</div>
+	<br>&nbsp;<br>&nbsp;
+</div>
+<div class="span5" id="viewContainer">
+</div>
+
+}

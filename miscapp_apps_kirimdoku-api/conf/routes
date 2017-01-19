@@ -1,0 +1,93 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Default Page
+GET     /                           controllers.Lab.index()
+
+# Network utilities
+GET     /ping                       controllers.Network.ping()
+POST    /ping                       controllers.Network.pings()
+
+# Mechanism for CashIn
+POST	/cashin/inquiry				controllers.CashIn.inquiry()
+POST	/cashin/remit				controllers.CashIn.remit()
+
+# Mechanism for CashOut
+POST    /cashout/inquiry			controllers.CashOut.inquiry()
+POST    /cashout/validate			controllers.CashOut.validate()
+POST    /cashout/collect			controllers.CashOut.collect()
+
+# Transaction informations
+GET     /transaction/:id			controllers.Transaction.show(id)
+POST    /transaction/:id			controllers.Transaction.summary(id)
+
+GET     /transactions				controllers.Transaction.search()
+
+# Customers
+#OPTIONS	/customers				controllers.Customer.options()
+#GET		/customers				controllers.Customer.index()
+GET		/customers/:id				controllers.Customer.show(id)
+#POST	/customers					controllers.Customer.create()
+#PUT		/customers/:id			controllers.Customer.update(id)
+#DELETE	/customers/:id				controllers.Customer.destroy(id)
+
+# Lab
+GET     /lab/settlement             controllers.Lab.settlement()
+GET     /lab/check/:id             	controllers.Lab.suspiciousCheck(id:String)
+GET     /lab/hello                  controllers.Lab.hello()
+GET     /lab/1                      controllers.Lab.test1()
+GET     /lab/2                      controllers.Lab.test2()
+GET     /lab/3                      controllers.Lab.test3()
+GET     /lab/4                      controllers.Lab.test4()
+
+#netelis
+POST	/translate/pinyin			controllers.Translate.QueryPinyin()
+POST	/translate/tcode			controllers.Translate.QueryTC()
+
+
+# NEW API MOBILE
+POST	/login						kirimdoku.interfaces.Login.index()
+POST	/cashinInquiry				kirimdoku.interfaces.CashIn.inquiry()
+POST	/cashinRemit				kirimdoku.interfaces.CashIn.remit()
+
+POST    /cashoutInquiry				kirimdoku.interfaces.CashOut.inquiry()
+POST    /cashoutValidate			kirimdoku.interfaces.CashOut.validate()
+POST    /cashoutCollect				kirimdoku.interfaces.CashOut.collect()
+
+POST	/customerLookup				kirimdoku.interfaces.Customer.getCustomer()
+POST	/customerList				kirimdoku.interfaces.Customer.getCustomerList()
+POST	/customerAdd				kirimdoku.interfaces.Customer.addCustomer()
+POST	/customerSenderList			kirimdoku.interfaces.Customer.getCustomerSenderList()
+
+POST	/transactionLookup			kirimdoku.interfaces.Transaction.getTransaction()
+POST	/getTransactionRefund		kirimdoku.interfaces.Transaction.getTransactionRefund()
+POST	/getTransactionChange		kirimdoku.interfaces.Transaction.getTransactionChange()
+POST	/getTransactionLocked		kirimdoku.interfaces.Transaction.getTransactionLocked()
+POST	/transactionList			kirimdoku.interfaces.Transaction.getTransactionList()
+
+POST	/checkRates					kirimdoku.interfaces.CheckRate.process()
+POST	/refundTransaction			kirimdoku.interfaces.RefundTransaction.process()
+POST	/unlockTransaction			kirimdoku.interfaces.UnlockTransaction.process()
+POST	/changeTransaction			kirimdoku.interfaces.ChangeTransaction.process()
+
+GET		/logo/:code					controllers.Logo.index(code)
+
+POST	/getGroupBankList			kirimdoku.interfaces.Banks.getGroupBankList()
+POST	/getProvinceBankList		kirimdoku.interfaces.Banks.getProvinceBankList()
+POST	/getCityBankList			kirimdoku.interfaces.Banks.getCityBankList()
+POST	/getListBank				kirimdoku.interfaces.Banks.getList()
+POST	/getListCountry				kirimdoku.interfaces.Countries.getList()
+POST	/getReceiveListCountry		kirimdoku.interfaces.Countries.getReceiveList()
+
+POST	/doTranslate				kirimdoku.interfaces.Translate.doTranslate()
+POST	/userInformation			kirimdoku.interfaces.User.getInformation()
+POST	/inquiryBillPayment			kirimdoku.interfaces.InquiryBillPayment.doInquiry()
+
+POST    /callback					controllers.Transaction.callback
+
+POST	/getdatabank				kirimdoku.interfaces.Banks.getDataBank()
+
+# CashIn Batch
+POST	/cashin/inquirybatch		kirimdoku.interfaces.CashInBatch.inquiry()
+POST	/cashin/remitbatch			kirimdoku.interfaces.CashInBatch.remit()

@@ -1,0 +1,94 @@
+.dashboard-region .dashboard-pane #operations {
+  margin-top: 12px;
+}
+.dashboard-region .dashboard-pane #operations .btn-large {
+  width: 100%;
+  margin: 12px 0px;
+  box-sizing: border-box;
+}
+.dashboard-region .dashboard-pane #topagents {
+  margin-top: 19px;
+}
+.dashboard-region .dashboard-pane #topagents .thumbnails img {
+  width: 96px;
+  height: 96px;
+}
+.dashboard-region .dashboard-pane #news {
+  margin-top: 15px;
+}
+.dashboard-region .box {
+  min-height: 200px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  margin-top: 10px;
+  padding: 5px 10px;
+}
+.dashboard-region .box .box-footer {
+  background-color: whiteSmoke;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+}
+svg {
+  display: block;
+}
+#chart1 svg {
+  height: 300px;
+  min-width: 100px;
+  min-height: 100px;
+}
+.graph {
+  margin-left: 0px;
+  padding: 5px;
+}
+.box .carousel {
+  margin-bottom: 0px;
+}
+.box .carousel .box-footer {
+  padding: 2px;
+  width: 99%;
+}
+.box .carousel .btn-carousel {
+  border-radius: 16px;
+  padding: 0px 5px;
+  min-width: 10px;
+}
+.box .carousel .nav {
+  z-index: 100;
+  margin-top: 4px;
+}
+.box .carousel .nav li {
+  display: block;
+  float: left;
+  width: 10px;
+  height: 10px;
+  line-height: 10px;
+  -webkit-border-radius: 7px;
+  background: #c5c5c5;
+  overflow: hidden;
+  padding: 0;
+  margin: 1px 6px 0 0;
+  text-align: center;
+}
+.box .carousel .nav li#prev {
+  margin-left: 5px;
+  background: transparent;
+}
+.box .carousel .nav li#next {
+  margin-right: 0;
+  background: transparent;
+}
+.box .carousel .nav li.selected {
+  background: #555;
+}
+.box .carousel .carousel-inner ul {
+  padding-left: 30px;
+}
+.box .carousel .thumbnail {
+  text-align: center;
+}
+.box .carousel thead {
+  text-align: center;
+}
+#topagents .carousel h5 {
+  min-height: 38px;
+}

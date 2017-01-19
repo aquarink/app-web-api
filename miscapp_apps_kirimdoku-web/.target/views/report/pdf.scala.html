@@ -1,0 +1,86 @@
+@(currentPage: com.avaje.ebean.Page[models.Transaction])
+
+
+@header(key:String, title:String) = {
+<th class="@key">
+	<bold>@title</bold>
+</th>
+}
+
+<html>
+<head>
+	<style>
+		@@page{
+			size: landscape;
+		}
+		body{
+			font-size: 12px;
+		}
+		#report-table, #report-table th, #report-table td{
+			border:1px solid black;
+			text-align: center;
+		}
+		#report-table{
+			border-collapse: collapse;
+		}
+	</style>
+</head>
+<body>
+
+<div class="page-header">
+    <h1>Report Transaction</h1>
+</div>
+
+<div>
+	@partial.flash_alert()
+
+    @if(currentPage.getTotalRowCount == 0){
+    <div class="well">
+        <em>Results are empty</em>
+    </div>
+    } else {
+    <table id="report-table">
+        <thead>
+        <tr>
+            @header("id", "Transaction ID")
+            @header("corporate", "Corporate")
+            @header("channel", "Channel")
+            @header("senderCustomerId", "Sender ID")
+            @header("senderCountry", "Sender Country")
+            @header("senderAmount", "Sender Amount")
+            @header("beneficiaryCustomerId", "Receiver ID")
+            @header("beneficiaryCountry", "Receiver Country")
+            @header("beneficiaryAmount", "Receiver Amount")
+            @header("rate", "Rate")
+            @header("status", "Status")
+            @header("createdTime", "Date")
+        </tr>
+        </thead>
+        <tbody>
+        @for(transaction <- currentPage.getList) {
+        <tr>
+            <td class="left">@transaction.getIdToken</td>
+			<td>@transaction.corporate.code</td>
+			<td>@transaction.channel.name</td>
+            <td>@transaction.sender.getIdToken</td>
+            <td>@transaction.senderCountry.name</td>
+            <td class="right">@transaction.senderAmountFormat @transaction.senderCurrency.code</td>
+            <td>@transaction.beneficiary.getIdToken</td>
+            <td>@transaction.beneficiaryCountry.name</td>
+            <td class="right">@transaction.beneficiaryAmountFormat @transaction.beneficiaryCurrency.code</td>
+            <td>@transaction.forexReference.rateFormat</td>
+            <td>@transaction.statusText</td>
+            <td>@models.Transaction.formatDate(transaction.createdTime, true)</td>
+        </tr>
+        }
+        </tbody>
+    </table>
+    }
+</div>
+
+<div class="span5" id="viewContainer">
+</div>
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/transaction.js")'></script></body>
+</html>
+

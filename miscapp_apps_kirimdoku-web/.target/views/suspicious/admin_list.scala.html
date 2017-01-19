@@ -1,0 +1,157 @@
+@(filterForm: Form[models.Transaction], currentPage: com.avaje.ebean.Page[models.Transaction], currentSortBy: String, currentOrder: String, currentFilter: String)
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Suspicious transaction list") {
+<div class="page-header">
+  <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG485","Suspicious transaction list")</h1>
+</div>
+
+<div class="common-container">
+	<div class="well common-container-filter">
+		@form(action = routes.Suspicious.admin_index(), 'id -> "customer-ban-filter-form", 'class -> "form form-horizontal row") {
+			<div class="control-group span8">
+				@input(filterForm("f"), '_showConstraints -> false, '_class -> "nolabel", '_label -> "", 'class -> "span4", 
+				'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG493","Search by ID, name, or email address")
+				) { (id, name, value, args) =>
+				<div class="input-append">
+					<input type="search" name="@name" value="@value" @toHtmlArgs(args)>
+					<button type="submit" class="btn"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+				</div>
+				}
+			</div>
+			<div class="control-group span3 right">
+				<a class="btn" href="@routes.Suspicious.csv().toString()"><i class="icon-download-alt"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG128","Export as CSV")</a>
+			</div>
+		}
+	</div>
+	
+	<div class="common-container-inner">
+		@if(currentPage.getTotalRowCount == 0){
+		<div class="well">
+			<em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG459","There are no news data to be displayed")</em>
+		</div>
+		} else {
+            <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                    <tr>
+                        @header("transaction.id", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG138","Transaction ID"))
+                        @header("sender.id", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG140","Sender ID"))
+                        @header("sender.firstName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG199","Sender name"))
+                        @header("beneficiary.id", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG142","Receiver ID"))
+                        @header("beneficiary.firstName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG201","Receiver name"))
+                        @header("sendAmount", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG028","Send amount"))
+                        @header("status", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG030","Status"))
+                        @header(null, doku.kirimdoku.util.MultiLanguage.getLanguage("LANG486","Suspicious reason"))
+                    </tr>
+                </thead>
+                <tbody>
+					@for(transaction <- currentPage.getList) {
+                        <tr>
+                            <td>@transaction.getIdToken</td>
+                            <td>@transaction.sender.getIdToken</td>
+                            <td>@transaction.sender.fullName</td>
+                            <td>@transaction.beneficiary.getIdToken</td>
+                            <td>@transaction.beneficiary.fullName</td>
+                            <td class="right">@transaction.senderAmountFormat</td>
+                            <td>@transaction.statusText</td>
+							<td>
+								<ul>
+								@for(label <- transaction.labels) {
+								<li>@label.description</li>
+								}
+								</ul>
+							</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+		
+            <div id="pagination" class="pagination pagination-right">
+                <ul>
+                    @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    } else {
+                    <li class="prev">
+                        <a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    }
+
+                   <li class="current">
+                       <a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+                   </li>
+
+                    @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    } else {
+                    <li class="next">
+                        <a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+		}
+	</div>
+
+	<!-- Modal -->
+	<div id="ban-add" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		@form(action = routes.CustomerBan.admin_add(), 'class -> "form") {
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG477","Add banned list")</h3>
+			</div>
+			<div class="modal-body">
+				<div class="control-group">
+					@inputText(filterForm("customer.idToken"), '_showConstraints -> false, '_class -> "", 
+					'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID"), 
+					'class -> "required", 'placeholder -> "Enter customer ID")
+				</div>
+				<div class="control-group">
+					@textarea(filterForm("reason"), '_showConstraints -> false, '_class -> "", 
+					'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG478","Reason for banning"), 
+					'class -> "required", 'placeholder -> "Enter reason")
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG479","Close")</button>
+				<button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG308","Submit")</button>
+			</div>
+		}
+	</div>
+</div>
+}
+
+
+@header(key:String, title:String) = {
+<th class="@key">
+	@if(key && key.length > 0) {
+	<a href="@link(currentPage.getPageIndex, key)">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+        }
+        } else {
+            order = "asc"
+        }
+    }
+    routes.Suspicious.admin_index(newPage, sortBy, order, currentFilter)
+}

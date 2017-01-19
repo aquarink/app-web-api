@@ -1,0 +1,97 @@
+@(loginForm: Form[Login.AdminLoginForm])
+@import helper._
+@import helper.twitterBootstrap._
+
+@layoutLogin {
+@if(loginForm.hasGlobalErrors) {
+<div class="alert alert-error">
+	@loginForm.globalError().message
+</div>
+}
+
+@if(flash.contains("success")) {
+<div class="alert alert-success">
+	@flash.get("success")
+</div>
+}
+
+<script type="text/javascript">
+	var RecaptchaOptions = {
+		theme : 'white'
+	};
+</script>
+
+@helper.form(routes.Login.admin_authenticate, args= 'class->"login-form") {
+<div class="control-group row-fluid">
+	@inputText(loginForm("email"), 
+	'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG002","Email"), 
+	'class -> "required input-xlarge span12", 
+	'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG003","Your email address"), 
+	'value -> "")
+</div>
+<div class="control-group row-fluid">
+	@inputPassword(loginForm("password"), 
+	'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG004","Password"), 
+	'class -> "required input-xlarge span12", 
+	'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG005","Your password")
+	)
+
+	<div class="pull-right" style="margin-top: -10px"><a data-toggle="modal" href="#forgetPassword" >@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG006","Forgot your password?")</a></div>
+</div>
+<div class="wrapper-code">
+    <img src="@routes.Login.captcha" maxLength="8" width="205" height="50" style="margin-bottom: 12px;" alt="SecurityCode" id="kaptchaImage"/>
+    <input type="text" autocomplete="off" class="default-input text fright" id="inputsecuritycode" name="recaptcha_challenge_field" placeholder="Security Code...">
+    <br/><small>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG305","Can't read the image? Click it to get a new one.")</small>
+    <div class="clear"></div>
+</div>
+<div class="form-controls">
+
+	<div class="pull-right">
+		<button type="submit" class="btn btn-primary" data-disable-with='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG490","Logging in")'>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG007","Sign In")</button>
+	</div>
+
+</div>
+    <script>
+	$().ready(function() {
+        $('#kaptchaImage').click(function () {
+            $(this).hide()
+            .attr('src', '@routes.Login.captcha?' + Math.floor(Math.random()*100) )
+            .fadeIn();
+        });
+	});
+    </script>
+<blockquote class="copyright" style="margin-top: 40px;">
+	Powered by  <a href="http://www.doku.com"><img src="/assets/images/doku_small.png" height="25px" style="margin-top: -15px;"/></a>
+</blockquote>
+}
+
+<div class="modal hide" id="forgetPassword">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG006","Forgot your password?")</h3>
+	</div>
+	@helper.form(routes.Login.forgetPassword,
+	'id -> "forgetPassword-form",
+	Symbol("data-remote") -> "true",
+	Symbol("data-type") -> "text",
+	'class -> "form-horizontal") {
+	<div class="alert-container"></div>
+	<div class="modal-body">
+		<div id="formForgetPassword">
+			<div class="control-group">
+				@inputText(loginForm("forget-email"), 'id -> "forget-email", 'class -> "span5 required email",
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG306","Please input your email address below"),
+				'placeholder -> "Email address.."
+				)
+			</div>
+		</div>
+		<div id="confirmForgetPassword" class="well" style="display:none;">
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG307","A confirmation link to for your forgot password  request has been sent to your email. Please check your email inbox and follow the instructions.")
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary" data-disable-with="Processing...">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG308","Submit")</button>
+	</div>
+	}
+</div>
+}

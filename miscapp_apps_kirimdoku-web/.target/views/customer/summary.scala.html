@@ -1,0 +1,29 @@
+@(customer:models.Customer)
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/customer.css")">
+
+<dl class="dl-horizontal dl-aligned">
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID")</dt>
+	<dd>@customer.getIdToken</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG051","First name"): </dt>
+	<dd>@customer.firstName</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG052","Last name"): </dt>
+	<dd>@customer.lastName</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country"): </dt>
+	<dd>@customer.country.name</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG062","City"): </dt>
+	<dd>@customer.cityName</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG283","Personal ID"): </dt>
+	<dd>(@customer.personalIdType) @customer.personalId</dd>
+	@if(customer.birthDate != null) {
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG057","Date of birth"): </dt>
+	<dd>@customer.getBirthDateFormatted</dd>
+	}
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG117","Gender"): </dt>
+	<dd>@customer.gender</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number"): </dt>
+	<dd>@customer.phoneNumber</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG124","Occupation"): </dt>
+	<dd>@customer.occupation</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG122","Address"): </dt>
+	<dd>@customer.address</dd>
+</dl>

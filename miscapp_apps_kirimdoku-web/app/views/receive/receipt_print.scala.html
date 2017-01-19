@@ -1,0 +1,234 @@
+@(result: org.codehaus.jackson.JsonNode)
+<html>
+<head>
+	<Title>Print</Title>
+
+</head>
+<body>
+<style type="text/css" media="all" >
+	* {
+		font-size: 1em;
+	}
+
+	body {
+		padding: 3em;
+		font-family: helveticaneue-light;
+	}
+
+	table{
+		/*width: 100%;*/
+		border: 1px;
+		border-collapse: collapse;
+
+	}
+	h1 {
+		font-size: 1.3em;
+	}
+
+	hr {
+		width: 100%;
+		line-height: 1em;
+	}
+	.header{margin-top: -2em;}
+
+	.aa{
+		padding: 2em;
+	}
+
+
+	.aa.table, th{
+		background-color: #2AD1F7;
+	}
+
+</style>
+
+<div class="header">
+	<img src="/assets/images/doku_small.png">&nbsp;&nbsp;<b>Remit</font> </b>
+</div>
+<hr style="width:100%;"/>
+
+
+@defining(result.path("transaction")) { trx =>
+<div class="aa">
+	<p style="font-size: 14pt;"><b>TRANSACTION RECEIPT</b></p>
+	<table border="1" width="100%">
+		<tr bgcolor="#2AD1F7">
+			<th style="font-size: 11pt;">
+				TRANSACTION NO.</span>
+			</th>
+			<th style="font-size: 11pt;">
+				REMITTANCE DATE
+			</th>
+			<th style="font-size: 11pt;">
+				STATUS
+			</th >
+		</tr>
+		<tr >
+
+			<td style=" background-color: #E5E3E3; font-size: 12pt;" align="center">
+				@trx.path("id").getTextValue
+			</td>
+			<td style=" background-color: #E5E3E3; font-size: 12pt;" align="center">
+				@defining(new java.util.Date(trx.path("createdTime").getLongValue())) { trxTimeStr =>
+				@trxTimeStr
+				}
+			</td>
+			<td style=" background-color: #E5E3E3; font-size: 12pt;" align="center">
+				@models.Transaction.statusText(trx.path("status").getIntValue)
+			</td>
+
+		</tr>
+	</table>
+	<pre>
+
+	</pre>
+
+	<p style="font-size: 14pt;"><b>Remittance Information</b></p>
+	<hr style="margin-top: -14px;"/>
+
+	@defining(trx.path("fund")) { fund =>
+	<table width="100%" align="left" border="0">
+		<tr>
+			<td width="30%">Sending Country</td>
+			<td width="1%" align="center">:</td>
+			<td width="40%"><p align="right">@trx.path("fund").path("origin").path("country").path("name").getTextValue</p></td>
+			<td width="29%">&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Receiving Country</td>
+			<td align="center">:</td>
+			<td><p align="right">@trx.path("fund").path("destination").path("country").path("name").getTextValue</p></td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Remit option</td>
+			<td align="center">:</td>
+			<td><p align="right">@trx.path("channel").path("name").getTextValue</p></td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>  &nbsp;</td>
+			<td>&nbsp;  </td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Send Amount</td>
+			<td align="center">:</td>
+			<td style="text-align: right;">@models.Currency.format(fund.path("origin").path("amount").getNumberValue, fund.path("origin").path("currency").getTextValue)&nbsp;&nbsp;&nbsp;@fund.path("origin").path("currency").getTextValue</td>
+			<!--<td width="30%" align="right">@fund.path("origin").path("currency").getTextValue</td>!-->
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		@***
+		<tr>
+			<td>Fee</td>
+			<td align="center">:</td>
+			<td style="text-align: right;">@models.Currency.format(fund.path("fees").path("total").getNumberValue, fund.path("fees").path("currency").getTextValue)</td>
+			<td width="30%" align="right">@fund.path("fees").path("currency").getTextValue</td>
+		</tr>
+		@defining(fund.path("origin").path("amount").getDoubleValue()+fund.path("fees").path("total").getDoubleValue()) { total =>
+		<tr>
+			<td><p style="color: green;"><strong>Total</strong></p></td>
+			<td align="center"><p style="color: green;"><strong>:</strong></p></td>
+			<td style="text-align: right;"><p style="color: green;"><strong>@models.Currency.format(total, trx.path("fund").path("origin").path("currency").getTextValue)</strong></p></td>
+			<td><p style="color: green;" align="right"><strong>@fund.path("origin").path("currency").getTextValue</strong></p></td>
+		</tr>
+		}
+		***@
+		<tr>
+			<td><p style="color: green;"><strong>Receive Amount</strong></p></td>
+			<td align="center"><p style="color: green;"><strong>:</strong></p></td>
+			<td style="text-align: right;"><p style="color: green;"><strong>@models.Currency.format(fund.path("destination").path("amount").getNumberValue, fund.path("destination").path("currency").getTextValue)&nbsp;&nbsp;&nbsp;@fund.path("destination").path("currency").getTextValue</strong></p></td>
+			<!--<td width="30%" align="right"><p style="color: green;"><strong>@fund.path("destination").path("currency").getTextValue</strong></p></td>!-->
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td> &nbsp;</td>
+			<td>&nbsp;  </td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Send Purpose</td>
+			<td align="center">:</td>
+			<td><p align="right">@trx.path("senderNote").getTextValue</p></td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+	</table>
+	}
+
+<br><br><br><br><br><br><br><br><br><br>
+
+	<p style="font-size: 14pt;"><b>Receiver Information</b></p>
+	<hr style="margin-top: -14px;">
+	@defining(trx.path("beneficiary")) { beneficiary =>
+	<p style="font-size: 9pt; margin-top: -8px;">Data given by Sender when uncompleted, need to be completed by receiving operator and receiver require to provide proof of valid ID when disbursing money</p>
+	<table width="100%" align="left" border="0">
+		<tr>
+			<td width="30%">Member ID</td>
+			<td width="1%" align="center">:</td>
+			<td width="40%" align="right">@beneficiary.path("id").getTextValue</td>
+			<td width="29%"><p style="font-size: 10px"><sup>*Please be sure to keep your ID.</sup></p></td>
+		</tr>
+		<tr>
+			<td>Full Name</td>
+			<td align="center">:</td>
+			<td align="right">@beneficiary.path("firstName").getTextValue @beneficiary.path("lastName").getTextValue</td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Date Of Birth</td>
+			<td align="center">:</td>
+			<td align="right">@beneficiary.path("birthDate").getTextValue</td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Gender</td>
+			<td align="center">:</td>
+			<td align="right">@beneficiary.path("gender").getTextValue</td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Country</td>
+			<td align="center">:</td>
+			<td align="right">@beneficiary.path("country").path("name").getTextValue</td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>City</td>
+			<td align="center">:</td>
+			<td align="right">@beneficiary.path("city").getTextValue</td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Phone No.</td>
+			<td align="center">:</td>
+			<td align="right">@beneficiary.path("phoneNumber").getTextValue</td>
+			<td>&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Email</td>
+			<td align="center">:</td>
+			<td><p align="right">@beneficiary.path("email").getTextValue</p></td>
+			<td>&nbsp;&nbsp;</td>
+	</table>     <br/><br/><br/><br/><br/><br/>
+	}
+	}
+</div>
+<pre>
+
+
+
+
+
+</pre>
+<div>
+<p style="font-size: 10pt;"><b>Copyright @@ 2012 DOKU</b> Please be sure to keep your <b>transaction and verification code (PIN)</b>.
+	Make sure you send the codes to the person that registered in the data sender or receiver.</p>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+    window.print();
+</script>

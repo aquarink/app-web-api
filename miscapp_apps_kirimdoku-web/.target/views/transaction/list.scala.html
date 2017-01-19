@@ -1,0 +1,136 @@
+@(filterForm: Form[controllers.Report.FilterForm], currentPage: com.avaje.ebean.Page[models.Transaction], currentSortBy: String, currentOrder: String)
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+            }
+        } else {
+            order = "asc"
+        }
+    }
+
+    routes.Transaction.list(newPage, sortBy, order, "")
+
+}
+
+
+@header(key:String, title:String) = {
+<th class="@key" style="vertical-align: middle;">
+	@if(key && key.length > 0) {
+	<a href="@link(currentPage.getPageIndex, key)">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@layout("Transactions management"){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG269","Transactions Management")</h1>
+</div>
+
+@partial.flash_alert()
+
+<div class="row">
+	<div class="span12">
+		<form action="@link(0, "name")" method="GET" class="form-search">
+			<div id="action" class="well">
+                <div class="input-append">
+					<input type="search" id="searchbox" name="@filterForm("transactionCode").name" class="search-query span4" value="@filterForm("transactionCode").valueOr("")" placeholder='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG521","Search by Transaction ID...")'><button type="submit" class="btn"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+				</div>
+			</div>
+		</form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span7">
+		@if(currentPage.getTotalRowCount == 0){
+		<div class="well">
+			<em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG271","There are no transaction data to be displayed")</em>
+		</div>
+		} else {
+		<table class="table transaction table-bordered table-striped table-condensed" style="text-align: center;">
+			<thead>
+			<tr>
+				@header("id", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG026","Transaction ID"))
+				@header("cashInTime", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG101","Sending time"))
+				@header("user", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG102","Agent ID"))
+				@header("senderCountry.code", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG103","Sender country"))
+				@header("beneficiaryCountry.code", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG104","Receiver country"))
+				@header("status", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG030","Status"))
+				<th colspan="2" style="text-align: center; vertical-align: middle;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG105","Action")</th>
+			</tr>
+			</thead>
+			<tbody>
+			@for(transaction <- currentPage.getList) {
+			<tr>
+				<td>@transaction.getIdToken</td>
+				<td nowrap="nowrap">@models.Transaction.formatDate(transaction.cashInTime.getTime, true)</td>
+				<td>@transaction.agent.getIdToken</td>
+				<td>@transaction.senderCountry.name</td>
+				<td>@transaction.beneficiaryCountry.name</td>
+				<td>@transaction.statusText</td>
+				<td class="actions">
+					<a href="@routes.Transaction.show(transaction.getIdToken)" class="btn-detail btn-transaction-detail" data-remote="true">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG108","Detail")</a>
+				</td>
+				<td class="actions">
+					<a href='@routes.Transaction.receipt(transaction.getIdToken, "t")' class="btn-detail btn-transaction-detail">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG079","Print")</a>
+				</td>
+			</tr>
+			}
+			</tbody>
+		</table>
+
+		<div id="pagination" class="pagination pagination-right">
+			<ul>
+				@if(currentPage.hasPrev) {
+				<li class="prev">
+					<a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+				</li>
+				} else {
+				<li class="prev">
+					<a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+				</li>
+				}
+
+				<li class="current">
+					<a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+				</li>
+
+				@if(currentPage.hasNext) {
+				<li class="next">
+					<a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+				</li>
+				} else {
+				<li class="next">
+					<a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+				</li>
+				}
+			</ul>
+		</div>
+		}
+	</div>
+	<div class="span5">
+		<div id="transaction-detail-container" class="well">
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG274","Click view detail for transaction detail")
+		</div>
+    </div>
+    </div>
+</div>
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/transaction.js")'></script>
+}

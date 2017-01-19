@@ -1,0 +1,72 @@
+@(err: String, user:models.User, latestTransactions: List[models.Transaction])
+
+<div class="box box-bordered">
+	<div class="page-subheader">
+		<h4>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG025","Latest five transactions")</h4>
+	</div>
+	<div>
+		@if(latestTransactions.isEmpty) {
+		<div class="">There are currently no transactions available to display</div>
+		} else {
+		<table class="top-transaction table ">
+			<thead>
+				<tr>
+
+					<th>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG026","Transaction ID")</th>
+					<th>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG027","Receive country")</th>
+					<th>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG028","Send amount")</th>
+					<th>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG029","Date")</th>
+					<th>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG030","Status")</th>
+
+				</tr>
+			</thead>
+			<tbody>
+			@for(t <- latestTransactions){
+				<tr>
+					<td>@t.getIdToken</td>
+					<td>@t.beneficiaryCountry.name</td>
+					<td class="right">@t.senderAmountFormat</td>
+					<td nowrap="nowrap">@models.Transaction.formatDate(t.cashInTime.getTime, true)</td>
+					<td>@t.statusText</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+		}
+	</div>
+</div>
+<div class="box box-bordered">
+	<div class="page-subheader">
+		<h4>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG032","Credit Limit")</h4>
+	</div>
+	<div class="row">
+		<div class="span12">
+			<dl class="dl-horizontal">
+				<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG033","Credit score")</dt>
+				<dd>@models.Currency.format(user.creditLimit, user.corporate.currency.code)</dd>
+				<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG034","Alert limit")</dt>
+				<dd>@models.Currency.format(user.creditAlertLimit, user.corporate.currency.code)</dd>
+				<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG035","Credit left")</dt>
+				<dd>@models.Currency.format(user.creditLastBalance, user.corporate.currency.code)</dd>
+			</dl>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12">
+		@if(err != null) {
+		  <div class="alert alert-block alert-error">
+			<div class="row-fluid">
+				<div class="span1">
+					<img src="@routes.Assets.at("images/alert-warning.png")"/>
+				</div>
+				<div class="span11">
+					<h4>
+					@err
+					</h4>
+				</div>
+			</div>
+		  </div>
+		}
+		</div>
+	</div>
+</div>

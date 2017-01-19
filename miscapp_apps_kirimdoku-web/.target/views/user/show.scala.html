@@ -1,0 +1,9 @@
+@(user: models.User)
+
+
+@layout("User account detail", Seq(
+"" -> ""
+)) {
+@partial.flash_alert()
+	@summary(user)
+}

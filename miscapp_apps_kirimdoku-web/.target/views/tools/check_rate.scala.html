@@ -1,0 +1,100 @@
+@(myForm: Form[models.forms.CashInInquiryForm])
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Check Rate & Fee"){
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG011","Check Rate & Fee")</h1>
+</div>
+
+<div class="row">
+    <div class="span5 offset2">
+        @helper.form(action = routes.Tools.checkRateSubmit, 'id -> "checkRateForm") {
+		<div class="control-group row-fluid">
+			<div class="span12">
+				@select(
+				myForm("channel.code"),
+				options(models.Channel.optionsUser),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG039","Service"),
+				'_showConstraints -> false, 'class -> "required"
+				)
+			</div>
+		</div>
+		<div class="control-group row-fluid">
+			<div class="span12">
+				@select(
+				myForm("senderCountry.code"),
+				options(models.Country.options),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG040","Sending country"),
+				'_showConstraints -> false, 'class -> "required"
+				)
+			</div>
+		</div>
+		<div class="control-group row-fluid">
+			<div class="span12">
+				@select(
+				myForm("senderCurrency.code"),
+				options(models.Currency.optionsByCountryCode(myForm("senderCountry.code").value)),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG087","Currency"),
+				'class -> "currency"
+				)
+			</div>
+		</div>
+
+		<div class="control-group row-fluid">
+			<div class="span12">
+				@select(
+				myForm("beneficiaryCountry.code"),
+				options(models.Country.options),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG088","Destination Country"), 
+				'_default -> "-- Choose a country --",
+				'_showConstraints -> false,
+				'class -> "required country_id"
+				)
+			</div>
+		</div>
+		<div class="control-group row-fluid">
+			<div class="span6">
+				@select(myForm("beneficiaryCurrency.code"),
+					options(""->"-- Please select country first --"),
+					'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG089","Destination Currency"),
+					'class -> "currency")
+			</div>
+		</div>
+		<div class="control-group row-fluid">
+			<div class="span12">
+				@inputText(myForm("senderAmount"),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG090","Amount")
+				, 'class -> "required number amount input-xlarge"
+				, 'placeholder -> "Amount"
+				, 'autocomplete -> "off"
+				, '_showConstraints -> false)
+
+			</div>
+		</div>
+
+		<div class="form-actions">
+			<input type="submit" id="checkRateRateFormSubmit" class="btn btn-primary" value='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG093","Check Rate")'/>
+		</div>
+        }
+    </div>
+    <div class="span5">
+        <div id="summary" class="well boxed">
+            <!-- SUMMARY SIDEBAR HERE -->
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG238","Check rate & fee give operator the easiest way to calculate foreign exchange rate")
+			<br/>
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG239","Exchange Rates will be updated by MTS Financial Administrator of PT. Nusa Satu Inti Artha everyday.")
+			<br/>
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG240","If you have any question all about Exchange Rates, please write down your feedback or call us on +62 2261807511 (Monday-Saturday)")
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/tools.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.chainedSelects.js")'></script>
+<script type="text/javascript">
+	$(function() {
+			initCheckRateForm('#checkRateForm');
+	});
+</script>
+}

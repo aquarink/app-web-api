@@ -1,0 +1,164 @@
+@(filterForm: Form[models.Fee], corporate: models.Corporate, fees: List[models.Fee], newFee: models.Fee)
+@import helper._
+@import helper.twitterBootstrap._
+
+@formFactory(fee:models.Fee) = {
+	@helper.form(routes.Fee.create(corporate.code),
+	'method -> "POST",
+	'class -> "form-inline form-fee",
+	'id -> "sendForm",
+	Symbol("data-remote") -> "true",
+	Symbol("data-type") -> "json",
+	'autocomplete -> "off"
+	) {
+	<input type="hidden" name="id" value="@(if(fee.id>0) fee.id else "0")"/>
+	<input type="hidden" name="corporate.code" value="@(if(fee.corporate != null) fee.corporate.code else corporate.code)"/>
+	<input type="hidden" name="currency.code" value="@fee.currency.code"/>
+	<input type="hidden" name="senderCountry.code" value="@fee.senderCountry.code"/>
+	<input type="hidden" name="beneficiaryCountry.code" value="@fee.beneficiaryCountry.code"/>
+	<input type="hidden" name="beneficiaryCurrency.code" value="@fee.beneficiaryCurrency.code"/>
+	<input type="hidden" name="channel.code" value="@fee.channel.code"/>
+	
+	<div class="row">
+		<div class="span3" style="width:220px;">
+			<div class="control-group">
+				<div class="input-append">
+					<input type="number" name="fromAmount" class="input-medium required number amount" value="@{fee.fromAmount}" placeholder="From amount"/>
+					<span class="add-on">@fee.currency.code</span>
+				</div>
+			</div>
+		</div>
+		<div class="span3" style="width:220px;">
+			<div class="control-group">
+				<div class="input-append">
+					<input type="number" name="toAmount" class="input-medium required number amount" value="@{fee.toAmount}" placeholder="To amount"/>
+					<span class="add-on">@fee.currency.code</span>
+				</div>
+			</div>
+		</div>
+		<div class="span3" style="width:160px;">
+			<div class="control-group">
+				<div class="input-append">
+					<input type="number" name="amount" class="input-small required number amount" value="@{fee.amount}" placeholder="Fee amount"/>
+					<span class="add-on">@fee.currency.code</span>
+				</div>
+			</div>
+		</div>
+		<div class="span3" style="width:180px;">
+			<div class="control-group">
+				<div class="input-append">
+					<input type="number" name="additionalFee" class="input-small required number amount" value="@{fee.additionalFee}" placeholder="Additional Fee amount"/>
+					<span class="add-on">@fee.beneficiaryCurrency.code</span>
+				</div>
+			</div>
+		</div>
+		<div class="span3">
+			<button type="submit" class="btn btn-small"><i class="icon-ok"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG126","Save")</button>
+			<a class="btn btn-small" href="@routes.Fee.destroy(corporate.code, fee.id)" data-remote="true" data-method="DELETE" data-confirm='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG411","Are you sure you want to delete this fee record?")'><i class="icon-remove"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG412","Delete")</a>
+
+			<span class="pull-right alert-container"></span>
+		</div>
+	</div>
+	}
+}
+
+
+
+@layout("Fee settings", Seq(
+routes.Corporate.admin_index().toString -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG354","Corporate management"),
+"" -> corporate.name,
+"" -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG424","Fees management")
+)) {
+<div class="page-header">
+	<h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG415","Fee setting for") @corporate.name</h1>
+</div>
+
+
+<div class="fee-container">
+
+    <div class="well">
+        @helper.form(routes.Fee.admin_index(corporate.code)) {
+			<div class="hidden">
+				@input(filterForm("senderCountry.code"), '_label -> "", '_showConstraints -> false) { (id, name, value, args) =>
+				<input type="hidden" name="@name" value="@value"/>
+				}
+			</div>
+            <div class="control-group">
+                <div class="row-fluid">
+                    <div class="span3" style="width:230px;">
+						@select(filterForm("senderCountry.code"), options(models.Country.options), 
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG040","Sending Country"), 
+						'disabled -> true)
+                    </div>
+                    <div class="span3" style="width:120px;">
+						@select(filterForm("currency.code"), options(models.Currency.options), 
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG413","Sending Currency"), 
+						'style -> "width:80px;")
+                    </div>
+                    <div class="span3" style="width:230px;">
+                        @select(filterForm("beneficiaryCountry.code"), options(models.Country.options), 
+                        '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG134","Receiving Country")
+                        )
+                    </div>
+                    <div class="span3" style="width:150px;">
+						@select(filterForm("beneficiaryCurrency.code"), options(models.Currency.options), 
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG416","Receiving Currency"), 
+						'style -> "width:80px;")
+                    </div>
+                    <div class="span3">
+                        @select(filterForm("channel.code"), options(models.Channel.options), 
+                        '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG139","Channels")
+                        )
+                    </div>
+                    <div class="span3">
+                        <label>&nbsp;</label>
+                        <button class="btn"><i class="icon-filter"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG130","Filter")</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+	@if(newFee != null) {
+	<div class="fee-container-inner">
+		<div>
+			<p class="alert alert-warn">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG417","This is advanced features! Please consult administrator for explanation for changing this settings")</p>
+		</div>
+        @partial.flash_alert()
+
+        <div class="page-subheader">
+			<h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG418","Fees tiering settings")</h3>
+		</div>
+
+		<p>
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG419","Please fill 'Higher amount' with value like") 999999.999999
+		</p>
+		<div class="row">
+			<div class="span3" style="width:220px;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG420","Lower amount")</div>
+			<div class="span3" style="width:220px;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG421","Higher amount")</div>
+			<div class="span3" style="width:160px;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG254","Fee amount")</div>
+			<div class="span3" style="width:180px;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG422","Additional Fee amount")</div>
+		</div>
+		<div class="spacer" style="height:10px"></div>
+
+		@for(fee <- fees) {
+			@formFactory(fee)
+		}
+	</div>
+	<div>
+		<div class="pull-left">
+			<a href="#" class="btn-add-fee"><i class="icon-plus"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG423","Add New Fee")</a>
+		</div>
+	</div>
+	}
+</div>
+
+@if(newFee != null) {
+<div id="fee-form-factory" style="display:none">
+	@formFactory(newFee)
+</div>
+}
+
+<script src="@routes.Assets.at("javascripts/fee.js")" type="text/javascript"></script>
+
+}

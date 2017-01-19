@@ -1,0 +1,874 @@
+2017-01-16 10:18:14,873 - [INFO] - from play in main 
+Listening for HTTP on /0:0:0:0:0:0:0:0:9000
+
+2017-01-16 10:18:22,824 - [KIRIMDOKU-API] Plugin [play.api.db.evolutions.EvolutionsPlugin] is disabled
+2017-01-16 10:18:23,332 - [KIRIMDOKU-API] database [default] connected at jdbc:postgresql://localhost:5432/kirimdoku_dev
+2017-01-16 10:18:24,014 - [KIRIMDOKU-API] Application Starting...
+2017-01-16 10:18:24,034 - [KIRIMDOKU-API] Application started (Dev)
+2017-01-16 10:18:24,522 - [KIRIMDOKU-API] ON REQUEST GET /ping
+2017-01-16 10:18:24,548 - [KIRIMDOKU-API] Starting application default Akka system.
+2017-01-16 10:18:24,570 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-16 10:18:24,691 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3b94d235
+2017-01-16 10:18:33,614 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-16 10:18:33,616 - [KIRIMDOKU-API] Request from Agent A40006 - 250588b4-de5b-1004-877b-27aef4169b6e - iUSKYt1gUqZFsJ84NkJ/sJoQer/bQc5pSPaYMOtI/p1w4JezjlCfbEhZ8xd0UJFj
+2017-01-16 10:18:33,616 - [KIRIMDOKU-API] AgentToken 6
+2017-01-16 10:18:33,673 - [KIRIMDOKU-API] Corporate AAA
+2017-01-16 10:18:33,673 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-16 10:18:33,985 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCountry.code=ID, beneficiaryCurrency.code=IDR, senderCurrency.code=MYR, senderAmount=10.0, sendType=senderAmount, activity=0, channel.code=02}
+2017-01-16 10:18:33,992 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7660454e
+2017-01-16 10:18:34,082 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I089301456988400","fund":{"origin":{"amount":10.000000,"currency":"MYR"},"destination":{"amount":15000.000000,"currency":"IDR"},"fees":{"total":3.000000,"currency":"MYR","components":[{"description":"Admin Fee","amount":3.000000}],"additionalFee":20000.000000}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"ID","name":"Indonesia"},"beneficiaryCurrency":{"code":"IDR"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":482,"forex":{"origin":{"code":"MYR"},"destination":{"code":"IDR"}},"rate":3500.0,"createdTime":1479721381030}}}
+2017-01-16 10:18:53,083 - [KIRIMDOKU-API] ON REQUEST POST /cashinInquiry
+2017-01-16 10:18:53,084 - [KIRIMDOKU-API] --------------------------------
+2017-01-16 10:18:53,084 - [KIRIMDOKU-API] :: AGENT MOBILE AUTHENTICATOR :: 
+2017-01-16 10:18:53,084 - [KIRIMDOKU-API] ================================
+2017-01-16 10:18:53,086 - [KIRIMDOKU-API] agentKey [A40006]
+2017-01-16 10:18:53,086 - [KIRIMDOKU-API] requestId [c6d33034-d374-1004-82be-58419227ce92]
+2017-01-16 10:18:53,086 - [KIRIMDOKU-API] signature [7sjrW6x3CLvzu+YqI6PoO4y5WapxayaXmz48Or3jSUiu2HIFm/7hwXXbHgBP6qN/7uKbwNQN/NpyhuF9JwOd9beuKrrVR1+Tnwr7cH4oDkI=]
+2017-01-16 10:18:53,092 - [KIRIMDOKU-API] Corporate [AAA]
+2017-01-16 10:18:53,093 - [KIRIMDOKU-API] Formula signature [A40006c6d33034-d374-1004-82be-58419227ce92a7656666-5c84-4d52-beaa-638a9b06a3d0]
+2017-01-16 10:18:53,093 - [KIRIMDOKU-API] Last Session Time Wed Dec 07 10:06:53 WIB 2016
+2017-01-16 10:18:53,093 - [KIRIMDOKU-API] Session [a7656666-5c84-4d52-beaa-638a9b06a3d0] expired
+2017-01-16 10:18:53,094 - [KIRIMDOKU-API] Unauthorized result {"status":10,"message":"Session expired"}
+2017-01-16 10:18:56,210 - [KIRIMDOKU-API] ON REQUEST POST /cashinInquiry
+2017-01-16 10:18:56,212 - [KIRIMDOKU-API] --------------------------------
+2017-01-16 10:18:56,212 - [KIRIMDOKU-API] :: AGENT MOBILE AUTHENTICATOR :: 
+2017-01-16 10:18:56,212 - [KIRIMDOKU-API] ================================
+2017-01-16 10:18:56,214 - [KIRIMDOKU-API] agentKey [A40006]
+2017-01-16 10:18:56,214 - [KIRIMDOKU-API] requestId [c6d33034-d374-1004-82be-58419227ce92]
+2017-01-16 10:18:56,215 - [KIRIMDOKU-API] signature [7sjrW6x3CLvzu+YqI6PoO4y5WapxayaXmz48Or3jSUiu2HIFm/7hwXXbHgBP6qN/7uKbwNQN/NpyhuF9JwOd9beuKrrVR1+Tnwr7cH4oDkI=]
+2017-01-16 10:18:56,221 - [KIRIMDOKU-API] Corporate [AAA]
+2017-01-16 10:18:56,221 - [KIRIMDOKU-API] Formula signature [A40006c6d33034-d374-1004-82be-58419227ce92a7656666-5c84-4d52-beaa-638a9b06a3d0]
+2017-01-16 10:18:56,221 - [KIRIMDOKU-API] Last Session Time Wed Dec 07 10:06:53 WIB 2016
+2017-01-16 10:18:56,222 - [KIRIMDOKU-API] Session [a7656666-5c84-4d52-beaa-638a9b06a3d0] expired
+2017-01-16 10:18:56,222 - [KIRIMDOKU-API] Unauthorized result {"status":10,"message":"Session expired"}
+2017-01-16 10:19:00,071 - [KIRIMDOKU-API] ON REQUEST POST /cashinInquiry
+2017-01-16 10:19:00,073 - [KIRIMDOKU-API] --------------------------------
+2017-01-16 10:19:00,073 - [KIRIMDOKU-API] :: AGENT MOBILE AUTHENTICATOR :: 
+2017-01-16 10:19:00,073 - [KIRIMDOKU-API] ================================
+2017-01-16 10:19:00,074 - [KIRIMDOKU-API] agentKey [A40006]
+2017-01-16 10:19:00,075 - [KIRIMDOKU-API] requestId [c6d33034-d374-1004-82be-58419227ce92]
+2017-01-16 10:19:00,075 - [KIRIMDOKU-API] signature [7sjrW6x3CLvzu+YqI6PoO4y5WapxayaXmz48Or3jSUiu2HIFm/7hwXXbHgBP6qN/7uKbwNQN/NpyhuF9JwOd9beuKrrVR1+Tnwr7cH4oDkI=]
+2017-01-16 10:19:00,080 - [KIRIMDOKU-API] Corporate [AAA]
+2017-01-16 10:19:00,080 - [KIRIMDOKU-API] Formula signature [A40006c6d33034-d374-1004-82be-58419227ce92a7656666-5c84-4d52-beaa-638a9b06a3d0]
+2017-01-16 10:19:00,081 - [KIRIMDOKU-API] Last Session Time Wed Dec 07 10:06:53 WIB 2016
+2017-01-16 10:19:00,081 - [KIRIMDOKU-API] Session [a7656666-5c84-4d52-beaa-638a9b06a3d0] expired
+2017-01-16 10:19:00,082 - [KIRIMDOKU-API] Unauthorized result {"status":10,"message":"Session expired"}
+2017-01-16 10:19:08,034 - [KIRIMDOKU-API] ON REQUEST POST /cashinRemit
+2017-01-16 10:19:08,035 - [KIRIMDOKU-API] --------------------------------
+2017-01-16 10:19:08,035 - [KIRIMDOKU-API] :: AGENT MOBILE AUTHENTICATOR :: 
+2017-01-16 10:19:08,035 - [KIRIMDOKU-API] ================================
+2017-01-16 10:19:08,037 - [KIRIMDOKU-API] agentKey [A40006]
+2017-01-16 10:19:08,037 - [KIRIMDOKU-API] requestId [c6d33034-d374-1004-82be-58419227ce92]
+2017-01-16 10:19:08,037 - [KIRIMDOKU-API] signature [7sjrW6x3CLvzu+YqI6PoO4y5WapxayaXmz48Or3jSUiu2HIFm/7hwXXbHgBP6qN/7uKbwNQN/NpyhuF9JwOd9beuKrrVR1+Tnwr7cH4oDkI=]
+2017-01-16 10:19:08,043 - [KIRIMDOKU-API] Corporate [AAA]
+2017-01-16 10:19:08,043 - [KIRIMDOKU-API] Formula signature [A40006c6d33034-d374-1004-82be-58419227ce92a7656666-5c84-4d52-beaa-638a9b06a3d0]
+2017-01-16 10:19:08,044 - [KIRIMDOKU-API] Last Session Time Wed Dec 07 10:06:53 WIB 2016
+2017-01-16 10:19:08,044 - [KIRIMDOKU-API] Session [a7656666-5c84-4d52-beaa-638a9b06a3d0] expired
+2017-01-16 10:19:08,044 - [KIRIMDOKU-API] Unauthorized result {"status":10,"message":"Session expired"}
+2017-01-16 10:19:08,892 - [KIRIMDOKU-API] ON REQUEST POST /cashinRemit
+2017-01-16 10:19:08,893 - [KIRIMDOKU-API] --------------------------------
+2017-01-16 10:19:08,893 - [KIRIMDOKU-API] :: AGENT MOBILE AUTHENTICATOR :: 
+2017-01-16 10:19:08,893 - [KIRIMDOKU-API] ================================
+2017-01-16 10:19:08,895 - [KIRIMDOKU-API] agentKey [A40006]
+2017-01-16 10:19:08,895 - [KIRIMDOKU-API] requestId [c6d33034-d374-1004-82be-58419227ce92]
+2017-01-16 10:19:08,895 - [KIRIMDOKU-API] signature [7sjrW6x3CLvzu+YqI6PoO4y5WapxayaXmz48Or3jSUiu2HIFm/7hwXXbHgBP6qN/7uKbwNQN/NpyhuF9JwOd9beuKrrVR1+Tnwr7cH4oDkI=]
+2017-01-16 10:19:08,901 - [KIRIMDOKU-API] Corporate [AAA]
+2017-01-16 10:19:08,901 - [KIRIMDOKU-API] Formula signature [A40006c6d33034-d374-1004-82be-58419227ce92a7656666-5c84-4d52-beaa-638a9b06a3d0]
+2017-01-16 10:19:08,902 - [KIRIMDOKU-API] Last Session Time Wed Dec 07 10:06:53 WIB 2016
+2017-01-16 10:19:08,902 - [KIRIMDOKU-API] Session [a7656666-5c84-4d52-beaa-638a9b06a3d0] expired
+2017-01-16 10:19:08,902 - [KIRIMDOKU-API] Unauthorized result {"status":10,"message":"Session expired"}
+2017-01-16 10:33:05,326 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-16 10:33:05,329 - [KIRIMDOKU-API] Request from Agent A40006 - 2a37a6dc-de5b-1004-877b-27aef4169b6e - J98PkL/J4RuzrrbGg1Y45poQer/bQc5pSPaYMOtI/p1w4JezjlCfbEhZ8xd0UJFj
+2017-01-16 10:33:05,330 - [KIRIMDOKU-API] AgentToken 6
+2017-01-16 10:33:05,338 - [KIRIMDOKU-API] Corporate AAA
+2017-01-16 10:33:05,338 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-16 10:33:05,381 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCountry.code=AS, beneficiaryCurrency.code=USD, senderCurrency.code=MYR, senderAmount=10.0, sendType=senderAmount, activity=0, channel.code=02}
+2017-01-16 10:33:05,384 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6c92cca2
+2017-01-16 10:33:05,454 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I088321544984480","fund":{"origin":{"amount":10.000000,"currency":"MYR"},"destination":{"amount":9875.000000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-16 10:33:11,007 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-16 10:33:11,009 - [KIRIMDOKU-API] Request from Agent A40006 - 2a4065ec-de5b-1004-877b-27aef4169b6e - Wcr7ae3nt1zCmm2ZTfhUl5oQer/bQc5pSPaYMOtI/p1w4JezjlCfbEhZ8xd0UJFj
+2017-01-16 10:33:11,009 - [KIRIMDOKU-API] AgentToken 6
+2017-01-16 10:33:11,016 - [KIRIMDOKU-API] Corporate AAA
+2017-01-16 10:33:11,016 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-16 10:33:11,044 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCountry.code=ID, beneficiaryCurrency.code=IDR, senderCurrency.code=MYR, senderAmount=10.0, sendType=senderAmount, activity=0, channel.code=02}
+2017-01-16 10:33:11,047 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7099b21d
+2017-01-16 10:33:11,096 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I089361748398320","fund":{"origin":{"amount":10.000000,"currency":"MYR"},"destination":{"amount":15000.000000,"currency":"IDR"},"fees":{"total":3.000000,"currency":"MYR","components":[{"description":"Admin Fee","amount":3.000000}],"additionalFee":20000.000000}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"ID","name":"Indonesia"},"beneficiaryCurrency":{"code":"IDR"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":482,"forex":{"origin":{"code":"MYR"},"destination":{"code":"IDR"}},"rate":3500.0,"createdTime":1479721381030}}}
+2017-01-16 14:30:39,297 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-16 14:30:39,314 - [KIRIMDOKU-API] Request from Agent A40006 - 7f2d8cb0-de5b-1004-8baa-c8f009cfc0e2 - imZECLTmNOmHtDNDfmXvWwsNA5Lg5K/1BIE6jtPaxE+x++nergHTIzVJ4OUIgNZs
+2017-01-16 14:30:39,314 - [KIRIMDOKU-API] AgentToken 6
+2017-01-16 14:30:39,427 - [KIRIMDOKU-API] Corporate AAA
+2017-01-16 14:30:39,427 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-16 14:30:39,530 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCurrency.code=USD, beneficiaryCountry.code=CN, senderCurrency.code=MYR, sendType=senderAmount, activity=0, channel.code=03}
+2017-01-16 14:30:39,608 - [KIRIMDOKU-API] Invalid parameters : {"":["Sender amount is invalid"]}
+2017-01-16 14:30:39,614 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@42525a19
+2017-01-16 14:31:03,230 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-16 14:31:03,257 - [KIRIMDOKU-API] Request from Agent A40006 - 7f5216fc-de5b-1004-8baa-c8f009cfc0e2 - KWrwpuurO78kwu/lDuo9vQsNA5Lg5K/1BIE6jtPaxE+x++nergHTIzVJ4OUIgNZs
+2017-01-16 14:31:03,258 - [KIRIMDOKU-API] AgentToken 6
+2017-01-16 14:31:03,265 - [KIRIMDOKU-API] Corporate AAA
+2017-01-16 14:31:03,265 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-16 14:31:03,299 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCountry.code=AS, beneficiaryCurrency.code=USD, senderCurrency.code=MYR, senderAmount=9.0, sendType=senderAmount, activity=0, channel.code=02}
+2017-01-16 14:31:03,301 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@331bde33
+2017-01-16 14:31:03,394 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I089823982476780","fund":{"origin":{"amount":9.000000,"currency":"MYR"},"destination":{"amount":8887.500000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-16 14:31:40,336 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-16 14:31:40,381 - [KIRIMDOKU-API] Request from Agent A40006 - 7f8a989c-de5b-1004-8baa-c8f009cfc0e2 - zHcOwxT4gRETUqEdDuWL+AsNA5Lg5K/1BIE6jtPaxE+x++nergHTIzVJ4OUIgNZs
+2017-01-16 14:31:40,382 - [KIRIMDOKU-API] AgentToken 6
+2017-01-16 14:31:40,391 - [KIRIMDOKU-API] Corporate AAA
+2017-01-16 14:31:40,391 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-16 14:31:40,420 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCountry.code=AS, beneficiaryCurrency.code=USD, senderCurrency.code=MYR, senderAmount=9.0, sendType=senderAmount, activity=0, channel.code=02}
+2017-01-16 14:31:40,423 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@5c927776
+2017-01-16 14:31:40,491 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I087281343876352","fund":{"origin":{"amount":9.000000,"currency":"MYR"},"destination":{"amount":8887.500000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-16 14:35:25,756 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-16 14:35:25,773 - [KIRIMDOKU-API] Request from Agent A40006 - 80e29014-de5b-1004-8baa-c8f009cfc0e2 - kAGPXdLjNLglC51wcVR4PwsNA5Lg5K/1BIE6jtPaxE+x++nergHTIzVJ4OUIgNZs
+2017-01-16 14:35:25,774 - [KIRIMDOKU-API] AgentToken 6
+2017-01-16 14:35:25,778 - [KIRIMDOKU-API] Corporate AAA
+2017-01-16 14:35:25,778 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-16 14:35:25,801 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCountry.code=ID, beneficiaryCurrency.code=IDR, senderCurrency.code=MYR, senderAmount=23.0, sendType=senderAmount, activity=0, channel.code=07}
+2017-01-16 14:35:25,803 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@1e4afd64
+2017-01-16 14:35:25,884 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I086743530544662","fund":{"origin":{"amount":23.000000,"currency":"MYR"},"destination":{"amount":78500.00,"currency":"IDR"},"fees":{"total":1.000000,"currency":"MYR","components":[{"description":null,"amount":1.000000}],"additionalFee":2000.000000}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"ID","name":"Indonesia"},"beneficiaryCurrency":{"code":"IDR"},"channel":{"code":"07","name":"Bank Deposit"},"forexReference":{"id":482,"forex":{"origin":{"code":"MYR"},"destination":{"code":"IDR"}},"rate":3500.0,"createdTime":1479721381030}}}
+2017-01-16 14:53:22,654 - [KIRIMDOKU-API] ON REQUEST POST /translate/tcode
+2017-01-16 14:53:22,663 - [KIRIMDOKU-API] Request from Agent A40006 - 874dc2ac-de5b-1004-8baa-c8f009cfc0e2 - Hjho9NYrkptlsWj60WcNoAsNA5Lg5K/1BIE6jtPaxE+x++nergHTIzVJ4OUIgNZs
+2017-01-16 14:53:22,678 - [KIRIMDOKU-API] AgentToken 6
+2017-01-16 14:53:22,711 - [KIRIMDOKU-API] Corporate AAA
+2017-01-16 14:53:22,712 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-16 14:53:22,729 - [KIRIMDOKU-API] Method   : TCODE
+2017-01-16 14:53:22,729 - [KIRIMDOKU-API] Code Val : sas,
+2017-01-16 14:53:24,506 - [KIRIMDOKU-API] Result Api : 
+2017-01-16 14:53:24,509 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3927b24e
+2017-01-16 14:53:27,919 - [KIRIMDOKU-API] ON REQUEST POST /translate/tcode
+2017-01-16 14:53:27,921 - [KIRIMDOKU-API] Request from Agent A40006 - 8755e5e0-de5b-1004-8baa-c8f009cfc0e2 - SnPiEdWfWq61SxagLPO70AsNA5Lg5K/1BIE6jtPaxE+x++nergHTIzVJ4OUIgNZs
+2017-01-16 14:53:27,921 - [KIRIMDOKU-API] AgentToken 6
+2017-01-16 14:53:27,929 - [KIRIMDOKU-API] Corporate AAA
+2017-01-16 14:53:27,930 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-16 14:53:27,931 - [KIRIMDOKU-API] Method   : TCODE
+2017-01-16 14:53:27,931 - [KIRIMDOKU-API] Code Val : 1212,
+2017-01-16 14:53:28,211 - [KIRIMDOKU-API] Result Api : 
+2017-01-16 14:53:28,212 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7dd8c4a6
+2017-01-17 14:01:56,780 - [KIRIMDOKU-API] Application shutdown...
+2017-01-17 14:01:56,782 - [KIRIMDOKU-API] Shutdown application default Akka system.
+2017-01-17 14:01:56,924 - [KIRIMDOKU-API] Plugin [play.api.db.evolutions.EvolutionsPlugin] is disabled
+2017-01-17 14:01:57,502 - [KIRIMDOKU-API] database [default] connected at jdbc:postgresql://localhost:5432/kirimdoku_dev
+2017-01-17 14:01:57,843 - [KIRIMDOKU-API] Application Starting...
+2017-01-17 14:01:57,844 - [KIRIMDOKU-API] Application started (Dev)
+2017-01-17 14:01:57,862 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-17 14:01:57,895 - [KIRIMDOKU-API] Starting application default Akka system.
+2017-01-17 14:01:57,898 - [KIRIMDOKU-API] Request from Agent A40006 - 77b19ab0-de5d-1004-8c9f-c1bd2a04d6f0 - 7K58aMSge/yfgc/nRCGq1v5JpOodCK8rx7PkURFZ/aKkoTkFgEpcXw0RIEX/6qEB
+2017-01-17 14:01:57,899 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 14:01:57,911 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 14:01:57,911 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 14:01:57,984 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCurrency.code=USD, beneficiaryCountry.code=AS, senderCurrency.code=MYR, sendType=senderAmount, activity=0, channel.code=02}
+2017-01-17 14:01:57,988 - [KIRIMDOKU-API] Invalid parameters : {"":["Sender amount is invalid"]}
+2017-01-17 14:01:57,995 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@438f7623
+2017-01-17 15:36:18,627 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-17 15:36:18,654 - [KIRIMDOKU-API] Request from Agent A40006 - 99a44b18-de5d-1004-8c9f-c1bd2a04d6f0 - FGor+V8reNa0bYGbn2zwDf5JpOodCK8rx7PkURFZ/aKkoTkFgEpcXw0RIEX/6qEB
+2017-01-17 15:36:18,655 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 15:36:18,718 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 15:36:18,718 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 15:36:18,755 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCurrency.code=USD, beneficiaryCountry.code=AS, senderCurrency.code=MYR, sendType=senderAmount, activity=0, channel.code=02}
+2017-01-17 15:36:18,763 - [KIRIMDOKU-API] Invalid parameters : {"":["Sender amount is invalid"]}
+2017-01-17 15:36:18,769 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@b264e5c
+2017-01-17 15:36:36,385 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-17 15:36:36,386 - [KIRIMDOKU-API] Request from Agent A40006 - 99bee4dc-de5d-1004-8c9f-c1bd2a04d6f0 - hUjQlLgZ6XJ+dTILh4p25/5JpOodCK8rx7PkURFZ/aKkoTkFgEpcXw0RIEX/6qEB
+2017-01-17 15:36:36,387 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 15:36:36,392 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 15:36:36,392 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 15:36:36,455 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3683d245
+2017-01-17 15:38:07,031 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-17 15:38:07,080 - [KIRIMDOKU-API] Request from Agent A40006 - 9a49d538-de5d-1004-8c9f-c1bd2a04d6f0 - 7lheX5xz3mQiiH/6evH2Rv5JpOodCK8rx7PkURFZ/aKkoTkFgEpcXw0RIEX/6qEB
+2017-01-17 15:38:07,081 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 15:38:07,088 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 15:38:07,088 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 15:38:07,125 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCurrency.code=USD, beneficiaryCountry.code=AS, senderCurrency.code=MYR, sendType=senderAmount, activity=0, channel.code=02}
+2017-01-17 15:38:07,130 - [KIRIMDOKU-API] Invalid parameters : {"":["Sender amount is invalid"]}
+2017-01-17 15:38:07,134 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@322179d7
+2017-01-17 15:55:58,766 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-17 15:55:58,779 - [KIRIMDOKU-API] Request from Agent A40006 - a0ad312c-de5d-1004-8c9f-c1bd2a04d6f0 - vs0r2Ylrtrx3F/tfbRurP/5JpOodCK8rx7PkURFZ/aKkoTkFgEpcXw0RIEX/6qEB
+2017-01-17 15:55:58,779 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 15:55:58,805 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 15:55:58,806 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 15:55:58,833 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCurrency.code=USD, beneficiaryCountry.code=AS, senderCurrency.code=MYR, sendType=senderAmount, activity=0, channel.code=02}
+2017-01-17 15:55:58,836 - [KIRIMDOKU-API] Invalid parameters : {"":["Sender amount is invalid"]}
+2017-01-17 15:55:58,842 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@603dce84
+2017-01-17 17:25:51,949 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-17 17:25:51,968 - [KIRIMDOKU-API] Request from Agent A40006 - c0d28948-de5d-1004-8841-b2d3c949c1dd - /HgGlaSdVg95jJsXhC1m6b4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:25:51,968 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:25:52,000 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:25:52,000 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:25:52,191 - [KIRIMDOKU-API] Inquiry request {sender.personalId=, sender.gender=MALE, beneficiaryCurrency.code=RMB, sender.lastName=, senderCurrency.code=MYR, sender.firstName=, sender.phoneNumber=, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=CN, sender.personalIdCountry.code=, senderAmount=12.0, activity=0, sender.country.code=ID, channel.code=07}
+2017-01-17 17:25:52,245 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@770518c4
+2017-01-17 17:25:52,490 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I014802171350400","fund":{"origin":{"amount":12.000000,"currency":"MYR"},"destination":{"amount":20.27,"currency":"RMB"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"CN","name":"China"},"beneficiaryCurrency":{"code":"RMB"},"channel":{"code":"07","name":"Bank Deposit"},"forexReference":{"id":291,"forex":{"origin":{"code":"MYR"},"destination":{"code":"RMB"}},"rate":1.6893063,"createdTime":1447319995120}}}
+2017-01-17 17:26:31,649 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-17 17:26:31,668 - [KIRIMDOKU-API] Request from Agent A40006 - c10f23bc-de5d-1004-8c9f-c1bd2a04d6f0 - 7WAcuOXq6Nc6P7RQWVjaNf5JpOodCK8rx7PkURFZ/aKkoTkFgEpcXw0RIEX/6qEB
+2017-01-17 17:26:31,668 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:26:31,676 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:26:31,676 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:26:31,696 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@30d56a1b
+2017-01-17 17:27:08,472 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-17 17:27:08,515 - [KIRIMDOKU-API] Request from Agent A40006 - c1472e9c-de5d-1004-8c9f-c1bd2a04d6f0 - BjIhSV+1hWNQyo9bMpN1pv5JpOodCK8rx7PkURFZ/aKkoTkFgEpcXw0RIEX/6qEB
+2017-01-17 17:27:08,516 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:27:08,529 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:27:08,529 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:27:08,552 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@e003628
+2017-01-17 17:27:45,688 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-17 17:27:45,740 - [KIRIMDOKU-API] Request from Agent A40006 - c1800500-de5d-1004-8841-b2d3c949c1dd - o2Q13wrkMZ6ubBfhj+Ig3r4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:27:45,741 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:27:45,748 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:27:45,748 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:27:45,790 - [KIRIMDOKU-API] Inquiry request {sender.personalId=, sender.gender=MALE, beneficiaryCurrency.code=USD, sender.lastName=, senderCurrency.code=MYR, sender.firstName=, sender.phoneNumber=, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=AS, sender.personalIdCountry.code=, senderAmount=12.0, activity=0, sender.country.code=ID, sender.idToken=CID0015141, channel.code=02}
+2017-01-17 17:27:45,792 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6d07cabc
+2017-01-17 17:27:45,856 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I01328751975560","fund":{"origin":{"amount":12.000000,"currency":"MYR"},"destination":{"amount":11850.000000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-17 17:29:47,759 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015142
+2017-01-17 17:29:47,761 - [KIRIMDOKU-API] Request from Agent A40006 - c23a5b58-de5d-1004-8c9f-c1bd2a04d6f0 - 06D1Jb/FEFnYQz4AxKu9uf5JpOodCK8rx7PkURFZ/aKkoTkFgEpcXw0RIEX/6qEB
+2017-01-17 17:29:47,762 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:29:47,768 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:29:47,769 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:29:47,787 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@574f9169
+2017-01-17 17:33:13,090 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-17 17:33:13,092 - [KIRIMDOKU-API] Request from Agent A40006 - c37397a0-de5d-1004-8841-b2d3c949c1dd - K7I3J+Z3NRjI4gd6zLGPy74Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:33:13,092 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:33:13,098 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:33:13,098 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:33:13,131 - [KIRIMDOKU-API] Inquiry request {sender.personalId=, sender.gender=MALE, beneficiaryCurrency.code=IDR, sender.lastName=, senderCurrency.code=MYR, sender.firstName=, sender.phoneNumber=, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=ID, sender.personalIdCountry.code=, senderAmount=21.0, activity=0, sender.country.code=ID, channel.code=02}
+2017-01-17 17:33:13,133 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@4d437150
+2017-01-17 17:33:13,187 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I014862334218020","fund":{"origin":{"amount":21.000000,"currency":"MYR"},"destination":{"amount":53500.000000,"currency":"IDR"},"fees":{"total":3.000000,"currency":"MYR","components":[{"description":"Admin Fee","amount":3.000000}],"additionalFee":20000.000000}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"ID","name":"Indonesia"},"beneficiaryCurrency":{"code":"IDR"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":482,"forex":{"origin":{"code":"MYR"},"destination":{"code":"IDR"}},"rate":3500.0,"createdTime":1479721381030}}}
+2017-01-17 17:38:05,155 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-17 17:38:05,157 - [KIRIMDOKU-API] Request from Agent A40006 - c53137b4-de5d-1004-8841-b2d3c949c1dd - 77BET6ZRKclzfRiI8Srfr74Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:38:05,157 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:38:05,162 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:38:05,163 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:38:05,189 - [KIRIMDOKU-API] Inquiry request {sender.personalId=, sender.gender=MALE, beneficiaryCurrency.code=USD, sender.lastName=, senderCurrency.code=MYR, sender.firstName=, sender.phoneNumber=, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=AS, sender.personalIdCountry.code=, senderAmount=12.0, activity=0, sender.country.code=ID, channel.code=02}
+2017-01-17 17:38:05,190 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6a779c4d
+2017-01-17 17:38:05,246 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I01434922833610","fund":{"origin":{"amount":12.000000,"currency":"MYR"},"destination":{"amount":11850.000000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-17 17:38:31,142 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-17 17:38:31,144 - [KIRIMDOKU-API] Request from Agent A40006 - c558ecf0-de5d-1004-8c9f-c1bd2a04d6f0 - sbxyhGYJaTIDd0mp7zIL5f5JpOodCK8rx7PkURFZ/aKkoTkFgEpcXw0RIEX/6qEB
+2017-01-17 17:38:31,145 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:38:31,148 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:38:31,148 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:38:31,166 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@30c8c5fe
+2017-01-17 17:39:55,784 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-17 17:39:55,786 - [KIRIMDOKU-API] Request from Agent A40006 - c5db6bf8-de5d-1004-8841-b2d3c949c1dd - pR2N2nXsYwboRZLKFov1S74Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:39:55,786 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:39:55,789 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:39:55,790 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:39:55,807 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@4a75c9b3
+2017-01-17 17:42:24,618 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-17 17:42:24,620 - [KIRIMDOKU-API] Request from Agent A40006 - c6bd3cf4-de5d-1004-8841-b2d3c949c1dd - YOzlXhIa6Wk03rUpJh3mbb4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:42:24,620 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:42:24,630 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:42:24,630 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:42:24,650 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@79c86e05
+2017-01-17 17:50:27,380 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-17 17:50:27,382 - [KIRIMDOKU-API] Request from Agent A40006 - c99dd2f8-de5d-1004-8841-b2d3c949c1dd - jjv/9FzBpH2BqQmoQR2TUr4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:50:27,382 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:50:27,391 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:50:27,392 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:50:27,415 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3a658a0c
+2017-01-17 17:50:30,185 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-17 17:50:30,187 - [KIRIMDOKU-API] Request from Agent A40006 - c9a2114c-de5d-1004-8841-b2d3c949c1dd - BzqXnmWUpCuwtaS1sWBNNb4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:50:30,187 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:50:30,198 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:50:30,198 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:50:30,220 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@579b9432
+2017-01-17 17:56:26,710 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-17 17:56:26,714 - [KIRIMDOKU-API] Request from Agent A40006 - cbc22674-de5d-1004-8841-b2d3c949c1dd - GEUe6sW+Hwb+BRfhOxQDzr4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:56:26,714 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:56:26,720 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:56:26,720 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:56:26,852 - [KIRIMDOKU-API] Inquiry request {sender.personalId=, beneficiaryCurrency.code=IDR, sender.firstName=, sender.phoneNumber=, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=ID, sender.personalIdCountry.code=, beneficiaryAccount.address=, senderAmount=12.0, beneficiaryAccount.bank.code=, activity=0, beneficiaryAccount.city=Jakarta, sender.gender=MALE, beneficiaryAccount.number=, sender.lastName=, voucherCode=, senderCurrency.code=MYR, beneficiaryWalletId=, sender.country.code=ID, channel.code=02}
+2017-01-17 17:56:26,854 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@8dd4131
+2017-01-17 17:56:26,896 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I01224637700256","fund":{"origin":{"amount":12.000000,"currency":"MYR"},"destination":{"amount":22000.000000,"currency":"IDR"},"fees":{"total":3.000000,"currency":"MYR","components":[{"description":"Admin Fee","amount":3.000000}],"additionalFee":20000.000000}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"ID","name":"Indonesia"},"beneficiaryCurrency":{"code":"IDR"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":482,"forex":{"origin":{"code":"MYR"},"destination":{"code":"IDR"}},"rate":3500.0,"createdTime":1479721381030}}}
+2017-01-17 17:56:29,129 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-17 17:56:29,131 - [KIRIMDOKU-API] Request from Agent A40006 - cbc5cec8-de5d-1004-8841-b2d3c949c1dd - SR+Kf0ouTvAMl9J8NXNoVL4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:56:29,132 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:56:29,142 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:56:29,142 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:56:29,164 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@4af4ab6b
+2017-01-17 17:56:31,641 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-17 17:56:31,642 - [KIRIMDOKU-API] Request from Agent A40006 - cbc9b7f4-de5d-1004-8841-b2d3c949c1dd - HkUGUrfmJk13TQpV1I74/74Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:56:31,642 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:56:31,651 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:56:31,651 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:56:31,668 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@403631a
+2017-01-17 17:58:17,590 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-17 17:58:17,632 - [KIRIMDOKU-API] Request from Agent A40006 - cc6b4880-de5d-1004-8841-b2d3c949c1dd - gVBo6bYG6RRbbswXD3HmuL4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:58:17,632 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:58:17,641 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:58:17,641 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:58:17,661 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2414c2f7
+2017-01-17 17:58:26,039 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-17 17:58:26,042 - [KIRIMDOKU-API] Request from Agent A40006 - cc7829c4-de5d-1004-8841-b2d3c949c1dd - XWDP1OeTHdQqBLfqtlhqur4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 17:58:26,042 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 17:58:26,048 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 17:58:26,049 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 17:58:26,073 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@33fe2429
+2017-01-17 18:05:02,538 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-17 18:05:02,558 - [KIRIMDOKU-API] Request from Agent A40006 - ced53a40-de5d-1004-8841-b2d3c949c1dd - M2R++IUXIc4lBoSfiZcgqL4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 18:05:02,558 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 18:05:02,570 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 18:05:02,570 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 18:05:02,593 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3e9bb169
+2017-01-17 18:05:10,149 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-17 18:05:10,150 - [KIRIMDOKU-API] Request from Agent A40006 - cee0d814-de5d-1004-8841-b2d3c949c1dd - +vePx8JkKxi9ARcGbkkxAb4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 18:05:10,150 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 18:05:10,157 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 18:05:10,157 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 18:05:10,179 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6db5b692
+2017-01-17 18:06:59,807 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-17 18:06:59,809 - [KIRIMDOKU-API] Request from Agent A40006 - cf883c08-de5d-1004-8841-b2d3c949c1dd - 0+etjcJycXP7HhyWrICXVb4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 18:06:59,809 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 18:06:59,814 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 18:06:59,814 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 18:06:59,839 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@32016f4f
+2017-01-17 18:07:26,439 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-17 18:07:26,441 - [KIRIMDOKU-API] Request from Agent A40006 - cfb0c948-de5d-1004-8841-b2d3c949c1dd - D+/eImoILJpqafO7rzwzYr4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 18:07:26,441 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 18:07:26,449 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 18:07:26,449 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 18:07:26,465 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@1865fd9b
+2017-01-17 18:07:59,757 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-17 18:07:59,759 - [KIRIMDOKU-API] Request from Agent A40006 - cfe3a6c4-de5d-1004-8841-b2d3c949c1dd - H6vbzoL1qv7jL6/Tv+Urdb4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 18:07:59,759 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 18:07:59,767 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 18:07:59,767 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 18:07:59,782 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@42794a13
+2017-01-17 18:08:57,719 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-17 18:08:57,721 - [KIRIMDOKU-API] Request from Agent A40006 - d03c08f0-de5d-1004-8841-b2d3c949c1dd - T/8QdqAmTgj/+ZIic0rJXr4Xwm2cYSwtgoMaCQGDTbFnHPBbr2u4xATbQdYQeQgm
+2017-01-17 18:08:57,721 - [KIRIMDOKU-API] AgentToken 6
+2017-01-17 18:08:57,730 - [KIRIMDOKU-API] Corporate AAA
+2017-01-17 18:08:57,731 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-17 18:08:57,750 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3ec18730
+2017-01-18 09:13:11,270 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 09:13:11,285 - [KIRIMDOKU-API] Request from Agent A40006 - 139c5e00-de5f-1004-8841-b2d3c949c1dd - yEkadzG02ydpLnOvlLqU4fawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:13:11,285 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:13:11,337 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:13:11,338 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:13:11,383 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@67dea96f
+2017-01-18 09:13:29,602 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 09:13:29,650 - [KIRIMDOKU-API] Request from Agent A40006 - 13b85f24-de5f-1004-8841-b2d3c949c1dd - LXKMT0naupoDaA5yNfiX2/awgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:13:29,650 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:13:29,664 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:13:29,664 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:13:29,688 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2f4843aa
+2017-01-18 09:14:04,331 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-18 09:14:04,332 - [KIRIMDOKU-API] Request from Agent A40006 - 13ed65c0-de5f-1004-8841-b2d3c949c1dd - gNGSPkzsCEh9DVcXtx8L//awgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:14:04,333 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:14:04,346 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:14:04,346 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:14:04,365 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2bd7b534
+2017-01-18 09:15:10,067 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 09:15:10,077 - [KIRIMDOKU-API] Request from Agent A40006 - 1451a6fc-de5f-1004-8841-b2d3c949c1dd - zUKs2zrEzrbVoOAbrCHhOfawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:15:10,078 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:15:10,091 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:15:10,091 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:15:10,111 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@c87137f
+2017-01-18 09:21:38,607 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 09:21:38,624 - [KIRIMDOKU-API] Request from Agent A40006 - 16a27ef4-de5f-1004-8841-b2d3c949c1dd - TDPpnK63EEr54WK8f8auAPawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:21:38,624 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:21:38,630 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:21:38,630 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:21:38,649 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7ec95189
+2017-01-18 09:22:18,565 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 09:22:18,567 - [KIRIMDOKU-API] Request from Agent A40006 - 16df8f60-de5f-1004-8841-b2d3c949c1dd - FUYAzvOuIg3ilQINVR3Ej/awgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:22:18,567 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:22:18,581 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:22:18,581 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:22:18,598 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@34d13551
+2017-01-18 09:25:07,572 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 09:25:07,647 - [KIRIMDOKU-API] Request from Agent A40006 - 17e172e8-de5f-1004-8841-b2d3c949c1dd - rU89Lh5HrArX74GRBMnS+vawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:25:07,647 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:25:07,650 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:25:07,650 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:25:07,667 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@56728241
+2017-01-18 09:26:32,383 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 09:26:32,384 - [KIRIMDOKU-API] Request from Agent A40006 - 1862ec38-de5f-1004-8841-b2d3c949c1dd - uflJQF1H6fAj44DNGTXIdPawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:26:32,385 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:26:32,397 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:26:32,397 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:26:32,453 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3525098b
+2017-01-18 09:29:57,217 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 09:29:57,231 - [KIRIMDOKU-API] Request from Agent A40006 - 199b67ec-de5f-1004-8841-b2d3c949c1dd - NmIvMeAkU7+jXhKdK8otRPawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:29:57,231 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:29:57,262 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:29:57,262 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:29:57,351 - [KIRIMDOKU-API] Inquiry request {beneficiaryAccount.city=Jakarta, sender.personalId=, sender.gender=MALE, beneficiaryCurrency.code=USD, beneficiaryAccount.number=, voucherCode=, sender.lastName=, senderCurrency.code=MYR, sender.firstName=, sender.phoneNumber=, sender.cityName=, sender.address=, beneficiaryWalletId=, sender.occupation=, sender.personalIdType=CITIZENID, senderCountry.code=MY, sender.personalIdCountry.code=, beneficiaryCountry.code=AS, beneficiaryAccount.address=, activity=0, beneficiaryAccount.bank.code=, channel.code=02, sender.country.code=ID}
+2017-01-18 09:29:57,360 - [KIRIMDOKU-API] Invalid parameters : {"":["Sender amount is invalid"]}
+2017-01-18 09:29:57,368 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3ba0b9ab
+2017-01-18 09:37:29,963 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 09:37:30,014 - [KIRIMDOKU-API] Request from Agent A40006 - 1c4e2344-de5f-1004-8841-b2d3c949c1dd - CWEJIlizfWK71Qmr6VfhSPawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:37:30,014 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:37:30,022 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:37:30,023 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:37:30,062 - [KIRIMDOKU-API] Inquiry request {sender.personalId=, beneficiaryCurrency.code=USD, sender.firstName=, sender.phoneNumber=, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=AS, sender.personalIdCountry.code=, beneficiaryAccount.address=, senderAmount=123.0, beneficiaryAccount.bank.code=, activity=0, beneficiaryAccount.city=Jakarta, sender.gender=MALE, beneficiaryAccount.number=, sender.lastName=, voucherCode=, senderCurrency.code=MYR, beneficiaryWalletId=, sender.country.code=ID, channel.code=02}
+2017-01-18 09:37:30,064 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@f288aad
+2017-01-18 09:37:30,142 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I011701839965960","fund":{"origin":{"amount":123.000000,"currency":"MYR"},"destination":{"amount":121462.500000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-18 09:43:35,888 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 09:43:35,903 - [KIRIMDOKU-API] Request from Agent A40006 - 1e7c89a8-de5f-1004-8841-b2d3c949c1dd - 9UO5ccT8IVIPyePiEnVzN/awgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 09:43:35,903 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:43:35,909 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:43:35,909 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:43:35,945 - [KIRIMDOKU-API] Inquiry request {sender.personalId=, beneficiaryCurrency.code=USD, sender.firstName=, sender.phoneNumber=, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=GU, sender.personalIdCountry.code=, beneficiaryAccount.address=, senderAmount=12.0, beneficiaryAccount.bank.code=, activity=0, beneficiaryAccount.city=Jakarta, sender.gender=MALE, beneficiaryAccount.number=, sender.lastName=, voucherCode=, senderCurrency.code=MYR, beneficiaryWalletId=, sender.country.code=ID, channel.code=02}
+2017-01-18 09:43:35,947 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6cc976ee
+2017-01-18 09:43:36,014 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I01330805702200","fund":{"origin":{"amount":12.000000,"currency":"MYR"},"destination":{"amount":11850.000000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"GU","name":"Guam (USA)"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-18 09:47:54,460 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 09:47:54,476 - [KIRIMDOKU-API] Request from Agent A40006 - 2007265c-de5f-1004-8c9f-c1bd2a04d6f0 - 2Sw0yX0EVN5NslQ/uwwm+rICSO240bgpi6tIaBQks22koTkFgEpcXw0RIEX/6qEB
+2017-01-18 09:47:54,477 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:47:54,486 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:47:54,487 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:47:54,506 - [KIRIMDOKU-API] Inquiry request {senderCountry.code=MY, beneficiaryCountry.code=AS, beneficiaryCurrency.code=USD, senderCurrency.code=MYR, senderAmount=12.0, activity=0, channel.code=02}
+2017-01-18 09:47:54,508 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@5dbd98e5
+2017-01-18 09:47:54,568 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I012762019405348","fund":{"origin":{"amount":12.000000,"currency":"MYR"},"destination":{"amount":11850.000000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-18 09:48:14,059 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 09:48:14,109 - [KIRIMDOKU-API] Request from Agent A40006 - 20250924-de5f-1004-8c9f-c1bd2a04d6f0 - ptN4jXt2E/ryRQ+BR/xO4LICSO240bgpi6tIaBQks22koTkFgEpcXw0RIEX/6qEB
+2017-01-18 09:48:14,110 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 09:48:14,121 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 09:48:14,121 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 09:48:14,161 - [KIRIMDOKU-API] Inquiry request {beneficiaryAmount=11850.0, senderCountry.code=MY, beneficiaryCountry.code=AS, beneficiaryCurrency.code=USD, senderCurrency.code=MYR, senderAmount=11.0, activity=0, channel.code=02}
+2017-01-18 09:48:14,163 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@1da13cba
+2017-01-18 09:48:14,220 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I02424719994240","fund":{"origin":{"amount":11.000000,"currency":"MYR"},"destination":{"amount":10862.500000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-18 10:00:50,770 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 10:00:50,791 - [KIRIMDOKU-API] Request from Agent A40006 - 24a7bbe0-de5f-1004-8841-b2d3c949c1dd - 4a8OnwOxLVz62A70SsSeBfawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 10:00:50,791 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 10:00:50,800 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 10:00:50,800 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 10:00:50,834 - [KIRIMDOKU-API] Inquiry request {sender.personalId=, beneficiaryCurrency.code=USD, sender.firstName=, sender.phoneNumber=, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=AS, sender.personalIdCountry.code=, beneficiaryAccount.address=, senderAmount=12.0, beneficiaryAccount.bank.code=, activity=0, beneficiaryAccount.city=Jakarta, sender.gender=MALE, beneficiaryAccount.number=, sender.lastName=, voucherCode=, senderCurrency.code=MYR, beneficiaryWalletId=, sender.country.code=ID, channel.code=02}
+2017-01-18 10:00:50,836 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3ea54b43
+2017-01-18 10:00:50,914 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I024702099990550","fund":{"origin":{"amount":12.000000,"currency":"MYR"},"destination":{"amount":11850.000000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-18 10:03:20,002 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 10:03:20,021 - [KIRIMDOKU-API] Request from Agent A40006 - 258b790c-de5f-1004-8841-b2d3c949c1dd - XKfvz5pQMAfwpODCkJxglvawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 10:03:20,022 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 10:03:20,033 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 10:03:20,033 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 10:03:20,102 - [KIRIMDOKU-API] Inquiry request {sender.personalId=, beneficiaryCurrency.code=USD, sender.firstName=, sender.phoneNumber=, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=AS, sender.personalIdCountry.code=, beneficiaryAccount.address=, senderAmount=12.0, beneficiaryAccount.bank.code=, activity=0, beneficiaryAccount.city=Jakarta, sender.gender=MALE, beneficiaryAccount.number=, sender.lastName=, voucherCode=, senderCurrency.code=MYR, beneficiaryWalletId=, sender.country.code=ID, channel.code=02}
+2017-01-18 10:03:20,106 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@686a9ef5
+2017-01-18 10:03:20,204 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I025742241140616","fund":{"origin":{"amount":12.000000,"currency":"MYR"},"destination":{"amount":11850.000000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-18 10:07:36,085 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 10:07:36,105 - [KIRIMDOKU-API] Request from Agent A40006 - 27121394-de5f-1004-8841-b2d3c949c1dd - FLegwQRWyJyAH9mN2QWHwPawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 10:07:36,105 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 10:07:36,114 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 10:07:36,114 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 10:07:36,131 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7f7bc03b
+2017-01-18 10:07:38,717 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 10:07:38,718 - [KIRIMDOKU-API] Request from Agent A40006 - 27161f84-de5f-1004-8841-b2d3c949c1dd - WCURls1OscliCdXc6nfW1vawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 10:07:38,719 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 10:07:38,730 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 10:07:38,730 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 10:07:38,758 - [KIRIMDOKU-API] Parsing date input 2016-04-26 00:00:00 with locale US
+2017-01-18 10:07:38,799 - [KIRIMDOKU-API] Inquiry request {sender.personalId=11111111111, beneficiaryCurrency.code=USD, sender.firstName=atilu, sender.phoneNumber=(021) 222-222222222, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=AS, sender.personalIdCountry.code=, beneficiaryAccount.address=, senderAmount=12.0, beneficiaryAccount.bank.code=, activity=0, sender.idToken=CID0003941, beneficiaryAccount.city=Jakarta, beneficiaryAccount.number=, sender.lastName=ctilu, voucherCode=, senderCurrency.code=MYR, sender.birthDate=2016-04-26 00:00:00, beneficiaryWalletId=, sender.country.code=ID, channel.code=02}
+2017-01-18 10:07:38,801 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@63de180e
+2017-01-18 10:07:38,858 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I02522666287380","fund":{"origin":{"amount":12.000000,"currency":"MYR"},"destination":{"amount":11850.000000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"02","name":"Cash to Cash"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-18 10:07:46,642 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-18 10:07:46,644 - [KIRIMDOKU-API] Request from Agent A40006 - 27225934-de5f-1004-8841-b2d3c949c1dd - voNTk0/CGOyCegpBYyNBWvawgwyZCkZKZ793InYkFtNnHPBbr2u4xATbQdYQeQgm
+2017-01-18 10:07:46,644 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 10:07:46,653 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 10:07:46,654 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 10:07:46,673 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@25fe1c1f
+2017-01-18 13:18:22,288 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-18 13:18:22,304 - [KIRIMDOKU-API] Request from Agent A40006 - 6b4b4c10-de5f-1004-8bfc-56afa99dfaa8 - to2UcjD6+Lq4/EtC0h8Bj6DtdrAqjumnvLxwtmdfGcvqzEp0lzw3CF8kbpyEnebk
+2017-01-18 13:18:22,305 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 13:18:22,332 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 13:18:22,332 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 13:18:22,370 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@520bcc76
+2017-01-18 13:18:26,941 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 13:18:26,942 - [KIRIMDOKU-API] Request from Agent A40006 - 6b52d494-de5f-1004-8bfc-56afa99dfaa8 - 5PlN9zhRHtVSA+DuroCmuqDtdrAqjumnvLxwtmdfGcvqzEp0lzw3CF8kbpyEnebk
+2017-01-18 13:18:26,943 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 13:18:26,957 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 13:18:26,957 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 13:18:26,975 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6f8bf112
+2017-01-18 13:18:32,411 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 13:18:32,413 - [KIRIMDOKU-API] Request from Agent A40006 - 6b5b1e74-de5f-1004-8bfc-56afa99dfaa8 - ATwVOjswh0+IezX7tI5UqqDtdrAqjumnvLxwtmdfGcvqzEp0lzw3CF8kbpyEnebk
+2017-01-18 13:18:32,413 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 13:18:32,423 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 13:18:32,423 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 13:18:32,435 - [KIRIMDOKU-API] Parsing date input 2016-04-26 00:00:00 with locale US
+2017-01-18 13:18:32,480 - [KIRIMDOKU-API] Inquiry request {sender.personalId=11111111111, beneficiaryCurrency.code=USD, sender.firstName=atilu, sender.phoneNumber=(021) 222-222222222, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=CN, sender.personalIdCountry.code=, beneficiaryAccount.address=, senderAmount=12.0, beneficiaryAccount.bank.code=, activity=0, sender.idToken=CID0003941, beneficiaryAccount.city=Jakarta, beneficiaryAccount.number=, sender.lastName=ctilu, voucherCode=, senderCurrency.code=MYR, sender.birthDate=2016-04-26 00:00:00, beneficiaryWalletId=, sender.country.code=ID, channel.code=03}
+2017-01-18 13:18:32,482 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@5335896e
+2017-01-18 13:18:32,531 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I023661961154624","fund":{"origin":{"amount":12.000000,"currency":"MYR"},"destination":{"amount":11850.000000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"CN","name":"China"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"03","name":"Cash to China"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309}}}
+2017-01-18 13:18:52,347 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 13:18:52,350 - [KIRIMDOKU-API] Request from Agent A40006 - 6b797f04-de5f-1004-8bfc-56afa99dfaa8 - mJinfgfk4CDjCFP1vy272aDtdrAqjumnvLxwtmdfGcvqzEp0lzw3CF8kbpyEnebk
+2017-01-18 13:18:52,350 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 13:18:52,355 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 13:18:52,355 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 13:18:52,374 - [KIRIMDOKU-API] Parsing date input 2016-04-26 00:00:00 with locale US
+2017-01-18 13:18:52,394 - [KIRIMDOKU-API] Inquiry request {sender.personalId=11111111111, beneficiaryAmount=11850.0, beneficiaryCurrency.code=USD, sender.firstName=atilu, sender.phoneNumber=(021) 222-222222222, sender.cityName=, sender.address=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, sender.personalIdCountry.code=, beneficiaryCountry.code=CN, beneficiaryAccount.address=, senderAmount=11.0, activity=0, beneficiaryAccount.bank.code=, sender.idToken=CID0003941, beneficiaryAccount.city=Jakarta, beneficiaryAccount.number=, voucherCode=, sender.lastName=ctilu, senderCurrency.code=MYR, sender.birthDate=2016-04-26 00:00:00, beneficiaryWalletId=, channel.code=07, sender.country.code=ID}
+2017-01-18 13:18:52,398 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6d010c26
+2017-01-18 13:18:52,624 - [KIRIMDOKU-API] Words Formula          : 0710862.5000I022144120039149187a294cc
+2017-01-18 13:18:52,637 - [KIRIMDOKU-API] Words Request          : a4f7885fa75642b9d1ee1ea08c3c735e8fcee4a7
+2017-01-18 13:18:52,637 - [KIRIMDOKU-API] Param Request          : {"channelCode":"07","currencyCode":"USD","activity":1,"referenceId":"I02214412003914","senderNote":"DO_INQUIRY","beneficiaryAmount":10862.50,"sharedKey":"Z1tZnwtfvTH9RT3HAfmITA==","bankDepositHelper":{"mallId":"2","chainMallId":null,"accountNumber":"0000000899","accountName":"DOKU","channelCode":"07","inquiryId":"I02214412003914","currency":"IDR","amount":"10862.50","trxCode":null,"responseCode":null,"responseMsg":null},"beneficiaryAccount":{"id":null,"bank":{"id":null,"code":"","name":null,"city":null,"countryCode":null,"groupBank":null,"province":null},"number":"","name":null,"city":"Jakarta","address":"","inputMode":null},"words":"a4f7885fa75642b9d1ee1ea08c3c735e8fcee4a7"}
+2017-01-18 13:18:52,638 - [KIRIMDOKU-API] --------------------------------------------------
+2017-01-18 13:18:52,638 - [KIRIMDOKU-API] URL                    : http://localhost:9200/transfer
+2017-01-18 13:18:52,638 - [KIRIMDOKU-API] Connection Timeout     : 75000
+2017-01-18 13:18:52,638 - [KIRIMDOKU-API] ==================================================
+2017-01-18 13:18:56,806 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:18:56,808 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:18:56,809 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@247edefa
+2017-01-18 13:18:58,816 - [KIRIMDOKU-API] Http Response Code     : 200
+2017-01-18 13:18:58,842 - [KIRIMDOKU-API] Result                 : {"status":11,"statusMessage":"FAILED","channelCode":"07"}
+2017-01-18 13:18:58,842 - [KIRIMDOKU-API] --------------------------------------------------
+2017-01-18 13:18:58,842 - [KIRIMDOKU-API] Fund Transfer transaction Post result (json) {"status":11,"statusMessage":"FAILED","channelCode":"07"}
+2017-01-18 13:18:58,842 - [KIRIMDOKU-API] Http Response Code     : 200
+2017-01-18 13:18:58,842 - [KIRIMDOKU-API] Result                 : {"status":11,"statusMessage":"FAILED","channelCode":"07"}
+2017-01-18 13:18:58,842 - [KIRIMDOKU-API] --------------------------------------------------
+2017-01-18 13:18:58,843 - [KIRIMDOKU-API] Fund Transfer transaction Post result (json) {"status":11,"statusMessage":"FAILED","channelCode":"07"}
+2017-01-18 13:18:58,846 - [KIRIMDOKU-API] Response : {"status":11,"statusMessage":"FAILED","channelCode":"07"}
+2017-01-18 13:21:56,630 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:21:56,670 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:21:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@57721831
+2017-01-18 13:24:56,632 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:24:56,635 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:24:56,636 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@246627bf
+2017-01-18 13:27:56,638 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:27:56,681 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:27:56,682 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@69b3207c
+2017-01-18 13:30:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:30:56,631 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:30:56,632 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@34e43f32
+2017-01-18 13:33:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:33:56,669 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:33:56,670 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@41bf7a32
+2017-01-18 13:36:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:36:56,650 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:36:56,651 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7c0a9b99
+2017-01-18 13:39:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:39:56,672 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:39:56,673 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@5baf3ae1
+2017-01-18 13:42:56,631 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:42:56,672 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:42:56,673 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@22bfc33c
+2017-01-18 13:45:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:45:56,673 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:45:56,674 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7be5ef1f
+2017-01-18 13:48:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:48:56,672 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:48:56,673 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@a6b4a47
+2017-01-18 13:51:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:51:56,672 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:51:56,673 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6f82376a
+2017-01-18 13:54:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:54:56,672 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:54:56,673 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7fe67100
+2017-01-18 13:57:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 13:57:56,673 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 13:57:56,674 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@4df51443
+2017-01-18 14:00:56,636 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:00:56,638 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:00:56,639 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@70d8120c
+2017-01-18 14:03:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:03:56,628 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:03:56,629 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@1b45d574
+2017-01-18 14:06:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:06:56,629 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:06:56,630 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7d008ce4
+2017-01-18 14:09:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:09:56,628 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:09:56,629 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@50fb0fd
+2017-01-18 14:12:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:12:56,672 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:12:56,673 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2faff89d
+2017-01-18 14:15:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:15:56,671 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:15:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@26823778
+2017-01-18 14:18:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:18:56,668 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:18:56,669 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@323d22a8
+2017-01-18 14:21:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:21:56,668 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:21:56,669 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@639c7010
+2017-01-18 14:24:56,636 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:24:56,679 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:24:56,680 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@559ffdd5
+2017-01-18 14:27:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:27:56,668 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:27:56,669 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2995c524
+2017-01-18 14:30:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:30:56,668 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:30:56,670 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@77527e32
+2017-01-18 14:33:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:33:56,679 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:33:56,680 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@175e855b
+2017-01-18 14:36:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:36:56,668 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:36:56,669 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@46b553a8
+2017-01-18 14:39:56,630 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:39:56,645 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:39:56,646 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@780fcda
+2017-01-18 14:42:56,637 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:42:56,679 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:42:56,680 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6ac0b0a6
+2017-01-18 14:45:56,631 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:45:56,679 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:45:56,680 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@531cc30f
+2017-01-18 14:48:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:48:56,634 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:48:56,636 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3d502486
+2017-01-18 14:51:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:51:56,634 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:51:56,635 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@65a8487b
+2017-01-18 14:54:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:54:56,632 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:54:56,633 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@457d8184
+2017-01-18 14:57:56,666 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 14:57:56,673 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 14:57:56,674 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@1245966b
+2017-01-18 15:00:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:00:56,658 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:00:56,659 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6f9b2c7
+2017-01-18 15:03:56,641 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:03:56,691 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:03:56,692 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@4faeddc0
+2017-01-18 15:06:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:06:56,669 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:06:56,670 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6f03473b
+2017-01-18 15:09:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:09:56,668 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:09:56,669 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2825a16c
+2017-01-18 15:12:56,625 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:12:56,627 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:12:56,628 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@160f419a
+2017-01-18 15:15:56,642 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:15:56,691 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:15:56,692 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@593f2661
+2017-01-18 15:18:56,672 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:18:56,674 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:18:56,675 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@b343d59
+2017-01-18 15:21:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:21:56,628 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:21:56,629 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@62c03a68
+2017-01-18 15:24:56,635 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:24:56,680 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:24:56,681 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7944db89
+2017-01-18 15:27:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:27:56,669 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:27:56,670 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7a248f40
+2017-01-18 15:30:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:30:56,628 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:30:56,629 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@520d21c4
+2017-01-18 15:33:56,624 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:33:56,626 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:33:56,627 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@1584ea60
+2017-01-18 15:36:56,636 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:36:56,638 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:36:56,639 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@640058fd
+2017-01-18 15:39:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:39:56,629 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:39:56,630 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3a699bcf
+2017-01-18 15:42:56,625 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:42:56,673 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:42:56,674 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3df5c8b4
+2017-01-18 15:45:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:45:56,667 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:45:56,668 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@61ec7cba
+2017-01-18 15:48:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:48:56,678 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:48:56,680 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3b41a993
+2017-01-18 15:51:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:51:56,667 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:51:56,668 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2ba68482
+2017-01-18 15:54:56,638 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:54:56,640 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:54:56,641 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2be4fe7f
+2017-01-18 15:57:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 15:57:56,630 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 15:57:56,631 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@59cad80a
+2017-01-18 16:00:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:00:56,629 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:00:56,630 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2e150be3
+2017-01-18 16:03:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:03:56,630 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:03:56,631 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@493f0647
+2017-01-18 16:06:56,625 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:06:56,626 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:06:56,628 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@47e0d645
+2017-01-18 16:09:56,636 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:09:56,679 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:09:56,680 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@681475c6
+2017-01-18 16:12:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:12:56,679 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:12:56,680 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@5d68bddb
+2017-01-18 16:15:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:15:56,646 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:15:56,647 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@53b6d0b3
+2017-01-18 16:18:04,837 - [KIRIMDOKU-API] ON REQUEST POST /cashin/inquiry
+2017-01-18 16:18:04,853 - [KIRIMDOKU-API] Request from Agent A40006 - ab9098fc-de5f-1004-8482-a2c8394caa26 - pytghuELsFos89PMFLMOdIJqqcfxMSR6dvZ8abS4ZsvBj7q7BDPxW8+mnyqTX9I3
+2017-01-18 16:18:04,853 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 16:18:04,865 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 16:18:04,865 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 16:18:04,912 - [KIRIMDOKU-API] Inquiry request {sender.personalId=, beneficiaryCurrency.code=USD, sender.firstName=, sender.phoneNumber=, sender.address=, sender.cityName=, sender.personalIdType=CITIZENID, sender.occupation=, senderCountry.code=MY, beneficiaryCountry.code=AS, sender.personalIdCountry.code=, beneficiaryAccount.address=, senderAmount=23.0, beneficiaryAccount.bank.code=, activity=0, beneficiaryAccount.city=Jakarta, sender.gender=MALE, beneficiaryAccount.number=, sender.lastName=, voucherCode=, senderCurrency.code=MYR, beneficiaryWalletId=, sender.country.code=ID, channel.code=06}
+2017-01-18 16:18:04,926 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@5bc0283e
+2017-01-18 16:18:05,056 - [KIRIMDOKU-API] Words Formula          : 0622712.5000I023185348640969187a294cc
+2017-01-18 16:18:05,057 - [KIRIMDOKU-API] Words Request          : ec0914d7ef71df83f0581b661c1f7a5dfbed0773
+2017-01-18 16:18:05,057 - [KIRIMDOKU-API] Param Request          : {"channelCode":"06","currencyCode":"USD","activity":1,"referenceId":"I02318534864096","senderNote":"DO_INQUIRY","beneficiaryAmount":22712.500000,"beneficiaryAccount":{"id":null,"bank":{"id":null,"code":"","name":null,"city":null,"countryCode":null,"groupBank":null,"province":null},"number":"","name":"DOKU NSIA","city":"Jakarta","address":"","inputMode":null},"words":"ec0914d7ef71df83f0581b661c1f7a5dfbed0773"}
+2017-01-18 16:18:05,057 - [KIRIMDOKU-API] --------------------------------------------------
+2017-01-18 16:18:05,057 - [KIRIMDOKU-API] URL                    : http://localhost:9200/transfer
+2017-01-18 16:18:05,057 - [KIRIMDOKU-API] Connection Timeout     : 75000
+2017-01-18 16:18:05,057 - [KIRIMDOKU-API] ==================================================
+2017-01-18 16:18:05,332 - [KIRIMDOKU-API] Http Response Code     : 200
+2017-01-18 16:18:05,333 - [KIRIMDOKU-API] Result                 : {"status":11,"statusMessage":"Operation failed","referenceStatus":"015","referenceMessage":"Beneficary name is invalid - LUKMAN HAKIM P","channelCode":"06"}
+2017-01-18 16:18:05,333 - [KIRIMDOKU-API] --------------------------------------------------
+2017-01-18 16:18:05,333 - [KIRIMDOKU-API] Fund Transfer transaction Post result (json) {"status":11,"statusMessage":"Operation failed","referenceStatus":"015","referenceMessage":"Beneficary name is invalid - LUKMAN HAKIM P","channelCode":"06"}
+2017-01-18 16:18:05,333 - [KIRIMDOKU-API] Http Response Code     : 200
+2017-01-18 16:18:05,333 - [KIRIMDOKU-API] Result                 : {"status":11,"statusMessage":"Operation failed","referenceStatus":"015","referenceMessage":"Beneficary name is invalid - LUKMAN HAKIM P","channelCode":"06"}
+2017-01-18 16:18:05,334 - [KIRIMDOKU-API] --------------------------------------------------
+2017-01-18 16:18:05,334 - [KIRIMDOKU-API] Fund Transfer transaction Post result (json) {"status":11,"statusMessage":"Operation failed","referenceStatus":"015","referenceMessage":"Beneficary name is invalid - LUKMAN HAKIM P","channelCode":"06"}
+2017-01-18 16:18:05,337 - [KIRIMDOKU-API] Response : {"status":11,"statusMessage":"Operation failed","referenceStatus":"015","referenceMessage":"Beneficary name is invalid - LUKMAN HAKIM P","channelCode":"06"}
+2017-01-18 16:18:05,351 - [KIRIMDOKU-API] Inquiry result {"status":0,"message":"Inquiry succeed","inquiry":{"idToken":"I02318534864096","fund":{"origin":{"amount":23.000000,"currency":"MYR"},"destination":{"amount":22712.500000,"currency":"USD"},"fees":{"total":0,"currency":"MYR","components":[],"additionalFee":0}},"senderCountry":{"code":"MY","name":"Malaysia"},"senderCurrency":{"code":"MYR"},"beneficiaryCountry":{"code":"AS","name":"American Samoa"},"beneficiaryCurrency":{"code":"USD"},"channel":{"code":"06","name":"Cash to Account"},"forexReference":{"id":605,"forex":{"origin":{"code":"MYR"},"destination":{"code":"USD"}},"rate":987.5,"createdTime":1479723700309},"beneficiaryAccount":{"id":null,"bank":{"id":null,"code":"","name":null,"city":null,"countryCode":null,"groupBank":null,"province":null},"number":"","name":"LUKMAN HAKIM P","city":"Jakarta","address":"","inputMode":null}}}
+2017-01-18 16:18:09,048 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 16:18:09,050 - [KIRIMDOKU-API] Request from Agent A40006 - ab969ae0-de5f-1004-8482-a2c8394caa26 - sLPFotZYbJ0RXe1o72x7UIJqqcfxMSR6dvZ8abS4ZsvBj7q7BDPxW8+mnyqTX9I3
+2017-01-18 16:18:09,050 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 16:18:09,056 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 16:18:09,056 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 16:18:09,070 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@62b4455a
+2017-01-18 16:18:13,561 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015141
+2017-01-18 16:18:13,562 - [KIRIMDOKU-API] Request from Agent A40006 - ab9dc734-de5f-1004-8482-a2c8394caa26 - eWC8MHM720Qp9TpS6uFIUIJqqcfxMSR6dvZ8abS4ZsvBj7q7BDPxW8+mnyqTX9I3
+2017-01-18 16:18:13,562 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 16:18:13,569 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 16:18:13,569 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 16:18:13,590 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@7162fb92
+2017-01-18 16:18:52,234 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015016
+2017-01-18 16:18:52,249 - [KIRIMDOKU-API] Request from Agent A40006 - abd8de28-de5f-1004-8482-a2c8394caa26 - 0OMa25BY82y2NuolIoxjm4JqqcfxMSR6dvZ8abS4ZsvBj7q7BDPxW8+mnyqTX9I3
+2017-01-18 16:18:52,249 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 16:18:52,256 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 16:18:52,256 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 16:18:52,271 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@52b6f371
+2017-01-18 16:18:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:18:56,631 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:18:56,632 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@24ca4d2
+2017-01-18 16:19:01,681 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0015078
+2017-01-18 16:19:01,704 - [KIRIMDOKU-API] Request from Agent A40006 - abe73b1c-de5f-1004-8482-a2c8394caa26 - BjJYfKXfqXxyTMhFBjsJMYJqqcfxMSR6dvZ8abS4ZsvBj7q7BDPxW8+mnyqTX9I3
+2017-01-18 16:19:01,705 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 16:19:01,713 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 16:19:01,713 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 16:19:01,731 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3c4c4bb2
+2017-01-18 16:21:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:21:56,671 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:21:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@58a85189
+2017-01-18 16:24:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:24:56,629 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:24:56,630 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@1a14a8a5
+2017-01-18 16:27:56,626 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:27:56,671 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:27:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@62c4e6ae
+2017-01-18 16:30:06,874 - [KIRIMDOKU-API] ON REQUEST GET /customers/CID0003941
+2017-01-18 16:30:06,890 - [KIRIMDOKU-API] Request from Agent A40006 - afde3194-de5f-1004-8482-a2c8394caa26 - YVAIY13Z3RAHXvh/VMoy5oJqqcfxMSR6dvZ8abS4ZsvBj7q7BDPxW8+mnyqTX9I3
+2017-01-18 16:30:06,891 - [KIRIMDOKU-API] AgentToken 6
+2017-01-18 16:30:06,895 - [KIRIMDOKU-API] Corporate AAA
+2017-01-18 16:30:06,895 - [KIRIMDOKU-API] Corporate SIMULATORDEMOKEY
+2017-01-18 16:30:06,914 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@741f2955
+2017-01-18 16:30:56,635 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:30:56,682 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:30:56,683 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@50212c05
+2017-01-18 16:33:56,630 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:33:56,682 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:33:56,683 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@79a328e6
+2017-01-18 16:36:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:36:56,682 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:36:56,684 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@703a2ecc
+2017-01-18 16:39:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:39:56,671 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:39:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@4b6c1324
+2017-01-18 16:42:56,630 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:42:56,672 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:42:56,673 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3784d550
+2017-01-18 16:45:56,631 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:45:56,671 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:45:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@19ff2c2e
+2017-01-18 16:48:56,630 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:48:56,671 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:48:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@53e84054
+2017-01-18 16:51:56,630 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:51:56,650 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:51:56,651 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@36be489
+2017-01-18 16:54:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:54:56,671 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:54:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3d13867b
+2017-01-18 16:57:56,630 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 16:57:56,632 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 16:57:56,633 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@29321bc5
+2017-01-18 17:00:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:00:56,671 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:00:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2686b8fd
+2017-01-18 17:03:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:03:56,670 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:03:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@389acbef
+2017-01-18 17:06:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:06:56,671 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:06:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@11daae42
+2017-01-18 17:09:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:09:56,681 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:09:56,682 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6ae59b5
+2017-01-18 17:12:56,638 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:12:56,650 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:12:56,653 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@c059813
+2017-01-18 17:15:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:15:56,631 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:15:56,632 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@5d56e60a
+2017-01-18 17:18:56,640 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:18:56,681 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:18:56,682 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6de7d544
+2017-01-18 17:21:56,631 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:21:56,652 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:21:56,654 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6c5433a1
+2017-01-18 17:24:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:24:56,670 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:24:56,671 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@17acb580
+2017-01-18 17:27:56,630 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:27:56,631 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:27:56,632 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@64a8f8e3
+2017-01-18 17:30:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:30:56,671 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:30:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@1202e463
+2017-01-18 17:33:56,630 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:33:56,670 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:33:56,671 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3a38dc97
+2017-01-18 17:36:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:36:56,670 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:36:56,671 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3aeede15
+2017-01-18 17:39:56,633 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:39:56,638 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:39:56,640 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@250d1cac
+2017-01-18 17:42:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:42:56,631 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:42:56,632 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@b16f319
+2017-01-18 17:45:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:45:56,629 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:45:56,630 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6ca10e37
+2017-01-18 17:48:56,627 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:48:56,650 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:48:56,651 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@27fd10d3
+2017-01-18 17:51:56,631 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:51:56,649 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:51:56,650 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3d4c02c1
+2017-01-18 17:54:56,631 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:54:56,638 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:54:56,639 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@2a1b4428
+2017-01-18 17:57:56,633 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 17:57:56,706 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 17:57:56,707 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@4c54e49d
+2017-01-18 18:00:56,641 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 18:00:56,650 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 18:00:56,651 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@5adf1b47
+2017-01-18 18:03:56,631 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 18:03:56,661 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 18:03:56,662 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@4e5fed46
+2017-01-18 18:06:56,632 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 18:06:56,682 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 18:06:56,683 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@481337e1
+2017-01-18 18:09:56,631 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 18:09:56,672 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 18:09:56,672 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@3dca4d12
+2017-01-18 18:12:56,632 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 18:12:56,672 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 18:12:56,673 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@ad974a4
+2017-01-18 18:15:56,631 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 18:15:56,633 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 18:15:56,634 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@30145034
+2017-01-18 18:18:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 18:18:56,631 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 18:18:56,632 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@57609cfe
+2017-01-18 18:21:56,629 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 18:21:56,630 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 18:21:56,631 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@6db0ba37
+2017-01-18 18:24:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 18:24:56,630 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 18:24:56,631 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@8c6257c
+2017-01-18 18:27:56,628 - [KIRIMDOKU-API] ON REQUEST POST /ping
+2017-01-18 18:27:56,630 - [KIRIMDOKU-API] Request from Agent null - null - null
+2017-01-18 18:27:56,631 - [KIRIMDOKU-API] LoggerActor onReceive with simulating delay controllers.actors.LoggerActor$UserRequestMessage@268d6d3

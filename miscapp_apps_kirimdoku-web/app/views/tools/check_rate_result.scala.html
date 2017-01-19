@@ -1,0 +1,60 @@
+@(fxForm: Form[models.forms.CashInInquiryForm], result: org.codehaus.jackson.JsonNode)
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@layout("Rate result") {
+@if(result.path("status").getIntValue() != 0) {
+<div class="row-fluid">
+	<div class="alert alert-error">
+		@result.path("message").getTextValue()
+	</div>
+</div>
+} else {
+@defining(result.path("inquiry")) { inquiry =>
+<div class="row-fluid">
+    <div class="span12">
+        @defining(inquiry.path("forexReference")) { forex =>
+
+        <h4>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG241","Summary")</h4>
+        <table class="table">
+            <tr>
+                <td width="70%">1 @forex.path("forex").path("origin").path("code").getTextValue()</td>
+                <td class="right"><strong>@models.Forex.format(forex.path("rate").getDoubleValue())</strong></td>
+                <td>@forex.path("forex").path("destination").path("code").getTextValue()</td>
+            </tr>
+        </table>
+        }
+
+        @defining(inquiry.path("fund")) { fund =>
+        <table class="table">
+			<tr>
+                <td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG028","Send amount")</td>
+                <td class="right">@models.Currency.format(fund.path("origin").path("amount").getNumberValue(), fund.path("fees").path("currency").getTextValue())</td>
+                <td>@fund.path("origin").path("currency").getTextValue()</td>
+            </tr>
+            <tr class="bordered">
+                <td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG046","Fee")</td>
+                <td class="right">@models.Currency.format(fund.path("fees").path("total").getNumberValue(), fund.path("fees").path("currency").getTextValue())</td>
+                <td>@fund.path("fees").path("currency").getTextValue()</td>
+            </tr>
+			<tr class="bordered highlight">
+                <td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG043","Receive amount")</td>
+                <td class="right">@models.Currency.format(fund.path("destination").path("amount").getDoubleValue(), fund.path("destination").path("currency").getTextValue())</td>
+                <td>@fund.path("destination").path("currency").getTextValue()</td>
+            </tr>
+        </table>
+        }
+    </div>
+</div>
+
+<div class="row-fluid form-controls">
+    <div class="span12 right">
+		@dynamic("sendTransaction", inquiry.toString()) {
+		<a class="btn btn-primary" href="@routes.Send.create()?senderCountry.code=@(fxForm.get().senderCountry.code)&senderCurrency.code=@(fxForm.get().senderCurrency.code)&senderAmount=@(fxForm.get().senderAmount)&beneficiaryCountry.code=@(fxForm.get().beneficiaryCountry.code)&beneficiaryCurrency.code=@(fxForm.get().beneficiaryCurrency.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG009","Send Money") <i class="icon-white icon-arrow-right"></i></a>
+		}
+    </div>
+</div>
+}
+
+}
+}

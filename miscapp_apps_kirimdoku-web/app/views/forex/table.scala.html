@@ -1,0 +1,45 @@
+@(corporate: models.Corporate, currencies: List[models.Currency])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Exchange rates") {
+
+<table class="table table-forexs">
+	<thead>
+		<tr>
+			<th>&nbsp;</th>
+			@for(currency <- currencies) {
+			<th>@currency.code</th>
+			}
+		</tr>
+	</thead>
+	<tbody>
+	@for(origin <- currencies) {
+		<tr>
+			<td>@origin.code</td>
+			@for((destination, index) <- currencies.zipWithIndex) {
+			<td>@forexRate(origin, destination)</td>
+			}
+		</tr>
+	}
+	</tbody>
+</table>
+}
+
+
+@forexRate(origin: models.Currency, destination: models.Currency) = {
+@if(origin.equals(destination)) {
+	-
+} else {
+@defining(models.Forex.findLastForexReference(corporate, origin, destination)) { (forexRef) =>
+@if(forexRef != null) {
+<span title="@origin.code to @destination.code">
+	@forexRef.rateFormat
+</span>
+} else {
+
+}
+}
+}
+}

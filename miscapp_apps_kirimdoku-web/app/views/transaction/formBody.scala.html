@@ -1,0 +1,303 @@
+@(err: String, transaction: models.Transaction, transactionForm: Form[models.Transaction])
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Transaction Refund"){
+
+@partial.flash_alert()
+
+<div class="container-refund-inner">
+@if(err) {
+	<div class="row">
+		<div class="span12">
+			<div class="alert-error">@err</div>
+		</div>
+	</div>
+} else {
+	@helper.form(action = routes.Transaction.refund, 'class -> "row form-horizontal") {
+		<fieldset class="span12">
+			<legend>Transaction information</legend>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("idToken"),
+						'_label -> "Service",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+				</div>
+				<div class="span4">
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.select(
+						transactionForm("beneficiary.country.code"),
+						options(models.Country.options),
+						'_label -> "Receive country", 
+						'_default -> "-- Choose a country --",
+						'_showConstraints -> false,
+						'disabled -> "disabled",
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("beneficiary.cityName"),
+						'_label -> "Receive city",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("forexReference.rate"),
+						'_label -> "Exchange rate",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("senderAmount"),
+						'_label -> "Sending amount",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("beneficiaryAmount"),
+						'_label -> "Amount to receive",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("idToken"),
+						'_label -> "Fee",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("senderAmountCollected"),
+						'_label -> "Amount to collect",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span8">
+					@helper.inputText(
+						transactionForm("senderNote"),
+						'_label -> "Sending purpose",
+						'_showConstraints -> false,
+						'class -> "input-xlarge",
+						'style -> "width: 79.5%"
+					)
+				</div>
+			</div>
+		</fieldset>
+		
+		<fieldset class="span12">
+			<legend>Sender information</legend>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.idToken"),
+						'_label -> "Customer ID",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.firstName"),
+						'_label -> "First name",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.lastName"),
+						'_label -> "Last name",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.phoneNumber"),
+						'_label -> "Phone number",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.address"),
+						'_label -> "Address",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.select(
+						transactionForm("sender.country.code"),
+						options(models.Country.options),
+						'_label -> "Nationality", 
+						'_default -> "-- Choose a country --",
+						'_showConstraints -> false,
+						'disabled -> "disabled",
+						'class -> "required"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.personalIdType"),
+						'_label -> "ID type",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.personalId"),
+						'_label -> "ID number",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.personalidIssueDate"),
+						'_label -> "Issue date",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.personalIdExpireDate"),
+						'_label -> "Expired date",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.select(
+						transactionForm("sender.personalIdCountry.code"),
+						options(models.Country.options),
+						'_label -> "Issuing country", 
+						'_default -> "-- Choose a country --",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.occupation"),
+						'_label -> "Occupation",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.cityName"),
+						'_label -> "City",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.birthDate"),
+						'_label -> "Date of birth",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+			</div>
+		</fieldset>
+		
+		<fieldset class="span12">
+			<legend>Receiver information</legend>
+				<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("beneficiary.idToken"),
+						'_label -> "Customer ID",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("beneficiary.firstName"),
+						'_label -> "First name",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("beneficiary.lastName"),
+						'_label -> "Last name",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("beneficiary.phoneNumber"),
+						'_label -> "Phone number",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("beneficiary.address"),
+						'_label -> "Address",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.select(
+						transactionForm("beneficiary.country.code"),
+						options(models.Country.options),
+						'_label -> "Nationality", 
+						'_default -> "-- Choose a country --",
+						'_showConstraints -> false,
+						'class -> "required"
+					)
+				</div>
+			</div>
+		</fieldset>
+	}
+}
+</div>
+}

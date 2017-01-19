@@ -1,0 +1,126 @@
+@(currentPage: com.avaje.ebean.Page[models.News], currentSortBy: String, currentOrder: String)
+
+@link(newPage:Int, newSortBy:String) = @{
+
+var sortBy = currentSortBy
+var order = currentOrder
+
+if(newSortBy != null) {
+sortBy = newSortBy
+if(currentSortBy == newSortBy) {
+if(currentOrder == "asc") {
+order = "desc"
+} else {
+order = "asc"
+}
+} else {
+order = "asc"
+}
+}
+
+routes.News.list(newPage, sortBy, order)
+
+}
+
+
+@header(key:String, title:String) = {
+<th class="@key" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+	@if(key && key.length > 0) {
+	<a href="@link(currentPage.getPageIndex, key)">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@layout("News"){
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/news.css")">
+
+<div class="page-header">
+	<h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG188","News Management")</h1>
+</div>
+
+@partial.flash_alert()
+
+<div class="row">
+	<div class="span12">
+		<div class="well">
+			<div class="input-append">
+				<a class="btn success" href="@routes.News.create"><i class="icon-plus"></i>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG458","Add News")</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12">
+		@if(currentPage.getTotalRowCount == 0){
+		<div class="well">
+			<em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG459","There are no news data to be displayed")</em>
+		</div>
+		} else {
+		<table class="table news table-bordered table-striped table-condensed" style="text-align: center;">
+			<thead>
+			<tr>
+				@header("", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG460","Content"))
+				@header("", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG030","Status"))
+				@header("", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG105","Action"))
+			</tr>
+			</thead>
+			<tbody>
+			@for(news <- currentPage.getList) {
+			<tr>
+				<td class="news-content">@news.getTitle()</td>
+				<td nowrap="nowrap">
+				@if(news.published){
+					<span class="badge badge-success">Published</span>
+				}else{
+					<span class="badge badge-warning">Not Published</span>
+				}
+				</td>
+				<td class="actions">
+					<a href="@routes.News.edit(news.id)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG112","Edit")</a>
+					@if(news.published){
+						<a href="@routes.News.status(news.id, "unpublish")" data-confirm='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG463","Unpublish this content?")'>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG461","Unpublish")</a>
+					} else {
+						<a href="@routes.News.status(news.id, "publish")" data-confirm='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG464","Publish this content?")'>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG462","Publish")</a>
+					}
+				</td>
+			</tr>
+			}
+			</tbody>
+		</table>
+
+		<div id="pagination" class="pagination pagination-right">
+			<ul>
+				@if(currentPage.hasPrev) {
+				<li class="prev">
+					<a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+				</li>
+				} else {
+				<li class="prev">
+					<a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+				</li>
+				}
+
+				<li class="current">
+					<a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+				</li>
+
+				@if(currentPage.hasNext) {
+				<li class="next">
+					<a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+				</li>
+				} else {
+				<li class="next">
+					<a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+				</li>
+				}
+			</ul>
+		</div>
+		}
+	</div>
+</div>
+</div>
+}
+

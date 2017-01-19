@@ -1,0 +1,810 @@
+@(transactionForm: Form[models.forms.CashInForm], channelCode: String, channels: TreeMap[String, String])
+
+@import helper._
+@import helper.twitterBootstrap._
+@import partial._
+
+@layout("Send money") {
+
+<div class="page-header">
+	<h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG009","Send money")</h1>
+</div>
+
+@partial.flash_alert()
+
+<style>
+	.ui-autocomplete {
+		max-height: 200px;
+		overflow-y: auto;
+		/* prevent horizontal scrollbar */
+		overflow-x: hidden;
+	}
+	
+	/* IE 6 doesn't support max-height
+	* we use height instead, but this forces the menu to always be this tall
+	*/
+	* html .ui-autocomplete {
+		height: 200px;
+	}
+	.ui-autocomplete-loading {
+		background: white url("@routes.Assets.at("images/ui-anim_basic_16x16.gif")") right center no-repeat;
+	}
+</style>
+<div class="container-transaction-send-inner">
+	@helper.form(routes.Send.confirm, 'id -> "form-cashin", 'autocomplete -> "on", 'class -> "row form form-horizontal", Symbol("data-url-verify") -> routes.Send.verify.url) {
+		<div class="hide">
+			<input type="hidden" name="trackingId" id="trackingId" value="@transactionForm.get().trackingId" />
+			<input type="hidden" name="sender.id" id="sender_id" />
+			<input type="hidden" name="beneficiary.id" id="beneficiary_id" />
+			<input type="hidden" name="agent.id" id="user_id" value='@session.get("userId")' />
+			<input type="hidden" name="corporate.code" id="corporate_code" value='@session.get("corporateCode")' />
+		</div>
+		<div class="span12">
+			<p>
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG037","Please filll all the mandatory fields highlighted with the bold labels below")
+			</p>
+		</div>
+
+		<fieldset class="span12 form-cashin-info">
+			<legend style="border-bottom: 0px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG038","Transaction information")</legend>
+			<div class="row hide">
+				<div class="control-group span4 well">
+					<input type="text" name="idToken" class="required"/>
+					@select(transactionForm("beneficiaryCurrency.code"),
+						options(models.Currency.options),
+						'_label -> "Receive currency",
+						'class -> "currency",
+						'_showConstraints -> false)
+					@inputText(transactionForm("fundSource"),
+						'_label -> "Source of fund",
+						'class -> "input-large",
+						'_help -> "(Optional field)"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12 container-info"></div>
+				
+				<div class="span6">
+					<div class="control-group span12">
+						@helper.select(transactionForm("channel.code"),
+						options(channels), 
+							'_class -> "required",
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG039","Service")
+						)
+					</div>
+					<div class="control-group span12">
+						@select(
+							transactionForm("senderCountry.code"),
+							options(transactionForm("senderCountry.code").value -> transactionForm("senderCountry.name").value),
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG040","Sending country"),
+							'readOnly -> true,
+							'_showConstraints -> false, 'class -> "required"
+						)
+					</div>
+					<div class="control-group span12">
+						@helper.select(transactionForm("beneficiaryCountry.code"),
+							options(models.Country.optionsBeneficiaryCountry(transactionForm("senderCountry.code").value)),
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG041","Receive country"),
+							'_showConstraints -> false,
+							'class -> "country_id",
+							'_class -> "required",
+							'class -> "required",
+							'autofocus -> "true"
+						)
+					</div>
+					<div class="control-group span12 hide">
+						@select(transactionForm("senderCurrency.code"),
+							options(transactionForm("senderCurrency.code").value -> transactionForm("senderCurrency.code").value),
+							'_label -> "Sender currency",
+							'class -> "currency disabled",
+							'readOnly -> true,
+							'_showConstraints -> false)
+					</div>
+					<div class="control-group span12">
+						@helper.input(transactionForm("senderAmount")
+							, '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG042","Sending amount")
+							, '_class -> "required"
+							, 'class -> "amount input-block-level"
+							, 'readOnly -> true
+							, '_help -> ""
+							, '_showConstraints -> false
+							, 'maxLength -> 14
+						) { (id, name, value, args) =>
+				            <div class="input-prepend input-append">
+								<span class="add-on"><input type="radio" name=" 	" value="senderAmount" checked="true" disabled/></span>
+								<input type="text" id="@id" name="@name" value="@value" @toHtmlArgs(args)>
+								<span class="add-on currency-code" style="font-size:11px">@transactionForm("senderCurrency.code").value</span>
+							</div>
+						}
+					</div>
+					<div class="control-group span12 hide">
+						@helper.input(transactionForm("beneficiaryAmount")
+							, '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG043","Receive amount")
+							, '_class -> "required"
+							, 'class -> "amount"
+							, 'readOnly -> true
+							, '_help -> ""
+							, '_showConstraints -> false
+							, 'maxLength -> 14
+						) { (id, name, value, args) =>
+				            <div class="input-prepend input-append">
+								<span class="add-on"><input type="radio" name="sendType" value="beneficiaryAmount"/></span>
+								<input type="text" id="@id" name="@name" value="@value" @toHtmlArgs(args)>
+								<span class="add-on currency-code" style="font-size:11px">...</span>
+							</div>
+						}
+					</div>
+					<div class="control-group span12 hide">
+						@helper.input(transactionForm("collectAmount")
+							, '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG044","Amount to collect")
+							, '_class -> ""
+							, 'class -> "amount input-block-level"
+							, 'readOnly -> "true"
+							, '_help -> ""
+							, 'tabindex -> "-1"
+							, '_showConstraints -> false
+						) { (id, name, value, args) =>
+				            <div class="input-append" style="width: 185px;">
+								<input type="text" id="@id" name="@name" value="@value" @toHtmlArgs(args) style="width: 100%;">
+								<span class="add-on currency-code" style="font-size:11px">@transactionForm("senderCurrency.code").value</span>
+							</div>
+						}
+					</div>
+					<div class="control-group span12 hide">
+						@helper.inputText(transactionForm("rate"),
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG045","Exchange rate"),
+							'_class -> "",
+							'class -> "rate amount",
+							'readOnly -> "true",
+							'_help -> "",
+							'alt -> "amount",
+							'tabindex -> "-1",
+							'_showConstraints -> false
+						)
+					</div>
+					<div class="control-group span12 hide">
+						@helper.inputText(transactionForm("feesTotal"),
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG046","Fee"),
+							'_class -> "",
+							'class -> "amount",
+							'readOnly -> "readonly",
+							'tabindex -> "-1",
+							'_help -> "",
+							'_showConstraints -> false
+						)
+					</div>
+					<div class="control-group span12 hide">
+						@helper.inputText(transactionForm("additionalFee"),
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG047","Additional Fee"),
+							'_class -> "",
+							'class -> "amount",
+							'readOnly -> "readonly",
+							'tabindex -> "-1",
+							'_help -> "",
+							'_showConstraints -> false
+						)
+					</div>
+					<div class="control-group span12">
+						@helper.inputText(transactionForm("senderNote"),
+							'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG048","Sending purpose"),
+							'class -> ""
+						)
+					</div>
+					<div class="control-group span12 hide">
+						@helper.inputText(transactionForm("beneficiaryCity"),
+							'_label -> "Receive city",
+							'class -> "",
+							'_help -> "",
+							'_showConstraints -> false
+						)
+					</div>
+					
+					
+					<fieldset class="span12 form-cashin-customer" data-prefix="sender">
+						<legend style="border-bottom: 0px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG049","Sender information")</legend>
+						<div class="row">
+							<div class="span12 container-info"></div>
+							<div class="control-group span12">
+								@helper.inputText(
+									transactionForm("sender.idToken"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID"),
+									'_showConstraints -> false,
+									'_class -> "",
+									'class -> ""
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("sender.firstName"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG051","First name"),
+									'_showConstraints -> false,
+									'_class -> "required",
+									'class -> "required",
+									'onkeypress -> "return !numbersonly(this, event)"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("sender.lastName"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG052","Last name"),
+									'_class -> "required",
+									'class -> "required",
+									'onkeypress -> "return !numbersonly(this, event)"
+								)
+							</div>
+						</div>
+						<div class="row">
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("sender.phoneNumber")
+									, '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number")
+									, '_showConstraints -> false
+									, '_class -> "required"
+									, 'class -> "required phone"
+									, 'type -> "tel"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("sender.address"),
+									'_label -> "Address",
+									'_showConstraints -> false
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.select(
+									transactionForm("sender.personalIdType"),
+									options(models.Customer.optionsPersonalIdType),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG054","ID type"),
+									'_showConstraints -> false,
+									'_class -> "required",
+									'class -> "required"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("sender.personalId"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG055","ID number"),
+									'_showConstraints -> false,
+									'_class -> "required",
+									'class -> "required"
+								)
+							</div>
+						</div>
+						<div class="row">
+							<div class="control-group span12 hide">
+								@helper.select(
+									transactionForm("sender.country.code"),
+									options(models.Country.options),
+									'_default -> "-- Choose a country --",
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG056","Nationality"), 
+									'_showConstraints -> false,
+									'_class -> "required",
+									'class -> "required"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputDate(
+									transactionForm("sender.birthDate"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG057","Date of birth"),
+									'_showConstraints -> false,
+									'_class -> "required",
+									'class -> "required"
+									, 'maxlength -> 10
+									, 'min -> "1900-01-01"
+									, 'max -> "2099-12-12"
+								)
+							</div>
+							<div class="span12 hide">
+								@helper.select(
+									transactionForm("sender.gender"),
+									options(models.Customer.optionsGender),
+									'_label -> "Gender",
+									'_showConstraints -> false
+								)
+							</div>
+						</div>
+						<div class="row">
+							<div class="control-group span12 hide">
+								@helper.inputDate(
+									transactionForm("sender.personalIdIssueDate"),
+									'_label -> "Issue date",
+									'_showConstraints -> false
+									, 'maxlength -> 10
+									, 'min -> "1900-01-01"
+									, 'max -> "2099-12-12"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputDate(
+									transactionForm("sender.personalIdExpireDate"),
+									'_label -> "Expired date",
+									'_showConstraints -> false
+									, 'maxlength -> 10
+									, 'min -> "1900-01-01"
+									, 'max -> "2099-12-12"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.select(
+									transactionForm("sender.personalIdCountry.code"),
+									options(models.Country.options),
+									'_default -> "-- Choose a country --",
+									'_label -> "Issuing country",
+									'_showConstraints -> false
+								)
+							</div>
+						</div>
+						<div class="row">
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("sender.occupation"),
+									'_label -> "Occupation",
+									'_showConstraints -> false,
+									'class -> ""
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("sender.cityName"),
+									'_label -> "City",
+									'_showConstraints -> false,
+									'class -> ""
+								)
+							</div>
+							
+						</div>
+					</fieldset>
+					
+					<fieldset class="span12 form-cashin-customer" data-prefix="beneficiary">
+						<legend style="border-bottom: 0px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG058","Receiver information")</legend>
+						<div class="row">
+							<div class="span12 container-info"></div>
+							<div class="control-group span12">
+								@helper.select(transactionForm("beneficiary.idToken"),
+								options(),
+								'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID"),
+								'_showConstraints -> false,
+								'class -> "beneficiary.idToken",
+								'_class -> "required",
+								'class -> "required",
+								'onchange -> "return !numbersonly(this, event)",
+								'autofocus -> "true"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("beneficiary.firstName"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG051","First name"),
+									'_class -> "required",
+									'class -> "required",
+									'onkeypress -> "return !numbersonly(this, event)"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("beneficiary.lastName"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG052","Last name"),
+									'_class -> "required",
+									'class -> "required",
+									'onkeypress -> "return !numbersonly(this, event)"
+								)
+							</div>
+						</div>
+						<div class="row">
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("beneficiary.phoneNumber"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number"),
+									'_class -> "required",
+									'class -> "required phone"
+									, 'type -> "tel"
+									, 'autocomplete -> "off"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("beneficiary.address"),
+									'_label -> "Address"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.select(
+									transactionForm("beneficiary.country.code"),
+									options(models.Country.options),
+									'_default -> "-- Choose a country --",
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG056","Nationality"),
+									'_class -> "required",
+									'class -> "required"
+								)
+							</div>
+						</div>
+						<div class="row hide" id="row-ctc">
+							<div class="span12 container-info"></div>
+							<div class="control-group span12">
+								&nbsp;
+							</div>
+							<div class="control-group span12">
+								<div class="clearfix" id="inputTCODE_field">
+								    <label for="inputModeTCODE">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG187","Telegraphic Code")</label>
+								    <div class="input">
+							            <div class="input-prepend input-append">
+											<span class="add-on"><input type="radio" id="inputModeTCODE" name="beneficiary.inputMode" value="TCODE" checked="checked"></span>
+											<input type="text" id="beneficiary_tcode" name="beneficiary.tcode" value="@transactionForm("beneficiary.tcode").value" title="Shift+Down to Check" style="width: 138px;">
+											<span class="add-on checkTC" style="font-size:11px; cursor: pointer;border-radius:0px 4px 4px 0px;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG096","Check")</span>
+											<label class="hide" for="beneficiary_tcode"><small style="font-style: italic;">(@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG196","separated by semicolon") [ ; ])</small></label>
+										</div>
+								    </div>
+								</div>
+							</div>
+							<div class="control-group span12">
+								<div class="clearfix" id="inputPINYIN_field">
+								    <label for="inputModePINYIN">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG197","Pinyin")</label>
+								    <div class="input">
+							            <div class="input-prepend input-append">
+											<span class="add-on"><input type="radio" id="inputModePINYIN" name="beneficiary.inputMode" value="PINYIN"></span>
+											<input type="text" id="beneficiary_pinyin" name="beneficiary.pinyin" value="@transactionForm("beneficiary.pinyin").value" readonly="readonly" title="Shift+Down to Check" style="width: 138px;">
+											<span class="add-on checkPinyin" style="font-size:11px; cursor: pointer;border-radius:0px 4px 4px 0px;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG096","Check")</span>
+											<label class="hide" for="beneficiary_pinyin"><small style="font-style: italic;">(@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG196","separated by semicolon") [ ; ])</small></label>
+										</div>
+								    </div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="span12 form-cashin-customer-account hide" data-prefix="beneficiary">
+						<legend style="border-bottom: 0px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG059","Receiver bank information")</legend>
+						<div class="row">
+							<div class="span12 container-info"></div>
+							<div class="control-group span12">
+								@helper.select(
+									transactionForm("groupBank"),
+									options(),
+									'_default -> "-- Choose Group Bank --",
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG060","Bank Name"),
+									'_showConstraints -> false,
+									'_class -> "required",
+									'class -> "required"
+								)
+							</div>
+							<div class="control-group span12">
+								@helper.select(
+									transactionForm("provinceBank"),
+									options(),
+									'_default -> "-- Choose Province --",
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG061","Province"),
+									'_showConstraints -> false,
+									'_class -> "required",
+									'class -> "required"
+								)
+							</div>
+							<div class="control-group span12">
+								@helper.select(
+									transactionForm("cityBank"),
+									options(),
+									'_default -> "-- Choose City --",
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG062","City"),
+									'_showConstraints -> false,
+									'_class -> "required",
+									'class -> "required"
+								)
+							</div>
+						</div>
+						<div class="row">
+							<div class="span12 container-info"></div>
+							<div class="control-group span12">
+								@helper.select(
+									transactionForm("beneficiaryAccount.bank.code"),
+									options(),
+									'_default -> "-- Choose a bank --",
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG063","Bank Name"),
+									'_showConstraints -> false,
+									'_class -> "required",
+									'class -> "required"
+								)
+							</div>
+							<div class="control-group span12">
+								@helper.inputText(
+									transactionForm("beneficiaryAccount.bank.code"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG064","SWIFT Code"),
+									'_class -> "required disabled",
+									'class -> "required disabled",
+									'disabled -> "true"
+								)
+							</div>
+							<div class="control-group span12">
+								@helper.inputText(
+									transactionForm("beneficiaryAccount.number"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG065","Account Number"),
+									'_class -> "required",
+									'class -> "required"
+								)
+							</div>
+							
+			
+						</div>
+						<div class="row" id="receiver-bank-info">
+							<div class="control-group span12">
+								@helper.inputText(
+									transactionForm("beneficiaryAccount.city"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG066","Account City"),
+									'_class -> "required",
+									'class -> "required"
+								)
+							</div>
+							<div class="control-group span12 hide">
+								@helper.inputText(
+									transactionForm("beneficiaryAccount.address"),
+									'_label -> "Address",
+									'class -> "",
+									'style -> ""
+								)
+							</div>
+						</div>
+					</fieldset>
+					
+					<fieldset class="span12 form-cashin-voucher-info hide" data-prefix="beneficiary">
+						<legend>Voucher information</legend>
+						<div class="row">
+							<div class="span12 voucher-info"></div>
+							<div class="control-group span12">
+								@helper.inputText(
+									transactionForm("voucherCode"),
+									'_label -> "Voucher Code",
+									'_class -> "required",
+									'class -> "required",
+									'maxLength -> 6
+								)
+							</div>
+							<button type="button" class="btn" id="btn-cek-voucher" data-dismiss="modal" aria-hidden="true">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG096","Check")</button>
+						</div>
+					</fieldset>
+					
+					<fieldset class="span12 form-cashin-wallet-info hide" data-prefix="beneficiary">
+						<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG198","Doku wallet information")</legend>
+						<div class="row">
+							<div class="span12 wallet-info"></div>
+							<div class="control-group span12">
+								@helper.inputText(
+									transactionForm("beneficiaryWalletId"),
+									'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG069","Wallet Id / Email"),
+									'_class -> "required",
+									'class -> "required",
+									'maxLength -> 100
+								)
+							</div>
+						</div>
+					</fieldset>
+				
+				</div>
+				
+				<div class="span6">
+					<div class="hero-unit" style="font-size:12px; padding: 10px">
+				  		<table>
+				  			<tr>
+				  				<td width="200px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG040","Sending country")</td>
+				  				<td>:</td>
+				  				<td id="senderCountryName"></td>
+				  			</tr>
+				  				<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG041","Receive country")</td>
+				  				<td>:</td>
+				  				<td id="beneficiaryCountryName"></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG045","Exchange rate")</td>
+				  				<td>:</td>
+				  				<td id="ratee"></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG042","Sending amount")</td>
+				  				<td>:</td>
+				  				<td id="originAmount"></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG043","Receive amount")</td>
+				  				<td>:</td>
+				  				<td id="destinationAmount"></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG046","Fee")</td>
+				  				<td>:</td>
+				  				<td id="feeTotal"></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG047","Additional Fee")</td>
+				  				<td>:</td>
+				  				<td id="feeAdditional"></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG044","Amount to collect")</td>
+				  				<td>:</td>
+				  				<td id="amountToCollect"></td>
+				  			</tr>
+				  		</table>
+				  		<h5 style="margin-top: 20px; margin-bottom: 0px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG049","Sender information")</h5>
+				  		<table>
+				  			<tr>
+				  				<td width="200px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG527","Sender Name")</td>
+				  				<td>:</td>
+				  				<td id="sennameLbl"></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number")</td>
+				  				<td>:</td>
+				  				<td><div id="senpNumberLbl"></div></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID")</td>
+				  				<td>:</td>
+				  				<td><div id="senpNameLbl"></div></td>
+				  			</tr>
+				  		</table>
+				  		
+				  		<h5 style="margin-top: 20px; margin-bottom: 0px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG058","Receiver information")</h5>
+				  		<table>
+				  			<tr>
+				  				<td width="200px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG528","Receiver Name")</td>
+				  				<td>:</td>
+				  				<td id="recnameLbl"></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number")</td>
+				  				<td>:</td>
+				  				<td><div id="recpNumberLbl"></div></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID")</td>
+				  				<td>:</td>
+				  				<td><div id="recpNameLbl"></div></td>
+				  			</tr>
+				  		</table>
+				  		
+				  		<table style="margin-top: 20px">
+				  			<tr>
+				  				<td width="200px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG039","Service")</td>
+				  				<td>:</td>
+				  				<td id="serviceLbl"></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG063","Bank Name")</td>
+				  				<td>:</td>
+				  				<td id="bankNameLbl"></td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG065","Account Number")</td>
+				  				<td>:</td>
+				  				<td>aa</td>
+				  			</tr>
+				  			<tr>
+				  				<td>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG066","Account City")</td>
+				  				<td>:</td>
+				  				<td>aa</td>
+				  			</tr>
+				  		</table>
+				  		
+				  		<table style="margin-top: 20px">
+				  			<tr>
+				  				<td width="200px">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG048","Sending purpose")</td>
+				  				<td>:</td>
+				  				<td>aa</td>
+				  			</tr>
+				  		</table>
+					</div>				
+							
+				</div>
+				
+			</div>
+		</fieldset>
+
+		<fieldset class="span12 form-cashin-customer" data-prefix="beneficiary">
+		
+			<div class="row hide" id="row-ctc">
+				<div class="span12 container-info"></div>
+				<div class="control-group span4">
+					&nbsp;
+				</div>
+				<div class="control-group span4">
+					<div class="clearfix" id="inputTCODE_field">
+					    <label for="inputModeTCODE">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG187","Telegraphic Code")</label>
+					    <div class="input">
+				            <div class="input-prepend input-append">
+								<span class="add-on"><input type="radio" id="inputModeTCODE" name="beneficiary.inputMode" value="TCODE" checked="checked"></span>
+								<input type="text" id="beneficiary_tcode" name="beneficiary.tcode" value="@transactionForm("beneficiary.tcode").value" title="Shift+Down to Check" style="width: 138px;">
+								<span class="add-on checkTC" style="font-size:11px; cursor: pointer;border-radius:0px 4px 4px 0px;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG096","Check")</span>
+								<label for="beneficiary_tcode"><small style="font-style: italic;">(@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG196","separated by semicolon") [ ; ])</small></label>
+							</div>
+					    </div>
+					</div>
+				</div>
+				<div class="control-group span4">
+					<div class="clearfix" id="inputPINYIN_field">
+					    <label for="inputModePINYIN">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG197","Pinyin")</label>
+					    <div class="input">
+				            <div class="input-prepend input-append">
+								<span class="add-on"><input type="radio" id="inputModePINYIN" name="beneficiary.inputMode" value="PINYIN"></span>
+								<input type="text" id="beneficiary_pinyin" name="beneficiary.pinyin" value="@transactionForm("beneficiary.pinyin").value" readonly="readonly" title="Shift+Down to Check" style="width: 138px;">
+								<span class="add-on checkPinyin" style="font-size:11px; cursor: pointer;border-radius:0px 4px 4px 0px;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG096","Check")</span>
+								<label for="beneficiary_pinyin"><small style="font-style: italic;">(@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG196","separated by semicolon") [ ; ])</small></label>
+							</div>
+					    </div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		
+		<fieldset class="span12 form-cashin-voucher-info hide" data-prefix="beneficiary">
+			<legend>Voucher information</legend>
+			<div class="row">
+				<div class="span12 voucher-info"></div>
+				<div class="control-group span4">
+					@helper.inputText(
+						transactionForm("voucherCode"),
+						'_label -> "Voucher Code",
+						'_class -> "required",
+						'class -> "required",
+						'maxLength -> 6
+					)
+				</div>
+				<button type="button" class="btn" id="btn-cek-voucher" data-dismiss="modal" aria-hidden="true">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG096","Check")</button>
+			</div>
+		</fieldset>
+		
+		<fieldset class="span12 form-cashin-wallet-info hide" data-prefix="beneficiary">
+			<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG198","Doku wallet information")</legend>
+			<div class="row">
+				<div class="span12 wallet-info"></div>
+				<div class="control-group span4">
+					@helper.inputText(
+						transactionForm("beneficiaryWalletId"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG069","Wallet Id / Email"),
+						'_class -> "required",
+						'class -> "required",
+						'maxLength -> 100
+					)
+				</div>
+			</div>
+		</fieldset>
+
+		<div class="span12">
+            <div class="form-actions">
+				<button type="reset" class="btn"><i class="icon-repeat"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG068","Reset")</button>
+				<button type="submit" id="btn-send-primary" class="btn btn-primary btn-next" data-loading-text="Loading..." data-disable-with="Sending..." data-enable-with="Sent">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG067","Send") <i class="icon-white icon-arrow-right"></i></button>
+            </div>
+		</div>
+	}
+	
+
+	<div id="sendModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="Send dialog" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Verification failure</h3>
+		</div>
+		<div class="modal-body">
+			<p>One fine body…</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+
+	<div id="checkPinyin" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="Check Code Pinyin" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Check Code Pinyin</h3>
+		</div>
+		<div class="modal-body">
+			<p id="pageCheckPinyin"></p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+
+    </div>
+</div>
+} {
+<script type="text/javascript" src='@routes.Assets.at("javascripts/send.js")'></script>
+<script src="@routes.Assets.at("javascripts/numbersonly.js")" type="text/javascript"></script>
+}

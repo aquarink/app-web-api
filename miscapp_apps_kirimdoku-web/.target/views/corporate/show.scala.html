@@ -1,0 +1,22 @@
+@(corporate: models.Corporate)
+
+<fieldset>
+	<img src="@routes.Corporate.logo(corporate.code)" width="120" height="120"/>
+	<dl class="dl-horizontal dl-aligned dl-aligned-right">
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG316","Corporate Code")</dt>
+	<dd>@corporate.code</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Corporate Name")</dt>
+	<dd>@corporate.name</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG225","Trade name")</dt>
+	<dd>@corporate.tradeName</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country")</dt>
+	<dd>@corporate.country.code - @corporate.country.name</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG087","Currency")</dt>
+	<dd>@corporate.currency.code</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG317","Permission Role")</dt>
+	<dd>
+		@if(corporate.hasPermission(models.Corporate.PERMISSION_SEND)) {Send}
+		@if(corporate.hasPermission(models.Corporate.PERMISSION_RECEIVE)) {Receive}
+	</dd>
+	</dl>
+</fieldset>

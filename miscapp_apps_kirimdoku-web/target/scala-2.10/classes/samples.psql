@@ -1,0 +1,2151 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: audit_logs; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE audit_logs (
+    id bigint NOT NULL,
+    created_time timestamp without time zone NOT NULL,
+    source integer NOT NULL,
+    user_id bigint,
+    tag character varying(24) NOT NULL,
+    message character varying(255) NOT NULL,
+    data text
+);
+
+
+ALTER TABLE public.audit_logs OWNER TO postgres;
+
+--
+-- Name: audit_logs_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE audit_logs_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.audit_logs_seq OWNER TO postgres;
+
+--
+-- Name: audit_logs_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('audit_logs_seq', 1, false);
+
+
+--
+-- Name: channels; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE channels (
+    code character varying(2) NOT NULL,
+    name character varying(255)
+);
+
+
+ALTER TABLE public.channels OWNER TO postgres;
+
+--
+-- Name: channels_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE channels_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.channels_seq OWNER TO postgres;
+
+--
+-- Name: channels_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('channels_seq', 1, false);
+
+
+--
+-- Name: cities; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE cities (
+    id bigint NOT NULL,
+    name character varying(255),
+    country_code character varying(3)
+);
+
+
+ALTER TABLE public.cities OWNER TO postgres;
+
+--
+-- Name: cities_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE cities_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cities_seq OWNER TO postgres;
+
+--
+-- Name: cities_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cities_seq', 20, true);
+
+
+--
+-- Name: corporates; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE corporates (
+    code character varying(3) NOT NULL,
+    name character varying(255),
+    color1 character varying(16) NOT NULL,
+    color2 character varying(16) NOT NULL,
+    logo_path character varying(64)
+);
+
+
+ALTER TABLE public.corporates OWNER TO postgres;
+
+--
+-- Name: corporates_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE corporates_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.corporates_seq OWNER TO postgres;
+
+--
+-- Name: corporates_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('corporates_seq', 1, false);
+
+
+--
+-- Name: countries; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE countries (
+    code character varying(3) NOT NULL,
+    name character varying(255),
+    currency_code character varying(3) NOT NULL
+);
+
+
+ALTER TABLE public.countries OWNER TO postgres;
+
+--
+-- Name: countries_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE countries_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.countries_seq OWNER TO postgres;
+
+--
+-- Name: countries_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('countries_seq', 1, false);
+
+
+--
+-- Name: currencies; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE currencies (
+    code character varying(3) NOT NULL
+);
+
+
+ALTER TABLE public.currencies OWNER TO postgres;
+
+--
+-- Name: currencies_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE currencies_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.currencies_seq OWNER TO postgres;
+
+--
+-- Name: currencies_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('currencies_seq', 1, false);
+
+
+--
+-- Name: customers; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE customers (
+    id bigint NOT NULL,
+    agent_id bigint,
+    first_name character varying(64) NOT NULL,
+    last_name character varying(64) NOT NULL,
+    country_code character varying(3) NOT NULL,
+    city_name character varying(64) NOT NULL,
+    address character varying(255) NOT NULL,
+    gender integer NOT NULL,
+    birth_date date,
+    personal_id_type character varying(16),
+    personal_id character varying(32),
+    phone_number character varying(20),
+    email character varying(64),
+    postal_code character varying(10),
+    tax_id character varying(32),
+    occupation character varying(64),
+    CONSTRAINT ck_customers_gender CHECK ((gender = ANY (ARRAY[0, 1])))
+);
+
+
+ALTER TABLE public.customers OWNER TO postgres;
+
+--
+-- Name: customers_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE customers_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.customers_seq OWNER TO postgres;
+
+--
+-- Name: customers_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('customers_seq', 20, true);
+
+
+--
+-- Name: fees; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE fees (
+    id integer NOT NULL,
+    corporate_code character varying(3) NOT NULL,
+    sender_country_code character varying(3) NOT NULL,
+    beneficiary_country_code character varying(3) NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    currency_code character varying(3) NOT NULL,
+    description character varying(255),
+    domain_corporate_code character varying(3)
+);
+
+
+ALTER TABLE public.fees OWNER TO postgres;
+
+--
+-- Name: fees_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE fees_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.fees_seq OWNER TO postgres;
+
+--
+-- Name: fees_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('fees_seq', 20, true);
+
+
+--
+-- Name: forex; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE forex (
+    id bigint NOT NULL,
+    origin_code character varying(3) NOT NULL,
+    destination_code character varying(3) NOT NULL,
+    rate double precision NOT NULL,
+    created_time timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.forex OWNER TO postgres;
+
+--
+-- Name: forex_references; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE forex_references (
+    id bigint NOT NULL,
+    forex_id bigint NOT NULL,
+    initial_rate double precision NOT NULL,
+    rate double precision NOT NULL,
+    created_time timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.forex_references OWNER TO postgres;
+
+--
+-- Name: forex_references_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE forex_references_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.forex_references_seq OWNER TO postgres;
+
+--
+-- Name: forex_references_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('forex_references_seq', 20, true);
+
+
+--
+-- Name: forex_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE forex_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.forex_seq OWNER TO postgres;
+
+--
+-- Name: forex_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('forex_seq', 20, true);
+
+
+--
+-- Name: forex_setting; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE forex_setting (
+    id bigint NOT NULL,
+    threshold double precision,
+    spread double precision,
+    created_time timestamp without time zone
+);
+
+
+ALTER TABLE public.forex_setting OWNER TO postgres;
+
+--
+-- Name: forex_setting_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE forex_setting_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.forex_setting_seq OWNER TO postgres;
+
+--
+-- Name: forex_setting_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('forex_setting_seq', 20, true);
+
+
+--
+-- Name: groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE groups (
+    role character varying(255) NOT NULL,
+    description character varying(255)
+);
+
+
+ALTER TABLE public.groups OWNER TO postgres;
+
+--
+-- Name: groups_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE groups_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.groups_seq OWNER TO postgres;
+
+--
+-- Name: groups_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('groups_seq', 1, false);
+
+
+--
+-- Name: news; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE news (
+    id bigint NOT NULL,
+    content text,
+    published boolean NOT NULL,
+    corporate_code character varying(3) NOT NULL
+);
+
+
+ALTER TABLE public.news OWNER TO postgres;
+
+--
+-- Name: news_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE news_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.news_seq OWNER TO postgres;
+
+--
+-- Name: news_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('news_seq', 20, true);
+
+
+--
+-- Name: play_evolutions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE play_evolutions (
+    id integer NOT NULL,
+    hash character varying(255) NOT NULL,
+    applied_at timestamp without time zone NOT NULL,
+    apply_script text,
+    revert_script text,
+    state character varying(255),
+    last_problem text
+);
+
+
+ALTER TABLE public.play_evolutions OWNER TO postgres;
+
+--
+-- Name: transaction_fees; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE transaction_fees (
+    transaction_id bigint NOT NULL,
+    fee_id integer,
+    amount numeric(12,2) NOT NULL,
+    currency_code character varying(3) NOT NULL,
+    description character varying(255),
+    domain_corporate_code character varying(3)
+);
+
+
+ALTER TABLE public.transaction_fees OWNER TO postgres;
+
+--
+-- Name: transaction_inquiries; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE transaction_inquiries (
+    id bigint NOT NULL,
+    type_id integer NOT NULL,
+    user_id bigint,
+    request_time timestamp without time zone NOT NULL,
+    update_time timestamp without time zone,
+    transaction_id bigint,
+    validation_id character varying(255),
+    collect_id character varying(255),
+    invalid_auth_count integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.transaction_inquiries OWNER TO postgres;
+
+--
+-- Name: transaction_inquiries_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE transaction_inquiries_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.transaction_inquiries_seq OWNER TO postgres;
+
+--
+-- Name: transaction_inquiries_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('transaction_inquiries_seq', 220, true);
+
+
+--
+-- Name: transactions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE transactions (
+    id bigint NOT NULL,
+    corporate_code character varying(3) NOT NULL,
+    user_id bigint,
+    channel_code character varying(2) NOT NULL,
+    created_time timestamp without time zone NOT NULL,
+    status integer NOT NULL,
+    cash_in_time timestamp without time zone,
+    cash_out_time timestamp without time zone,
+    sender_id bigint NOT NULL,
+    sender_country_code character varying(3) NOT NULL,
+    sender_currency_code character varying(3) NOT NULL,
+    sender_amount numeric(16,2) NOT NULL,
+    beneficiary_id bigint NOT NULL,
+    beneficiary_country_code character varying(3) NOT NULL,
+    beneficiary_currency_code character varying(3) NOT NULL,
+    beneficiary_amount numeric(16,2) NOT NULL,
+    forex_reference_id bigint NOT NULL,
+    beneficiary_city_id bigint,
+    auth1 character varying(255),
+    auth2 character varying(255),
+    fee_included boolean NOT NULL,
+    fund_source character varying(255),
+    sender_note character varying(255)
+);
+
+
+ALTER TABLE public.transactions OWNER TO postgres;
+
+--
+-- Name: transactions_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE transactions_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.transactions_seq OWNER TO postgres;
+
+--
+-- Name: transactions_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('transactions_seq', 120, true);
+
+
+--
+-- Name: user_permission; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE user_permission (
+    id bigint NOT NULL,
+    value character varying(255)
+);
+
+
+ALTER TABLE public.user_permission OWNER TO postgres;
+
+--
+-- Name: user_permission_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE user_permission_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_permission_seq OWNER TO postgres;
+
+--
+-- Name: user_permission_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('user_permission_seq', 1, false);
+
+
+--
+-- Name: user_requests; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE user_requests (
+    request_time timestamp without time zone,
+    username character varying(255),
+    type_id integer,
+    request_id character varying(255),
+    request_data character varying(255),
+    result_data character varying(255)
+);
+
+
+ALTER TABLE public.user_requests OWNER TO postgres;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE users (
+    id bigint NOT NULL,
+    corporate_code character varying(3) NOT NULL,
+    first_name character varying(64) NOT NULL,
+    last_name character varying(64) NOT NULL,
+    email character varying(64),
+    password character varying(32),
+    country_code character varying(3) NOT NULL,
+    city_id bigint NOT NULL,
+    address character varying(255) NOT NULL,
+    gender integer NOT NULL,
+    birth_date date,
+    personal_id_type character varying(16),
+    personal_id character varying(32),
+    phone_number character varying(20),
+    postal_code character varying(10),
+    supervisor_id bigint,
+    is_admin boolean NOT NULL,
+    photo character varying(64),
+    status integer NOT NULL,
+    CONSTRAINT ck_users_gender CHECK ((gender = ANY (ARRAY[0, 1]))),
+    CONSTRAINT ck_users_status CHECK ((status = ANY (ARRAY[0, 1])))
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: users_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE users_groups (
+    users_id bigint NOT NULL,
+    groups_role character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.users_groups OWNER TO postgres;
+
+--
+-- Name: users_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE users_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_seq OWNER TO postgres;
+
+--
+-- Name: users_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('users_seq', 40, true);
+
+
+--
+-- Name: users_user_permission; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE users_user_permission (
+    users_id bigint NOT NULL,
+    user_permission_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.users_user_permission OWNER TO postgres;
+
+--
+-- Data for Name: audit_logs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY audit_logs (id, created_time, source, user_id, tag, message, data) FROM stdin;
+\.
+
+
+--
+-- Data for Name: channels; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY channels (code, name) FROM stdin;
+02	Cash to Cash
+11	Cash to Bank
+\.
+
+
+--
+-- Data for Name: cities; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY cities (id, name, country_code) FROM stdin;
+1	Jakarta	ID
+2	Bandung	ID
+3	Surabaya	ID
+4	Kuala Lumpur	MY
+5	Canberra	AU
+6	Riyadh	SA
+7	Abu Dhabi	AE
+\.
+
+
+--
+-- Data for Name: corporates; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY corporates (code, name, color1, color2, logo_path) FROM stdin;
+AAA	Simulator Agent	#333	#333	\N
+DOK	Doku	#800E0E	#F0F0F0	\N
+WAR	Warindo	#5EA2DE	#5EA2DE	\N
+\.
+
+
+--
+-- Data for Name: countries; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY countries (code, name, currency_code) FROM stdin;
+ID	Indonesia	IDR
+MY	Malaysia	MYR
+AU	Australia	AUD
+SA	Saudi Arabia	SAR
+AE	United Arab Emirate	AED
+\.
+
+
+--
+-- Data for Name: currencies; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY currencies (code) FROM stdin;
+IDR
+USD
+AUD
+MYR
+SAR
+AED
+HKD
+\.
+
+
+--
+-- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY customers (id, agent_id, first_name, last_name, country_code, city_name, address, gender, birth_date, personal_id_type, personal_id, phone_number, email, postal_code, tax_id, occupation) FROM stdin;
+1	\N	Fadhil	Bayonair	ID	Jakarta	Jalan Merdeka Raya No.5	0	1984-02-12	CITIZENID	728127189	62899272626111	bayu.sembada@mobiledoku.com	12450	\N	\N
+2	\N	Cialuk	Banara	ID	Bandung	Jalan Bandung Cilegon 2	0	1980-06-17	CITIZENID	28192719827198	6289927817291	widhie@mobiledoku.com	12455	\N	\N
+3	\N	Trackie	Gundara	ID	Canberra	Jalan Ampera tujuh lima No 88	1	1977-04-04	DRIVERLICENSE	8000020222	628772222221	faiq@doku.com	12455	\N	\N
+4	\N	Cilemang	Malangsia	MY	Kuala Lumpur	Jalan Makmur No. 35	1	1987-01-04	PASSPORTID	120009888001	628998082898	fauzi.assegaff@gmail.com	12042	\N	\N
+5	\N	Mickey	Jacksnoite	AU	Sydney	Jalan Ciledug Raya No 77	0	1987-08-08	CITIZENID	5555689222222	628123488971	xigitech@gmail.com	12041	\N	\N
+\.
+
+
+--
+-- Data for Name: fees; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY fees (id, corporate_code, sender_country_code, beneficiary_country_code, amount, currency_code, description, domain_corporate_code) FROM stdin;
+1	AAA	ID	ID	5000.00	IDR	Admin Fee	AAA
+2	AAA	ID	AU	7000.00	IDR	Admin Fee	AAA
+3	AAA	ID	AU	4000.00	IDR	Trans Fee	DOK
+4	AAA	ID	MY	6000.00	IDR	Admin Fee	AAA
+5	AAA	AU	ID	1.25	AUD	Admin Fee	AAA
+\.
+
+
+--
+-- Data for Name: forex; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY forex (id, origin_code, destination_code, rate, created_time) FROM stdin;
+1	IDR	IDR	1	2012-08-04 20:50:01
+2	IDR	USD	0.000105619999999999995	2012-08-04 21:30:10
+3	USD	IDR	9467.5	2012-08-04 21:30:10
+4	IDR	AUD	0.000101070000000000006	2012-08-04 21:30:10
+5	AUD	IDR	9893.54000000000087	2012-08-04 21:30:10
+6	IDR	MYR	0.000331599999999999983	2012-08-04 21:30:10
+7	MYR	IDR	3015.61000000000013	2012-08-04 22:10:10
+\.
+
+
+--
+-- Data for Name: forex_references; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY forex_references (id, forex_id, initial_rate, rate, created_time) FROM stdin;
+1	1	1	1	2012-08-10 07:00:00
+2	2	0.000105619999999999995	0.000105520000000000006	2012-08-10 07:00:00
+3	3	9467.5	9466.5	2012-08-10 07:00:00
+4	4	0.000101076000000000006	0.000101059999999999998	2012-08-10 07:00:00
+5	5	9893.54000000000087	9892.54000000000087	2012-08-10 07:00:00
+6	6	0.000331599999999999983	0.000330600000000000013	2012-08-10 07:00:00
+7	7	3015.61000000000013	3014.61000000000013	2012-08-10 07:00:00
+\.
+
+
+--
+-- Data for Name: forex_setting; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY forex_setting (id, threshold, spread, created_time) FROM stdin;
+1	2	1	2012-08-04 22:10:10
+\.
+
+
+--
+-- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY groups (role, description) FROM stdin;
+doku	Doku Admin
+mainagent	Main Agent
+supervisor	Supervisor
+agent	Agent
+\.
+
+
+--
+-- Data for Name: news; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY news (id, content, published, corporate_code) FROM stdin;
+1	Hari ini, Jumat, 31 Agustus 2012, Bank Indonesia dan Ikatan Sarjana Ekonomi Indonesia (ISEI) menerbitkan sebuah buku berjudul Koordinasi dan Interaksi Kebijakan Fiskal-Moneter: Tantangan ke Depan.\nPenerbitan buku ini untuk mengisi kekosongan bahan bacaan yang mengulas koordinasi kebijakan Fiskal dan Moneter. Apalagi pada akhir 2011 seiring dengan dibentuknya Otoritas Jasa Keuangan akan mengubah pola pengelolaan sistem keuangan dan juga mempengaruhi koordinasi kebijakan fiskal dan moneter. Sementara itu masih banyak pihak di Indonesia yang belum memahami dengan baik koordinasi kebijakan fiskal dan moneter. Oleh karena itu diterbitkannya buku ini diharapkan akan dapat memenuhi kebutuhan masyarakat, akademisi, peneliti ekonomi, serta pengambil kebijakan yang ingin memahami dengan lebih baik koordinasi kebijakan fiskal dan moneter serta perkembangannya di Indonesia.\nBuku ini merupakan kumpulan berbagai tulisan dari para penulis yang memiliki berbagai latar belakang, baik otoritas terkait ataupun mantan otoritas terkait, serta akademisi yang menggeluti dan memiliki keahlian di bidang kebijakan fiskal dan moneter. Tulisan yang disajikan dalam buku ini mencakup sejarah, perkembangan masa kini, studi empiris, masalah dan tantangan yang dihadapi serta perkembangan kedepan koordinasi kebijakan fiskal dan moneter di Indonesia.\nSelamat membaca.	t	AAA
+2	Ulang tahun ASEAN ke-45 pada Agustus 2012 seyogyanya menjadi alarm call bagi kita akan bakal hadirnya Masyarakat Ekonomi ASEAN (MEA) pada 2015. Sayangnya, meski kurang dari tiga tahun, banyak dari kita belum memahami MEA secara utuh.\nMEA ingin mewujudkan ASEAN sebuah pasar tunggal dan basis produksi yang diyakini dapat menekan biaya transaksi dan memaksimalkan manfaat dari perdagangan. Proses integrasi sendiri akan dilakukan secara bertahap sesuai dengan kesiapan masing-masing.\nPemerintah menunjuk Kantor Menko sebagai koordinator pelaksanaan komitmen Indonesia dalam cetak biru MEA atas dasar Inpres No.11/2011. Bank Indonesia (BI) turut aktif dalam pelaksanaan komitmen nasional itu khususnya di sektor perbankan dan sistem pembayaran nasional. Peran itu mencakup kebijakan menguatkan ketahanan dan daya saing kedua sektor serta keterlibatan dalam forum negosiasi dan kerjasama ASEAN untuk mengawal kepentingan nasional.\nLantas, apa dampak MEA pada kehidupan kita? Bagaimana kesiapan kita? Dan bagaimana kita dapat memanfaatkan kelebihan skala ekonomi sebagai basis memperoleh keuntungan?\nSilahkan simak informasi tersebut dengan mengakses halaman www.bi.go.id/geraiinfo.	t	AAA
+3	Ribuan pulau yang indah menguntai di Khatulistiwa adalah karunia Tuhan Yang Maha Esa kepada negeri ini, Indonesia. Keindahan alam nusantara, barisan pegunungan, danau, sungai yang meliuk melukisi dan pantai-pantai samudera yang menginspirasi. Hutan hujan yang tinggi menjulang dan sawah ladang yang padinya kuning membentang. Keindahan alam Indonesia. Dan keindahan kearifan lokal yang menjuntai bak mutu manikam, yang dari setiapnya memancarkan pesona dari rasa mensyukuri karunia. Mewujud dalam keindahan seni budaya, sastra bertutur dengan lisan dan dengan bayang-bayang, gerak tari, busana tradisionil, batik dan kerajinan, prosesi tradisi, lantunan nada maupun keindahan bangunan khas negeri, candi dan arca. <p align="justify">Dalam rangkaian peringatan HUT ke-67 RI tahun 2012, USF IPEBI menyelenggarakan lomba foto Bank Indonesia Tahun 2012 dengan tema <b>“Cinta Indonesia”</b>. USF mengajak masyarakat pecinta fotografi untuk dapat ikut mensyukuri keindahan alam dan seni budaya Indonesia, untuk mengabadikan keindahan alam indonesia dan keindahan seni budaya Indonesia itu dalam bentuk seni foto, dan membangkitkan inspirasi. </p><p align="justify">Lomba dibagi ke dalam 2 (dua) kategori, yaitu:<br><b><u>Kategori A:</u></b> Keindahan Alam Indonesia (lanskap, arsitektur tradisional)<br><b><u>Kategori B:</u></b> Seni Budaya Indonesia (seni tari, musik, prosesi budaya dan tradisi, wayang, seni batik, kerajinan) </p><p align="justify">Peserta boleh mengikuti dua kategori, dengan maksimal jumlah foto 5 lembar untuk masing-masing kategori. <br>Persyaratan Lomba sbb: </p><ol> <li>Peserta terbuka untuk umum. </li><li>Peserta dapat mengirimkan foto cetak berwarna atau hitam putih maksimal 5 lembar untuk masing-masing kategori dengan ukuran sisi terpanjang minimal 25 cm dan maksimal 30 cm. </li><li>Peserta diwajibkan menuliskan nama obyek dan lokasi obyek foto, judul foto, nama peserta sesuai identitas yang masih berlaku, alamat, nomor telepon, dan email (jika ada) pada selembar kertas dan ditempelkan di bagian belakang setiap foto. </li><li>Peserta bertanggungjawab apabila dikemudian hari terdapat tuntutan dari pihak lain manapun atas penggunaan fasilitas, lokasi, model dan obyek lainnya di dalam foto. </li><li>Foto belum pernah diikutsertakan atau menjadi juara pada perlombaan foto. </li><li>Foto tidak diperkenankan mengandung unsur provokatif, pornografi dan SARA. Panitia berhak untuk mendiskualifikasi foto yang dianggap mengandung unsur-unsur tersebut. </li><li>Olah digital diperkenankan sepanjang tidak melakukan penggabungan 2 foto atau lebih ke dalam satu foto, tidak menambahkan frame atau atribut apapun pada foto dan foto harus memenuhi sisi panjang kertas. </li><li>Hadiah masing-masing kategori sbb: <ul type="square"> <li>1 hadiah pertama&nbsp;Rp.5.000.000,- </li><li>1 hadiah kedua Rp.4.000.000,- </li><li>1 hadiah ketiga Rp.3.000.000,-&nbsp; </li><li>5 hadiah harapan masing-masing Rp.500.000,- </li></ul> </li><li>Hadiah sudah termasuk kompensasi atas penggunaan foto-foto pemenang untuk keperluan penyelenggara, sedangkan hak cipta tetap milik fofografer. Pajak hadiah ditanggung pemenang. </li><li>Dewan juri: <ul type="square"> <li>Bp. Oscar Motuloh (KBN Antara) </li><li>Bp. Ferry Ardianto (Profesional) </li><li>Bp. Janu Dewandaru (USF-IPEBI) </li></ul> </li><li>Keputusan dewan juri mutlak dan tidak dapat diganggu gugat. </li><li>Pengumuman pemenang direncanakan pada pertengahan bulan Oktober 2012 di website Bank Indonesia. </li><li>Pemenang lomba foto akan dihubungi panitia dan wajib menyerahkan file foto hires dan persyaratan lainnya yang akan ditentukan panitia. </li><li>Informasi lomba dapat menghubungi <b>Sdr. Dedy Sutardi</b> di nomor Hp.<b>0812-9829-8770</b>; <strong>PIN BB.26CB8E6F.</strong> </li><li>Foto selambat-lambatnya telah diterima Panitia pada Jumat, 28 September 2012 pukul 12.00&nbsp;WIB (keterlambatan pengiriman oleh pihak ekspedisi menjadi tanggung jawab peserta). </li><li>Foto dikirimkan dalam sampul tertutup, dituliskan kategori yang diikuti pada sampul bagian kiri atas dan ditujukan kepada Panitia Lomba Foto Bank Indonesia 2012 dengan alamat: <br>Sdri. Evi Eliza <br>Bank Indonesia <br>Menara Sjafruddin Prawiranegara lantai 4 <br>Jl. M.H. Thamrin No.2<br>JAKARTA PUSAT 10350 <br>Telp. 021 3818294 </li></ol></span>	t	AAA
+4	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut risus velit. Nam in nisi ipsum, quis aliquet magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam tortor augue, cursus vitae consectetur vitae, ullamcorper a lorem. Integer et urna nulla, eu sagittis enim. Maecenas ac ligula sed lacus molestie tempor. Donec id ultricies mi. Donec ornare, eros in consectetur gravida, sem elit ullamcorper mauris, sit amet scelerisque odio neque sit amet metus. Proin ac arcu sem, nec pulvinar dolor. Integer euismod posuere tellus, vel ultrices lacus dignissim a. Suspendisse vel metus nibh. Cras tincidunt pharetra lacinia. Integer ut sem enim, et blandit quam. Vestibulum in mauris eros. Vestibulum elit risus, suscipit ac placerat consequat, eleifend in lorem. Nulla facilisi.	t	AAA
+5	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut risus velit. Nam in nisi ipsum, quis aliquet magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam tortor augue, cursus vitae consectetur vitae, ullamcorper a lorem. Integer et urna nulla, eu sagittis enim. Maecenas ac ligula sed lacus molestie tempor. Donec id ultricies mi. Donec ornare, eros in consectetur gravida, sem elit ullamcorper mauris, sit amet scelerisque odio neque sit amet metus. Proin ac arcu sem, nec pulvinar dolor. Integer euismod posuere tellus, vel ultrices lacus dignissim a. Suspendisse vel metus nibh. Cras tincidunt pharetra lacinia. Integer ut sem enim, et blandit quam. Vestibulum in mauris eros. Vestibulum elit risus, suscipit ac placerat consequat, eleifend in lorem. Nulla facilisi.	t	AAA
+6	Warindo News Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut risus velit. Nam in nisi ipsum, quis aliquet magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam tortor augue, cursus vitae consectetur vitae, ullamcorper a lorem. Integer et urna nulla, eu sagittis enim. Maecenas ac ligula sed lacus molestie tempor. Donec id ultricies mi. Donec ornare, eros in consectetur gravida, sem elit ullamcorper mauris, sit amet scelerisque odio neque sit amet metus. Proin ac arcu sem, nec pulvinar dolor. Integer euismod posuere tellus, vel ultrices lacus dignissim a. Suspendisse vel metus nibh. Cras tincidunt pharetra lacinia. Integer ut sem enim, et blandit quam. Vestibulum in mauris eros. Vestibulum elit risus, suscipit ac placerat consequat, eleifend in lorem. Nulla facilisi.	t	WAR
+7	Warindo News 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut risus velit. Nam in nisi ipsum, quis aliquet magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam tortor augue, cursus vitae consectetur vitae, ullamcorper a lorem. Integer et urna nulla, eu sagittis enim. Maecenas ac ligula sed lacus molestie tempor. Donec id ultricies mi. Donec ornare, eros in consectetur gravida, sem elit ullamcorper mauris, sit amet scelerisque odio neque sit amet metus. Proin ac arcu sem, nec pulvinar dolor. Integer euismod posuere tellus, vel ultrices lacus dignissim a. Suspendisse vel metus nibh. Cras tincidunt pharetra lacinia. Integer ut sem enim, et blandit quam. Vestibulum in mauris eros. Vestibulum elit risus, suscipit ac placerat consequat, eleifend in lorem. Nulla facilisi.	t	WAR
+8	Warindo News 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut risus velit. Nam in nisi ipsum, quis aliquet magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam tortor augue, cursus vitae consectetur vitae, ullamcorper a lorem. Integer et urna nulla, eu sagittis enim. Maecenas ac ligula sed lacus molestie tempor. Donec id ultricies mi. Donec ornare, eros in consectetur gravida, sem elit ullamcorper mauris, sit amet scelerisque odio neque sit amet metus. Proin ac arcu sem, nec pulvinar dolor. Integer euismod posuere tellus, vel ultrices lacus dignissim a. Suspendisse vel metus nibh. Cras tincidunt pharetra lacinia. Integer ut sem enim, et blandit quam. Vestibulum in mauris eros. Vestibulum elit risus, suscipit ac placerat consequat, eleifend in lorem. Nulla facilisi.	t	WAR
+\.
+
+
+--
+-- Data for Name: play_evolutions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY play_evolutions (id, hash, applied_at, apply_script, revert_script, state, last_problem) FROM stdin;
+1	c8222b4dcd3f10d9611760ad1b32ad7e8f7a0102	2012-09-06 00:00:00	create table audit_logs (\nid                        bigint not null,\ncreated_time              timestamp not null,\nsource                    integer not null,\nuser_id                   bigint,\ntag                       varchar(24) not null,\nmessage                   varchar(255) not null,\ndata                      text,\nconstraint pk_audit_logs primary key (id))\n;\n\ncreate table channels (\ncode                      varchar(2) not null,\nname                      varchar(255),\nconstraint pk_channels primary key (code))\n;\n\ncreate table cities (\nid                        bigint not null,\nname                      varchar(255),\ncountry_code              varchar(3),\nconstraint pk_cities primary key (id))\n;\n\ncreate table corporates (\ncode                      varchar(3) not null,\nname                      varchar(255),\ncolor1                    varchar(16) not null,\ncolor2                    varchar(16) not null,\nlogo_path                 varchar(64),\nconstraint pk_corporates primary key (code))\n;\n\ncreate table countries (\ncode                      varchar(3) not null,\nname                      varchar(255),\ncurrency_code             varchar(3) not null,\nconstraint pk_countries primary key (code))\n;\n\ncreate table currencies (\ncode                      varchar(3) not null,\nconstraint pk_currencies primary key (code))\n;\n\ncreate table customers (\nid                        bigint not null,\nagent_id                  bigint,\nfirst_name                varchar(64) not null,\nlast_name                 varchar(64) not null,\ncountry_code              varchar(3) not null,\ncity_name                 varchar(64) not null,\naddress                   varchar(255) not null,\ngender                    integer not null,\nbirth_date                date,\npersonal_id_type          varchar(16),\npersonal_id               varchar(32),\nphone_number              varchar(20),\nemail                     varchar(64),\npostal_code               varchar(10),\ntax_id                    varchar(32),\noccupation                varchar(64),\nconstraint ck_customers_gender check (gender in (0,1)),\nconstraint pk_customers primary key (id))\n;\n\ncreate table fees (\nid                        integer not null,\ncorporate_code            varchar(3) not null,\nsender_country_code       varchar(3) not null,\nbeneficiary_country_code  varchar(3) not null,\namount                    decimal(12,2) not null,\ncurrency_code             varchar(3) not null,\ndescription               varchar(255),\ndomain_corporate_code     varchar(3),\nconstraint pk_fees primary key (id))\n;\n\ncreate table forex (\nid                        bigint not null,\norigin_code               varchar(3) not null,\ndestination_code          varchar(3) not null,\nrate                      float not null,\ncreated_time              timestamp not null,\nconstraint pk_forex primary key (id))\n;\n\ncreate table forex_references (\nid                        bigint not null,\nforex_id                  bigint not null,\ninitial_rate              float not null,\nrate                      float not null,\ncreated_time              timestamp not null,\nconstraint pk_forex_references primary key (id))\n;\n\ncreate table forex_setting (\nid                        bigint not null,\nthreshold                 float,\nspread                    float,\ncreated_time              timestamp,\nconstraint pk_forex_setting primary key (id))\n;\n\ncreate table news (\nid                        bigint not null,\ncontent                   text,\npublished                 boolean not null,\ncorporate_code            varchar(3) not null,\nconstraint pk_news primary key (id))\n;\n\ncreate table groups (\nrole                      varchar(255) not null,\ndescription               varchar(255),\nconstraint pk_groups primary key (role))\n;\n\ncreate table transactions (\nid                        bigint not null,\ncorporate_code            varchar(3) not null,\nuser_id                   bigint,\nchannel_code              varchar(2) not null,\ncreated_time              timestamp not null,\nstatus                    integer not null,\ncash_in_time              timestamp,\ncash_out_time             timestamp,\nsender_id                 bigint not null,\nsender_country_code       varchar(3) not null,\nsender_currency_code      varchar(3) not null,\nsender_amount             decimal(16,2) not null,\nbeneficiary_id            bigint not null,\nbeneficiary_country_code  varchar(3) not null,\nbeneficiary_currency_code varchar(3) not null,\nbeneficiary_amount        decimal(16,2) not null,\nforex_reference_id        bigint not null,\nbeneficiary_city_id       bigint,\nauth1                     varchar(255),\nauth2                     varchar(255),\nfee_included              boolean not null,\nfund_source               varchar(255),\nsender_note               varchar(255),\nconstraint pk_transactions primary key (id))\n;\n\ncreate table transaction_fees (\ntransaction_id            bigint not null,\nfee_id                    integer,\namount                    decimal(12,2) not null,\ncurrency_code             varchar(3) not null,\ndescription               varchar(255),\ndomain_corporate_code     varchar(3))\n;\n\ncreate table transaction_inquiries (\nid                        bigint not null,\ntype_id                   integer not null,\nuser_id                   bigint,\nrequest_time              timestamp not null,\nupdate_time               timestamp,\ntransaction_id            bigint,\nvalidation_id             varchar(255),\ncollect_id                varchar(255),\ninvalid_auth_count        int default 0 not null,\nconstraint pk_transaction_inquiries primary key (id))\n;\n\ncreate table users (\nid                        bigint not null,\ncorporate_code            varchar(3) not null,\nfirst_name                varchar(64) not null,\nlast_name                 varchar(64) not null,\nemail                     varchar(64),\npassword                  varchar(32),\ncountry_code              varchar(3) not null,\ncity_id                   bigint not null,\naddress                   varchar(255) not null,\ngender                    integer not null,\nbirth_date                date,\npersonal_id_type          varchar(16),\npersonal_id               varchar(32),\nphone_number              varchar(20),\npostal_code               varchar(10),\nsupervisor_id             bigint,\nis_admin                  boolean not null,\nphoto                     varchar(64),\nstatus                    integer not null,\nconstraint ck_users_gender check (gender in (0,1)),\nconstraint ck_users_status check (status in (0,1)),\nconstraint uq_users_email unique (email),\nconstraint pk_users primary key (id))\n;\n\ncreate table user_permission (\nid                        bigint not null,\nvalue                     varchar(255),\nconstraint pk_user_permission primary key (id))\n;\n\ncreate table user_requests (\nrequest_time              timestamp,\nusername                  varchar(255),\ntype_id                   integer,\nrequest_id                varchar(255),\nrequest_data              varchar(255),\nresult_data               varchar(255))\n;\n\n\ncreate table users_groups (\nusers_id                       bigint not null,\ngroups_role                    varchar(255) not null,\nconstraint pk_users_groups primary key (users_id, groups_role))\n;\n\ncreate table users_user_permission (\nusers_id                       bigint not null,\nuser_permission_id             bigint not null,\nconstraint pk_users_user_permission primary key (users_id, user_permission_id))\n;\ncreate sequence audit_logs_seq;\n\ncreate sequence channels_seq;\n\ncreate sequence cities_seq;\n\ncreate sequence corporates_seq;\n\ncreate sequence countries_seq;\n\ncreate sequence currencies_seq;\n\ncreate sequence customers_seq;\n\ncreate sequence fees_seq;\n\ncreate sequence forex_seq;\n\ncreate sequence forex_references_seq;\n\ncreate sequence forex_setting_seq;\n\ncreate sequence news_seq;\n\ncreate sequence groups_seq;\n\ncreate sequence transactions_seq;\n\ncreate sequence transaction_inquiries_seq;\n\ncreate sequence users_seq;\n\ncreate sequence user_permission_seq;\n\nalter table audit_logs add constraint fk_audit_logs_user_1 foreign key (user_id) references users (id);\ncreate index ix_audit_logs_user_1 on audit_logs (user_id);\nalter table cities add constraint fk_cities_country_2 foreign key (country_code) references countries (code);\ncreate index ix_cities_country_2 on cities (country_code);\nalter table countries add constraint fk_countries_currency_3 foreign key (currency_code) references currencies (code);\ncreate index ix_countries_currency_3 on countries (currency_code);\nalter table customers add constraint fk_customers_agent_4 foreign key (agent_id) references users (id);\ncreate index ix_customers_agent_4 on customers (agent_id);\nalter table customers add constraint fk_customers_country_5 foreign key (country_code) references countries (code);\ncreate index ix_customers_country_5 on customers (country_code);\nalter table fees add constraint fk_fees_corporate_6 foreign key (corporate_code) references corporates (code);\ncreate index ix_fees_corporate_6 on fees (corporate_code);\nalter table fees add constraint fk_fees_senderCountry_7 foreign key (sender_country_code) references countries (code);\ncreate index ix_fees_senderCountry_7 on fees (sender_country_code);\nalter table fees add constraint fk_fees_beneficiaryCountry_8 foreign key (beneficiary_country_code) references countries (code);\ncreate index ix_fees_beneficiaryCountry_8 on fees (beneficiary_country_code);\nalter table fees add constraint fk_fees_currency_9 foreign key (currency_code) references currencies (code);\ncreate index ix_fees_currency_9 on fees (currency_code);\nalter table fees add constraint fk_fees_domainCorporate_10 foreign key (domain_corporate_code) references corporates (code);\ncreate index ix_fees_domainCorporate_10 on fees (domain_corporate_code);\nalter table forex add constraint fk_forex_origin_11 foreign key (origin_code) references currencies (code);\ncreate index ix_forex_origin_11 on forex (origin_code);\nalter table forex add constraint fk_forex_destination_12 foreign key (destination_code) references currencies (code);\ncreate index ix_forex_destination_12 on forex (destination_code);\nalter table forex_references add constraint fk_forex_references_forex_13 foreign key (forex_id) references forex (id);\ncreate index ix_forex_references_forex_13 on forex_references (forex_id);\nalter table news add constraint fk_news_corporate_14 foreign key (corporate_code) references corporates (code);\ncreate index ix_news_corporate_14 on news (corporate_code);\nalter table transactions add constraint fk_transactions_corporate_15 foreign key (corporate_code) references corporates (code);\ncreate index ix_transactions_corporate_15 on transactions (corporate_code);\nalter table transactions add constraint fk_transactions_user_16 foreign key (user_id) references users (id);\ncreate index ix_transactions_user_16 on transactions (user_id);\nalter table transactions add constraint fk_transactions_channel_17 foreign key (channel_code) references channels (code);\ncreate index ix_transactions_channel_17 on transactions (channel_code);\nalter table transactions add constraint fk_transactions_sender_18 foreign key (sender_id) references customers (id);\ncreate index ix_transactions_sender_18 on transactions (sender_id);\nalter table transactions add constraint fk_transactions_senderCountry_19 foreign key (sender_country_code) references countries (code);\ncreate index ix_transactions_senderCountry_19 on transactions (sender_country_code);\nalter table transactions add constraint fk_transactions_senderCurrenc_20 foreign key (sender_currency_code) references currencies (code);\ncreate index ix_transactions_senderCurrenc_20 on transactions (sender_currency_code);\nalter table transactions add constraint fk_transactions_beneficiary_21 foreign key (beneficiary_id) references customers (id);\ncreate index ix_transactions_beneficiary_21 on transactions (beneficiary_id);\nalter table transactions add constraint fk_transactions_beneficiaryCo_22 foreign key (beneficiary_country_code) references countries (code);\ncreate index ix_transactions_beneficiaryCo_22 on transactions (beneficiary_country_code);\nalter table transactions add constraint fk_transactions_beneficiaryCu_23 foreign key (beneficiary_currency_code) references currencies (code);\ncreate index ix_transactions_beneficiaryCu_23 on transactions (beneficiary_currency_code);\nalter table transactions add constraint fk_transactions_forexReferenc_24 foreign key (forex_reference_id) references forex_references (id);\ncreate index ix_transactions_forexReferenc_24 on transactions (forex_reference_id);\nalter table transactions add constraint fk_transactions_beneficiaryCi_25 foreign key (beneficiary_city_id) references cities (id);\ncreate index ix_transactions_beneficiaryCi_25 on transactions (beneficiary_city_id);\nalter table transaction_fees add constraint fk_transaction_fees_transacti_26 foreign key (transaction_id) references transactions (id);\ncreate index ix_transaction_fees_transacti_26 on transaction_fees (transaction_id);\nalter table transaction_fees add constraint fk_transaction_fees_fee_27 foreign key (fee_id) references fees (id);\ncreate index ix_transaction_fees_fee_27 on transaction_fees (fee_id);\nalter table transaction_fees add constraint fk_transaction_fees_currency_28 foreign key (currency_code) references currencies (code);\ncreate index ix_transaction_fees_currency_28 on transaction_fees (currency_code);\nalter table transaction_fees add constraint fk_transaction_fees_domainCor_29 foreign key (domain_corporate_code) references corporates (code);\ncreate index ix_transaction_fees_domainCor_29 on transaction_fees (domain_corporate_code);\nalter table transaction_inquiries add constraint fk_transaction_inquiries_user_30 foreign key (user_id) references users (id);\ncreate index ix_transaction_inquiries_user_30 on transaction_inquiries (user_id);\nalter table transaction_inquiries add constraint fk_transaction_inquiries_tran_31 foreign key (transaction_id) references transactions (id);\ncreate index ix_transaction_inquiries_tran_31 on transaction_inquiries (transaction_id);\nalter table users add constraint fk_users_corporate_32 foreign key (corporate_code) references corporates (code);\ncreate index ix_users_corporate_32 on users (corporate_code);\nalter table users add constraint fk_users_country_33 foreign key (country_code) references countries (code);\ncreate index ix_users_country_33 on users (country_code);\nalter table users add constraint fk_users_city_34 foreign key (city_id) references cities (id);\ncreate index ix_users_city_34 on users (city_id);\nalter table users add constraint fk_users_supervisor_35 foreign key (supervisor_id) references users (id);\ncreate index ix_users_supervisor_35 on users (supervisor_id);\n\n\n\nalter table users_groups add constraint fk_users_groups_users_01 foreign key (users_id) references users (id);\n\nalter table users_groups add constraint fk_users_groups_groups_02 foreign key (groups_role) references groups (role);\n\nalter table users_user_permission add constraint fk_users_user_permission_user_01 foreign key (users_id) references users (id);\n\nalter table users_user_permission add constraint fk_users_user_permission_user_02 foreign key (user_permission_id) references user_permission (id);	drop table if exists audit_logs cascade;\n\ndrop table if exists channels cascade;\n\ndrop table if exists cities cascade;\n\ndrop table if exists corporates cascade;\n\ndrop table if exists countries cascade;\n\ndrop table if exists currencies cascade;\n\ndrop table if exists customers cascade;\n\ndrop table if exists fees cascade;\n\ndrop table if exists forex cascade;\n\ndrop table if exists forex_references cascade;\n\ndrop table if exists forex_setting cascade;\n\ndrop table if exists news cascade;\n\ndrop table if exists groups cascade;\n\ndrop table if exists transactions cascade;\n\ndrop table if exists transaction_fees cascade;\n\ndrop table if exists transaction_inquiries cascade;\n\ndrop table if exists users cascade;\n\ndrop table if exists users_groups cascade;\n\ndrop table if exists users_user_permission cascade;\n\ndrop table if exists user_permission cascade;\n\ndrop table if exists user_requests cascade;\n\ndrop sequence if exists audit_logs_seq;\n\ndrop sequence if exists channels_seq;\n\ndrop sequence if exists cities_seq;\n\ndrop sequence if exists corporates_seq;\n\ndrop sequence if exists countries_seq;\n\ndrop sequence if exists currencies_seq;\n\ndrop sequence if exists customers_seq;\n\ndrop sequence if exists fees_seq;\n\ndrop sequence if exists forex_seq;\n\ndrop sequence if exists forex_references_seq;\n\ndrop sequence if exists forex_setting_seq;\n\ndrop sequence if exists news_seq;\n\ndrop sequence if exists groups_seq;\n\ndrop sequence if exists transactions_seq;\n\ndrop sequence if exists transaction_inquiries_seq;\n\ndrop sequence if exists users_seq;\n\ndrop sequence if exists user_permission_seq;	applied	
+\.
+
+
+--
+-- Data for Name: transaction_fees; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY transaction_fees (transaction_id, fee_id, amount, currency_code, description, domain_corporate_code) FROM stdin;
+6	4	6000.00	IDR	Admin Fee	AAA
+7	4	6000.00	IDR	Admin Fee	AAA
+8	5	1.25	AUD	Admin Fee	AAA
+9	5	1.25	AUD	Admin Fee	AAA
+10	5	1.25	AUD	Admin Fee	AAA
+11	3	4000.00	IDR	Trans Fee	DOK
+11	2	7000.00	IDR	Admin Fee	AAA
+12	3	4000.00	IDR	Trans Fee	DOK
+12	2	7000.00	IDR	Admin Fee	AAA
+13	3	4000.00	IDR	Trans Fee	DOK
+13	2	7000.00	IDR	Admin Fee	AAA
+19	4	6000.00	IDR	Admin Fee	AAA
+20	4	6000.00	IDR	Admin Fee	AAA
+21	5	1.25	AUD	Admin Fee	AAA
+22	5	1.25	AUD	Admin Fee	AAA
+23	5	1.25	AUD	Admin Fee	AAA
+24	3	4000.00	IDR	Trans Fee	DOK
+24	2	7000.00	IDR	Admin Fee	AAA
+25	3	4000.00	IDR	Trans Fee	DOK
+25	2	7000.00	IDR	Admin Fee	AAA
+26	3	4000.00	IDR	Trans Fee	DOK
+26	2	7000.00	IDR	Admin Fee	AAA
+32	4	6000.00	IDR	Admin Fee	AAA
+33	4	6000.00	IDR	Admin Fee	AAA
+34	5	1.25	AUD	Admin Fee	AAA
+35	5	1.25	AUD	Admin Fee	AAA
+36	5	1.25	AUD	Admin Fee	AAA
+37	3	4000.00	IDR	Trans Fee	DOK
+37	2	7000.00	IDR	Admin Fee	AAA
+38	3	4000.00	IDR	Trans Fee	DOK
+38	2	7000.00	IDR	Admin Fee	AAA
+39	3	4000.00	IDR	Trans Fee	DOK
+39	2	7000.00	IDR	Admin Fee	AAA
+45	4	6000.00	IDR	Admin Fee	AAA
+46	4	6000.00	IDR	Admin Fee	AAA
+47	5	1.25	AUD	Admin Fee	AAA
+48	5	1.25	AUD	Admin Fee	AAA
+49	5	1.25	AUD	Admin Fee	AAA
+50	3	4000.00	IDR	Trans Fee	DOK
+50	2	7000.00	IDR	Admin Fee	AAA
+51	3	4000.00	IDR	Trans Fee	DOK
+51	2	7000.00	IDR	Admin Fee	AAA
+52	3	4000.00	IDR	Trans Fee	DOK
+52	2	7000.00	IDR	Admin Fee	AAA
+58	4	6000.00	IDR	Admin Fee	AAA
+59	4	6000.00	IDR	Admin Fee	AAA
+60	5	1.25	AUD	Admin Fee	AAA
+61	5	1.25	AUD	Admin Fee	AAA
+62	5	1.25	AUD	Admin Fee	AAA
+63	3	4000.00	IDR	Trans Fee	DOK
+63	2	7000.00	IDR	Admin Fee	AAA
+64	3	4000.00	IDR	Trans Fee	DOK
+64	2	7000.00	IDR	Admin Fee	AAA
+65	3	4000.00	IDR	Trans Fee	DOK
+65	2	7000.00	IDR	Admin Fee	AAA
+71	4	6000.00	IDR	Admin Fee	AAA
+72	4	6000.00	IDR	Admin Fee	AAA
+73	5	1.25	AUD	Admin Fee	AAA
+74	5	1.25	AUD	Admin Fee	AAA
+75	5	1.25	AUD	Admin Fee	AAA
+76	3	4000.00	IDR	Trans Fee	DOK
+76	2	7000.00	IDR	Admin Fee	AAA
+77	3	4000.00	IDR	Trans Fee	DOK
+77	2	7000.00	IDR	Admin Fee	AAA
+78	3	4000.00	IDR	Trans Fee	DOK
+78	2	7000.00	IDR	Admin Fee	AAA
+84	4	6000.00	IDR	Admin Fee	AAA
+85	4	6000.00	IDR	Admin Fee	AAA
+86	5	1.25	AUD	Admin Fee	AAA
+87	5	1.25	AUD	Admin Fee	AAA
+88	5	1.25	AUD	Admin Fee	AAA
+89	3	4000.00	IDR	Trans Fee	DOK
+89	2	7000.00	IDR	Admin Fee	AAA
+90	3	4000.00	IDR	Trans Fee	DOK
+90	2	7000.00	IDR	Admin Fee	AAA
+91	3	4000.00	IDR	Trans Fee	DOK
+91	2	7000.00	IDR	Admin Fee	AAA
+97	4	6000.00	IDR	Admin Fee	AAA
+98	4	6000.00	IDR	Admin Fee	AAA
+99	5	1.25	AUD	Admin Fee	AAA
+100	5	1.25	AUD	Admin Fee	AAA
+\.
+
+
+--
+-- Data for Name: transaction_inquiries; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY transaction_inquiries (id, type_id, user_id, request_time, update_time, transaction_id, validation_id, collect_id, invalid_auth_count) FROM stdin;
+1	11	5	2012-09-06 18:47:37.769	\N	\N	\N	\N	0
+2	11	5	2012-09-06 18:47:38.627	\N	1	\N	\N	0
+3	11	5	2012-09-06 18:47:39.126	\N	2	\N	\N	0
+4	11	5	2012-09-06 18:47:39.344	\N	3	\N	\N	0
+5	11	5	2012-09-06 18:47:39.564	\N	4	\N	\N	0
+6	11	5	2012-09-06 18:47:39.777	\N	5	\N	\N	0
+7	11	5	2012-09-06 18:47:39.967	\N	6	\N	\N	0
+8	11	5	2012-09-06 18:47:40.171	\N	7	\N	\N	0
+9	11	5	2012-09-06 18:47:40.361	\N	8	\N	\N	0
+10	11	5	2012-09-06 18:47:40.539	\N	9	\N	\N	0
+11	11	5	2012-09-06 18:47:40.726	\N	10	\N	\N	0
+12	11	5	2012-09-06 18:47:40.915	\N	11	\N	\N	0
+13	11	5	2012-09-06 18:47:41.109	\N	12	\N	\N	0
+14	11	5	2012-09-06 18:47:41.321	\N	13	\N	\N	0
+15	11	5	2012-09-06 18:47:41.502	\N	14	\N	\N	0
+16	11	5	2012-09-06 18:47:41.666	\N	15	\N	\N	0
+17	11	5	2012-09-06 18:47:41.818	\N	16	\N	\N	0
+18	11	5	2012-09-06 18:47:41.978	\N	17	\N	\N	0
+19	11	5	2012-09-06 18:47:42.143	\N	18	\N	\N	0
+20	11	5	2012-09-06 18:47:42.297	\N	19	\N	\N	0
+21	11	5	2012-09-06 18:47:42.469	\N	20	\N	\N	0
+22	11	5	2012-09-06 18:47:42.643	\N	21	\N	\N	0
+23	11	5	2012-09-06 18:47:42.815	\N	22	\N	\N	0
+24	11	5	2012-09-06 18:47:43.002	\N	23	\N	\N	0
+25	11	5	2012-09-06 18:47:43.183	\N	24	\N	\N	0
+26	11	5	2012-09-06 18:47:43.349	\N	25	\N	\N	0
+27	11	5	2012-09-06 18:47:43.539	\N	26	\N	\N	0
+28	11	5	2012-09-06 18:47:43.782	\N	27	\N	\N	0
+29	11	5	2012-09-06 18:47:43.931	\N	28	\N	\N	0
+30	11	5	2012-09-06 18:47:44.088	\N	29	\N	\N	0
+31	11	5	2012-09-06 18:47:44.238	\N	30	\N	\N	0
+32	11	5	2012-09-06 18:47:44.388	\N	31	\N	\N	0
+33	11	5	2012-09-06 18:47:44.712	\N	32	\N	\N	0
+34	11	5	2012-09-06 18:47:44.917	\N	33	\N	\N	0
+35	11	5	2012-09-06 18:47:45.077	\N	34	\N	\N	0
+36	11	5	2012-09-06 18:47:45.238	\N	35	\N	\N	0
+37	11	5	2012-09-06 18:47:45.395	\N	36	\N	\N	0
+38	11	5	2012-09-06 18:47:45.649	\N	37	\N	\N	0
+39	11	5	2012-09-06 18:47:45.855	\N	38	\N	\N	0
+40	11	5	2012-09-06 18:47:46.019	\N	39	\N	\N	0
+41	11	5	2012-09-06 18:47:46.186	\N	40	\N	\N	0
+42	11	5	2012-09-06 18:47:46.335	\N	41	\N	\N	0
+43	11	5	2012-09-06 18:47:46.53	\N	42	\N	\N	0
+44	11	5	2012-09-06 18:47:46.676	\N	43	\N	\N	0
+45	11	5	2012-09-06 18:47:46.828	\N	44	\N	\N	0
+46	11	5	2012-09-06 18:47:47.03	\N	45	\N	\N	0
+47	11	5	2012-09-06 18:47:47.209	\N	46	\N	\N	0
+48	11	5	2012-09-06 18:47:47.41	\N	47	\N	\N	0
+49	11	5	2012-09-06 18:47:47.596	\N	48	\N	\N	0
+50	11	5	2012-09-06 18:47:47.818	\N	49	\N	\N	0
+51	11	5	2012-09-06 18:47:48.011	\N	50	\N	\N	0
+52	11	5	2012-09-06 18:47:48.171	\N	51	\N	\N	0
+53	11	5	2012-09-06 18:47:48.325	\N	52	\N	\N	0
+54	11	5	2012-09-06 18:47:48.485	\N	53	\N	\N	0
+55	11	5	2012-09-06 18:47:48.635	\N	54	\N	\N	0
+56	11	5	2012-09-06 18:47:48.785	\N	55	\N	\N	0
+57	11	5	2012-09-06 18:47:48.935	\N	56	\N	\N	0
+58	11	5	2012-09-06 18:47:49.076	\N	57	\N	\N	0
+59	11	5	2012-09-06 18:47:49.217	\N	58	\N	\N	0
+60	11	5	2012-09-06 18:47:49.377	\N	59	\N	\N	0
+61	11	5	2012-09-06 18:47:49.524	\N	60	\N	\N	0
+68	11	5	2012-09-06 18:47:50.659	\N	67	\N	\N	0
+75	11	5	2012-09-06 18:47:51.83	\N	74	\N	\N	0
+84	11	5	2012-09-06 18:47:53.236	\N	83	\N	\N	0
+95	11	5	2012-09-06 18:47:54.951	\N	94	\N	\N	0
+62	11	5	2012-09-06 18:47:49.685	\N	61	\N	\N	0
+63	11	5	2012-09-06 18:47:49.841	\N	62	\N	\N	0
+72	11	5	2012-09-06 18:47:51.365	\N	71	\N	\N	0
+87	11	5	2012-09-06 18:47:53.678	\N	86	\N	\N	0
+97	11	5	2012-09-06 18:47:55.235	\N	96	\N	\N	0
+128	21	1	2012-09-06 18:48:01.923	\N	27	80561280044032	20561280044032	0
+129	21	1	2012-09-06 18:48:02.074	\N	28	80561290044376	20561290044376	0
+130	21	1	2012-09-06 18:48:02.233	\N	29	80571300044850	20571300044850	0
+131	21	1	2012-09-06 18:48:02.431	\N	30	80571310045195	20571310045195	0
+132	21	1	2012-09-06 18:48:02.571	\N	31	80541320045144	20541320045144	0
+133	21	1	2012-09-06 18:48:02.705	\N	32	80541330045486	20541330045486	0
+134	21	1	2012-09-06 18:48:02.855	\N	33	80551340045962	20551340045962	0
+135	21	1	2012-09-06 18:48:03.007	\N	34	80551350046305	20551350046305	0
+136	21	1	2012-09-06 18:48:03.197	\N	35	80531360046376	20531360046376	0
+137	21	1	2012-09-06 18:48:03.333	\N	36	80521370046580	20521370046580	0
+138	21	1	2012-09-06 18:48:03.479	\N	37	80531380047058	20531380047058	0
+139	21	1	2012-09-06 18:48:03.612	\N	38	80531390047399	20531390047399	0
+140	21	1	2012-09-06 18:48:03.744	\N	39	80511400047460	20511400047460	0
+141	21	1	2012-09-06 18:48:03.888	\N	40	80501410047658	20501410047658	0
+142	21	1	2012-09-06 18:48:04.029	\N	41	80521420048280	20521420048280	0
+143	21	1	2012-09-06 18:48:04.162	\N	42	80511430048477	20511430048477	0
+144	21	1	2012-09-06 18:48:04.305	\N	43	80631440050544	20631440050544	0
+145	21	1	2012-09-06 18:48:04.437	\N	44	80631450050895	20631450050895	0
+146	21	1	2012-09-06 18:48:04.572	\N	45	80641460051392	20641460051392	0
+147	21	1	2012-09-06 18:48:04.755	\N	46	80641470051744	20641470051744	0
+148	21	1	2012-09-06 18:48:04.895	\N	47	80621480051800	20621480051800	0
+149	21	1	2012-09-06 18:48:05.026	\N	48	80611490052001	20611490052001	0
+150	21	1	2012-09-06 18:48:05.169	\N	49	80621500052500	20621500052500	0
+151	21	1	2012-09-06 18:48:05.313	\N	50	80621510052850	20621510052850	0
+152	21	1	2012-09-06 18:48:05.477	\N	51	80601520052896	20601520052896	0
+153	21	1	2012-09-06 18:48:05.618	\N	52	80591530053091	20591530053091	0
+154	21	1	2012-09-06 18:48:05.779	\N	53	80611540053746	20611540053746	0
+155	21	1	2012-09-06 18:48:05.928	\N	54	80601550053940	20601550053940	0
+64	11	5	2012-09-06 18:47:50	\N	63	\N	\N	0
+65	11	5	2012-09-06 18:47:50.158	\N	64	\N	\N	0
+66	11	5	2012-09-06 18:47:50.326	\N	65	\N	\N	0
+67	11	5	2012-09-06 18:47:50.497	\N	66	\N	\N	0
+73	11	5	2012-09-06 18:47:51.516	\N	72	\N	\N	0
+83	11	5	2012-09-06 18:47:53.095	\N	82	\N	\N	0
+90	11	5	2012-09-06 18:47:54.182	\N	89	\N	\N	0
+91	11	5	2012-09-06 18:47:54.356	\N	90	\N	\N	0
+98	11	5	2012-09-06 18:47:55.378	\N	97	\N	\N	0
+69	11	5	2012-09-06 18:47:50.806	\N	68	\N	\N	0
+76	11	5	2012-09-06 18:47:51.981	\N	75	\N	\N	0
+70	11	5	2012-09-06 18:47:51.076	\N	69	\N	\N	0
+81	11	5	2012-09-06 18:47:52.782	\N	80	\N	\N	0
+86	11	5	2012-09-06 18:47:53.529	\N	85	\N	\N	0
+96	11	5	2012-09-06 18:47:55.093	\N	95	\N	\N	0
+71	11	5	2012-09-06 18:47:51.226	\N	70	\N	\N	0
+89	11	5	2012-09-06 18:47:53.979	\N	88	\N	\N	0
+94	11	5	2012-09-06 18:47:54.811	\N	93	\N	\N	0
+99	11	5	2012-09-06 18:47:55.534	\N	98	\N	\N	0
+100	11	5	2012-09-06 18:47:55.804	\N	99	\N	\N	0
+168	21	1	2012-09-06 18:48:07.883	\N	100	80381680054768	20381680054768	0
+169	21	1	2012-09-06 18:48:08.017	\N	63	80381690055094	20381690055094	0
+170	21	1	2012-09-06 18:48:08.2	\N	64	80391700055590	20391700055590	0
+171	21	1	2012-09-06 18:48:08.334	\N	65	80391710055917	20391710055917	0
+172	21	1	2012-09-06 18:48:08.539	\N	66	80361720055728	20361720055728	0
+173	21	1	2012-09-06 18:48:08.866	\N	71	80361730056052	20361730056052	0
+174	21	1	2012-09-06 18:48:09.297	\N	88	80371740056550	20371740056550	0
+175	21	1	2012-09-06 18:48:09.474	\N	89	80371750056875	20371750056875	0
+176	21	1	2012-09-06 18:48:09.617	\N	90	80491760059312	20491760059312	0
+177	21	1	2012-09-06 18:48:09.758	\N	91	80481770059472	20481770059472	0
+178	21	1	2012-09-06 18:48:09.906	\N	92	80501780060164	20501780060164	0
+179	21	1	2012-09-06 18:48:10.044	\N	67	80491790060323	20491790060323	0
+180	21	1	2012-09-06 18:48:10.18	\N	74	80471800060300	20471800060300	0
+181	21	1	2012-09-06 18:48:10.321	\N	82	80471810060635	20471810060635	0
+182	21	1	2012-09-06 18:48:10.455	\N	93	80481820061152	20481820061152	0
+183	21	1	2012-09-06 18:48:10.587	\N	98	80481830061488	20481830061488	0
+74	11	5	2012-09-06 18:47:51.673	\N	73	\N	\N	0
+101	11	5	2012-09-06 18:47:55.953	\N	100	\N	\N	0
+77	11	5	2012-09-06 18:47:52.135	\N	76	\N	\N	0
+78	11	5	2012-09-06 18:47:52.306	\N	77	\N	\N	0
+79	11	5	2012-09-06 18:47:52.464	\N	78	\N	\N	0
+80	11	5	2012-09-06 18:47:52.638	\N	79	\N	\N	0
+85	11	5	2012-09-06 18:47:53.38	\N	84	\N	\N	0
+110	21	1	2012-09-06 18:47:58.88	\N	9	80491100037070	20491100037070	0
+111	21	1	2012-09-06 18:47:59.041	\N	10	80481110037296	20481110037296	0
+112	21	1	2012-09-06 18:47:59.198	\N	11	80611120039088	20611120039088	0
+113	21	1	2012-09-06 18:47:59.377	\N	12	80601130039324	20601130039324	0
+114	21	1	2012-09-06 18:47:59.537	\N	13	80611140039786	20611140039786	0
+115	21	1	2012-09-06 18:47:59.695	\N	14	80611150040135	20611150040135	0
+116	21	1	2012-09-06 18:47:59.852	\N	15	80591160040252	20591160040252	0
+117	21	1	2012-09-06 18:48:00.026	\N	16	80581170040482	20581170040482	0
+118	21	1	2012-09-06 18:48:00.2	\N	17	80601180041064	20601180041064	0
+119	21	1	2012-09-06 18:48:00.375	\N	18	80591190041293	20591190041293	0
+120	21	1	2012-09-06 18:48:00.543	\N	19	80571200041400	20571200041400	0
+121	21	1	2012-09-06 18:48:00.705	\N	20	80561210041624	20561210041624	0
+122	21	1	2012-09-06 18:48:00.857	\N	21	80581220042212	20581220042212	0
+123	21	1	2012-09-06 18:48:01	\N	22	80571230042435	20571230042435	0
+124	21	1	2012-09-06 18:48:01.181	\N	23	80551240042532	20551240042532	0
+125	21	1	2012-09-06 18:48:01.327	\N	24	80551250042875	20551250042875	0
+126	21	1	2012-09-06 18:48:01.466	\N	25	80561260043344	20561260043344	0
+127	21	1	2012-09-06 18:48:01.62	\N	26	80561270043688	20561270043688	0
+82	11	5	2012-09-06 18:47:52.929	\N	81	\N	\N	0
+88	11	5	2012-09-06 18:47:53.828	\N	87	\N	\N	0
+92	11	5	2012-09-06 18:47:54.521	\N	91	\N	\N	0
+93	11	5	2012-09-06 18:47:54.675	\N	92	\N	\N	0
+102	21	1	2012-09-06 18:47:57.481	\N	1	80521020034680	20521020034680	0
+103	21	1	2012-09-06 18:47:57.749	\N	2	80521030035020	20521030035020	0
+104	21	1	2012-09-06 18:47:57.91	\N	3	80501040035152	20501040035152	0
+105	21	1	2012-09-06 18:47:58.065	\N	4	80491050035385	20491050035385	0
+106	21	1	2012-09-06 18:47:58.246	\N	5	80511060035934	20511060035934	0
+107	21	1	2012-09-06 18:47:58.408	\N	6	80501070036166	20501070036166	0
+108	21	1	2012-09-06 18:47:58.565	\N	7	80481080036288	20481080036288	0
+109	21	1	2012-09-06 18:47:58.722	\N	8	80471090036515	20471090036515	0
+184	21	1	2012-09-06 18:48:10.92	\N	99	80451840061272	20451840061272	0
+185	21	1	2012-09-06 18:48:11.053	\N	68	80451850061605	20451850061605	0
+186	21	1	2012-09-06 18:48:11.186	\N	76	80461860062124	20461860062124	0
+187	21	1	2012-09-06 18:48:11.324	\N	77	80461870062458	20461870062458	0
+188	21	1	2012-09-06 18:48:11.471	\N	78	80441880062416	20441880062416	0
+189	21	1	2012-09-06 18:48:11.614	\N	79	80431890062559	20431890062559	0
+190	21	1	2012-09-06 18:48:11.745	\N	84	80441900063080	20441900063080	0
+191	21	1	2012-09-06 18:48:11.878	\N	95	80441910063412	20441910063412	0
+192	21	1	2012-09-06 18:48:12.026	\N	69	80271920060480	20271920060480	0
+193	21	1	2012-09-06 18:48:12.162	\N	80	80271930060795	20271930060795	0
+194	21	1	2012-09-06 18:48:12.299	\N	85	80281940061304	20281940061304	0
+195	21	1	2012-09-06 18:48:12.437	\N	73	80281950061620	20281950061620	0
+196	21	1	2012-09-06 18:48:12.568	\N	83	80261960061544	20261960061544	0
+197	21	1	2012-09-06 18:48:12.706	\N	75	80251970061661	20251970061661	0
+198	21	1	2012-09-06 18:48:12.844	\N	94	80261980062172	20261980062172	0
+199	21	1	2012-09-06 18:48:12.975	\N	81	80261990062486	20261990062486	0
+200	21	1	2012-09-06 18:48:13.107	\N	87	80242000062400	20242000062400	0
+201	21	1	2012-09-06 18:48:13.268	\N	97	80232010062511	20232010062511	0
+156	21	1	2012-09-06 18:48:06.226	\N	55	80581560053976	20581560053976	0
+157	21	1	2012-09-06 18:48:06.38	\N	56	80571570054165	20571570054165	0
+158	21	1	2012-09-06 18:48:06.527	\N	57	80591580054826	20591580054826	0
+159	21	1	2012-09-06 18:48:06.659	\N	58	80581590055014	20581590055014	0
+160	21	1	2012-09-06 18:48:06.792	\N	59	80421600052800	20421600052800	0
+161	21	1	2012-09-06 18:48:06.924	\N	60	80411610052969	20411610052969	0
+162	21	1	2012-09-06 18:48:07.058	\N	61	80431620053622	20431620053622	0
+163	21	1	2012-09-06 18:48:07.192	\N	70	80421630053790	20421630053790	0
+164	21	1	2012-09-06 18:48:07.327	\N	86	80401640053792	20401640053792	0
+165	21	1	2012-09-06 18:48:07.465	\N	96	80391650053955	20391650053955	0
+166	21	1	2012-09-06 18:48:07.607	\N	62	80411660054614	20411660054614	0
+167	21	1	2012-09-06 18:48:07.744	\N	72	80401670054776	20401670054776	0
+\.
+
+
+--
+-- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY transactions (id, corporate_code, user_id, channel_code, created_time, status, cash_in_time, cash_out_time, sender_id, sender_country_code, sender_currency_code, sender_amount, beneficiary_id, beneficiary_country_code, beneficiary_currency_code, beneficiary_amount, forex_reference_id, beneficiary_city_id, auth1, auth2, fee_included, fund_source, sender_note) FROM stdin;
+26	AAA	5	02	2012-09-06 18:47:43.687	50	2012-04-11 00:00:00	2012-04-12 00:00:00	3	ID	IDR	10789200.00	4	AU	AUD	1090.35	4	\N	4321	\N	t	\N	\N
+27	AAA	5	02	2012-09-06 18:47:43.878	50	2012-04-30 00:00:00	2012-05-01 00:00:00	1	MY	MYR	100.00	2	ID	IDR	301461.00	7	\N	4321	\N	t	\N	\N
+28	AAA	5	02	2012-09-06 18:47:44.036	50	2012-08-28 00:00:00	2012-09-02 00:00:00	3	MY	MYR	150.00	2	ID	IDR	452191.50	7	\N	4321	\N	t	\N	\N
+60	AAA	5	02	2012-09-06 18:47:49.619	50	2012-04-04 00:00:00	2012-04-04 00:00:00	4	AU	AUD	48.75	5	ID	IDR	482261.32	5	\N	4321	\N	t	\N	\N
+61	AAA	5	02	2012-09-06 18:47:49.783	50	2012-03-07 00:00:00	2012-03-11 00:00:00	4	AU	AUD	2580.70	5	ID	IDR	25529677.97	5	\N	4321	\N	f	\N	\N
+70	AAA	5	02	2012-09-06 18:47:51.315	50	2012-05-31 00:00:00	2012-05-31 00:00:00	2	MY	MYR	100.00	1	ID	IDR	301461.00	7	\N	4321	\N	t	\N	\N
+86	AAA	5	02	2012-09-06 18:47:53.772	50	2012-04-22 00:00:00	2012-04-23 00:00:00	4	AU	AUD	50.00	5	ID	IDR	494627.00	5	\N	4321	\N	f	\N	\N
+96	AAA	5	02	2012-09-06 18:47:55.327	50	2012-06-13 00:00:00	2012-06-16 00:00:00	2	MY	MYR	100.00	1	ID	IDR	301461.00	7	\N	4321	\N	f	\N	\N
+62	AAA	5	02	2012-09-06 18:47:49.94	50	2012-08-09 00:00:00	2012-08-11 00:00:00	3	AU	AUD	2579.45	5	ID	IDR	25517312.30	5	\N	4321	\N	t	\N	\N
+72	AAA	5	02	2012-09-06 18:47:51.611	50	2012-02-04 00:00:00	2012-02-06 00:00:00	1	ID	IDR	944000.00	2	MY	MYR	312.08	6	\N	4321	\N	f	\N	\N
+100	AAA	5	02	2012-09-06 18:47:56.049	50	2012-02-13 00:00:00	2012-02-14 00:00:00	4	AU	AUD	2580.70	5	ID	IDR	25529677.97	5	\N	4321	\N	f	\N	\N
+8	AAA	5	02	2012-09-06 18:47:40.47	50	2012-04-22 00:00:00	2012-04-24 00:00:00	4	AU	AUD	50.00	5	ID	IDR	494627.00	5	\N	4321	\N	f	\N	\N
+63	AAA	5	02	2012-09-06 18:47:50.091	50	2012-08-14 00:00:00	2012-08-16 00:00:00	3	ID	IDR	869500.00	4	AU	AUD	87.87	4	\N	4321	\N	t	\N	\N
+64	AAA	5	02	2012-09-06 18:47:50.253	50	2012-04-27 00:00:00	2012-04-30 00:00:00	3	ID	IDR	1500000.00	4	AU	AUD	151.59	4	\N	4321	\N	f	\N	\N
+65	AAA	5	02	2012-09-06 18:47:50.42	50	2012-05-10 00:00:00	2012-05-14 00:00:00	3	ID	IDR	10789200.00	4	AU	AUD	1090.35	4	\N	4321	\N	t	\N	\N
+66	AAA	5	02	2012-09-06 18:47:50.604	50	2012-07-23 00:00:00	2012-07-24 00:00:00	1	MY	MYR	100.00	2	ID	IDR	301461.00	7	\N	4321	\N	f	\N	\N
+71	AAA	5	02	2012-09-06 18:47:51.458	50	2012-07-12 00:00:00	2012-07-12 00:00:00	2	ID	IDR	500000.00	1	MY	MYR	165.30	6	\N	4321	\N	f	\N	\N
+88	AAA	5	02	2012-09-06 18:47:54.115	50	2012-06-06 00:00:00	2012-06-09 00:00:00	3	AU	AUD	2579.45	5	ID	IDR	25517312.30	5	\N	4321	\N	t	\N	\N
+89	AAA	5	02	2012-09-06 18:47:54.286	50	2012-03-28 00:00:00	2012-03-28 00:00:00	3	ID	IDR	869500.00	4	AU	AUD	87.87	4	\N	4321	\N	t	\N	\N
+90	AAA	5	02	2012-09-06 18:47:54.445	50	2012-07-26 00:00:00	2012-07-28 00:00:00	3	ID	IDR	1500000.00	4	AU	AUD	151.59	4	\N	4321	\N	f	\N	\N
+91	AAA	5	02	2012-09-06 18:47:54.615	50	2012-07-30 00:00:00	2012-08-02 00:00:00	3	ID	IDR	10789200.00	4	AU	AUD	1090.35	4	\N	4321	\N	t	\N	\N
+92	AAA	5	02	2012-09-06 18:47:54.762	50	2012-08-20 00:00:00	2012-08-21 00:00:00	1	MY	MYR	100.00	2	ID	IDR	301461.00	7	\N	4321	\N	f	\N	\N
+1	AAA	5	02	2012-09-06 18:47:39.056	50	2012-08-18 00:00:00	2012-08-23 00:00:00	1	MY	MYR	100.00	2	ID	IDR	301461.00	7	\N	4321	\N	f	\N	\N
+2	AAA	5	02	2012-09-06 18:47:39.277	50	2012-05-03 00:00:00	2012-05-09 00:00:00	3	MY	MYR	150.00	2	ID	IDR	452191.50	7	\N	4321	\N	t	\N	\N
+3	AAA	5	02	2012-09-06 18:47:39.496	50	2012-05-31 00:00:00	2012-06-03 00:00:00	3	MY	MYR	1205.00	4	ID	IDR	3632605.05	7	\N	4321	\N	t	\N	\N
+4	AAA	5	02	2012-09-06 18:47:39.706	50	2012-06-18 00:00:00	2012-06-20 00:00:00	3	MY	MYR	700.00	2	ID	IDR	2110227.00	7	\N	4321	\N	f	\N	\N
+5	AAA	5	02	2012-09-06 18:47:39.904	50	2012-08-13 00:00:00	2012-08-13 00:00:00	2	MY	MYR	100.00	1	ID	IDR	301461.00	7	\N	4321	\N	t	\N	\N
+6	AAA	5	02	2012-09-06 18:47:40.094	50	2012-06-10 00:00:00	2012-06-14 00:00:00	2	ID	IDR	494000.00	1	MY	MYR	163.31	6	\N	4321	\N	t	\N	\N
+7	AAA	5	02	2012-09-06 18:47:40.29	50	2012-09-05 00:00:00	2012-09-08 00:00:00	1	ID	IDR	944000.00	2	MY	MYR	312.08	6	\N	4321	\N	f	\N	\N
+9	AAA	5	02	2012-09-06 18:47:40.654	50	2012-05-10 00:00:00	2012-05-15 00:00:00	4	AU	AUD	2579.45	5	ID	IDR	25517312.30	5	\N	4321	\N	t	\N	\N
+10	AAA	5	02	2012-09-06 18:47:40.844	50	2012-02-09 00:00:00	2012-02-11 00:00:00	3	AU	AUD	2580.70	5	ID	IDR	25529677.97	5	\N	4321	\N	f	\N	\N
+11	AAA	5	02	2012-09-06 18:47:41.026	50	2012-03-31 00:00:00	2012-03-31 00:00:00	3	ID	IDR	880500.00	4	AU	AUD	88.98	4	\N	4321	\N	f	\N	\N
+12	AAA	5	02	2012-09-06 18:47:41.24	50	2012-03-08 00:00:00	2012-03-11 00:00:00	3	ID	IDR	1500000.00	4	AU	AUD	151.59	4	\N	4321	\N	f	\N	\N
+13	AAA	5	02	2012-09-06 18:47:41.43	50	2012-07-15 00:00:00	2012-07-15 00:00:00	3	ID	IDR	10789200.00	4	AU	AUD	1090.35	4	\N	4321	\N	t	\N	\N
+14	AAA	5	02	2012-09-06 18:47:41.604	50	2012-04-15 00:00:00	2012-04-18 00:00:00	1	MY	MYR	100.00	2	ID	IDR	301461.00	7	\N	4321	\N	f	\N	\N
+15	AAA	5	02	2012-09-06 18:47:41.764	50	2012-05-21 00:00:00	2012-05-26 00:00:00	3	MY	MYR	150.00	2	ID	IDR	452191.50	7	\N	4321	\N	t	\N	\N
+16	AAA	5	02	2012-09-06 18:47:41.921	50	2012-09-01 00:00:00	2012-09-03 00:00:00	3	MY	MYR	1205.00	4	ID	IDR	3632605.05	7	\N	4321	\N	t	\N	\N
+17	AAA	5	02	2012-09-06 18:47:42.084	50	2012-08-08 00:00:00	2012-08-11 00:00:00	3	MY	MYR	700.00	2	ID	IDR	2110227.00	7	\N	4321	\N	t	\N	\N
+18	AAA	5	02	2012-09-06 18:47:42.24	50	2012-04-03 00:00:00	2012-04-03 00:00:00	2	MY	MYR	100.00	1	ID	IDR	301461.00	7	\N	4321	\N	f	\N	\N
+19	AAA	5	02	2012-09-06 18:47:42.402	50	2012-07-13 00:00:00	2012-07-13 00:00:00	2	ID	IDR	500000.00	1	MY	MYR	165.30	6	\N	4321	\N	f	\N	\N
+20	AAA	5	02	2012-09-06 18:47:42.58	50	2012-03-29 00:00:00	2012-04-02 00:00:00	1	ID	IDR	938000.00	2	MY	MYR	310.10	6	\N	4321	\N	t	\N	\N
+21	AAA	5	02	2012-09-06 18:47:42.749	50	2012-08-09 00:00:00	2012-08-09 00:00:00	4	AU	AUD	50.00	5	ID	IDR	494627.00	5	\N	4321	\N	f	\N	\N
+22	AAA	5	02	2012-09-06 18:47:42.931	50	2012-04-27 00:00:00	2012-05-03 00:00:00	4	AU	AUD	2579.45	5	ID	IDR	25517312.30	5	\N	4321	\N	t	\N	\N
+23	AAA	5	02	2012-09-06 18:47:43.117	50	2012-05-19 00:00:00	2012-05-19 00:00:00	3	AU	AUD	2580.70	5	ID	IDR	25529677.97	5	\N	4321	\N	f	\N	\N
+24	AAA	5	02	2012-09-06 18:47:43.277	50	2012-08-27 00:00:00	2012-08-29 00:00:00	3	ID	IDR	880500.00	4	AU	AUD	88.98	4	\N	4321	\N	f	\N	\N
+25	AAA	5	02	2012-09-06 18:47:43.445	50	2012-05-19 00:00:00	2012-05-21 00:00:00	3	ID	IDR	1489000.00	4	AU	AUD	150.47	4	\N	4321	\N	t	\N	\N
+67	AAA	5	02	2012-09-06 18:47:50.753	50	2012-02-08 00:00:00	2012-02-11 00:00:00	3	MY	MYR	150.00	2	ID	IDR	452191.50	7	\N	4321	\N	f	\N	\N
+74	AAA	5	02	2012-09-06 18:47:51.92	50	2012-06-23 00:00:00	2012-06-26 00:00:00	4	AU	AUD	2579.45	5	ID	IDR	25517312.30	5	\N	4321	\N	t	\N	\N
+82	AAA	5	02	2012-09-06 18:47:53.191	50	2012-07-17 00:00:00	2012-07-18 00:00:00	3	MY	MYR	700.00	2	ID	IDR	2110227.00	7	\N	4321	\N	f	\N	\N
+93	AAA	5	02	2012-09-06 18:47:54.904	50	2012-04-01 00:00:00	2012-04-03 00:00:00	3	MY	MYR	150.00	2	ID	IDR	452191.50	7	\N	4321	\N	f	\N	\N
+98	AAA	5	02	2012-09-06 18:47:55.731	50	2012-03-19 00:00:00	2012-03-20 00:00:00	1	ID	IDR	938000.00	2	MY	MYR	310.10	6	\N	4321	\N	t	\N	\N
+99	AAA	5	02	2012-09-06 18:47:55.893	50	2012-03-30 00:00:00	2012-04-02 00:00:00	4	AU	AUD	50.00	5	ID	IDR	494627.00	5	\N	4321	\N	f	\N	\N
+46	AAA	5	02	2012-09-06 18:47:47.319	50	2012-02-16 00:00:00	2012-02-18 00:00:00	1	ID	IDR	944000.00	2	MY	MYR	312.08	6	\N	4321	\N	f	\N	\N
+47	AAA	5	02	2012-09-06 18:47:47.511	50	2012-06-27 00:00:00	2012-06-30 00:00:00	4	AU	AUD	48.75	5	ID	IDR	482261.32	5	\N	4321	\N	t	\N	\N
+48	AAA	5	02	2012-09-06 18:47:47.709	50	2012-05-19 00:00:00	2012-05-22 00:00:00	4	AU	AUD	2579.45	5	ID	IDR	25517312.30	5	\N	4321	\N	t	\N	\N
+68	AAA	5	02	2012-09-06 18:47:51.017	50	2012-05-29 00:00:00	2012-06-03 00:00:00	3	MY	MYR	1205.00	4	ID	IDR	3632605.05	7	\N	4321	\N	t	\N	\N
+76	AAA	5	02	2012-09-06 18:47:52.234	50	2012-05-18 00:00:00	2012-05-22 00:00:00	3	ID	IDR	880500.00	4	AU	AUD	88.98	4	\N	4321	\N	f	\N	\N
+77	AAA	5	02	2012-09-06 18:47:52.398	50	2012-07-06 00:00:00	2012-07-10 00:00:00	3	ID	IDR	1489000.00	4	AU	AUD	150.47	4	\N	4321	\N	t	\N	\N
+78	AAA	5	02	2012-09-06 18:47:52.57	50	2012-07-28 00:00:00	2012-07-30 00:00:00	3	ID	IDR	10800200.00	4	AU	AUD	1091.46	4	\N	4321	\N	f	\N	\N
+79	AAA	5	02	2012-09-06 18:47:52.73	50	2012-03-04 00:00:00	2012-03-08 00:00:00	1	MY	MYR	100.00	2	ID	IDR	301461.00	7	\N	4321	\N	f	\N	\N
+84	AAA	5	02	2012-09-06 18:47:53.47	50	2012-06-06 00:00:00	2012-06-12 00:00:00	2	ID	IDR	500000.00	1	MY	MYR	165.30	6	\N	4321	\N	f	\N	\N
+95	AAA	5	02	2012-09-06 18:47:55.187	50	2012-08-27 00:00:00	2012-08-31 00:00:00	3	MY	MYR	700.00	2	ID	IDR	2110227.00	7	\N	4321	\N	t	\N	\N
+29	AAA	5	02	2012-09-06 18:47:44.187	50	2012-08-23 00:00:00	2012-08-28 00:00:00	3	MY	MYR	1205.00	4	ID	IDR	3632605.05	7	\N	4321	\N	t	\N	\N
+30	AAA	5	02	2012-09-06 18:47:44.335	50	2012-07-13 00:00:00	2012-07-14 00:00:00	3	MY	MYR	700.00	2	ID	IDR	2110227.00	7	\N	4321	\N	f	\N	\N
+31	AAA	5	02	2012-09-06 18:47:44.652	50	2012-07-01 00:00:00	2012-07-02 00:00:00	2	MY	MYR	100.00	1	ID	IDR	301461.00	7	\N	4321	\N	t	\N	\N
+32	AAA	5	02	2012-09-06 18:47:44.842	50	2012-03-29 00:00:00	2012-03-29 00:00:00	2	ID	IDR	494000.00	1	MY	MYR	163.31	6	\N	4321	\N	t	\N	\N
+33	AAA	5	02	2012-09-06 18:47:45.016	50	2012-06-02 00:00:00	2012-06-07 00:00:00	1	ID	IDR	944000.00	2	MY	MYR	312.08	6	\N	4321	\N	f	\N	\N
+34	AAA	5	02	2012-09-06 18:47:45.176	50	2012-07-01 00:00:00	2012-07-05 00:00:00	4	AU	AUD	50.00	5	ID	IDR	494627.00	5	\N	4321	\N	f	\N	\N
+35	AAA	5	02	2012-09-06 18:47:45.335	50	2012-02-24 00:00:00	2012-02-27 00:00:00	4	AU	AUD	2580.70	5	ID	IDR	25529677.97	5	\N	4321	\N	f	\N	\N
+36	AAA	5	02	2012-09-06 18:47:45.544	50	2012-02-21 00:00:00	2012-02-22 00:00:00	3	AU	AUD	2579.45	5	ID	IDR	25517312.30	5	\N	4321	\N	t	\N	\N
+37	AAA	5	02	2012-09-06 18:47:45.772	50	2012-04-01 00:00:00	2012-04-05 00:00:00	3	ID	IDR	869500.00	4	AU	AUD	87.87	4	\N	4321	\N	t	\N	\N
+38	AAA	5	02	2012-09-06 18:47:45.954	50	2012-05-07 00:00:00	2012-05-08 00:00:00	3	ID	IDR	1489000.00	4	AU	AUD	150.47	4	\N	4321	\N	t	\N	\N
+39	AAA	5	02	2012-09-06 18:47:46.115	50	2012-06-21 00:00:00	2012-06-27 00:00:00	3	ID	IDR	10789200.00	4	AU	AUD	1090.35	4	\N	4321	\N	t	\N	\N
+40	AAA	5	02	2012-09-06 18:47:46.285	50	2012-07-03 00:00:00	2012-07-03 00:00:00	1	MY	MYR	100.00	2	ID	IDR	301461.00	7	\N	4321	\N	t	\N	\N
+41	AAA	5	02	2012-09-06 18:47:46.462	50	2012-06-10 00:00:00	2012-06-15 00:00:00	3	MY	MYR	150.00	2	ID	IDR	452191.50	7	\N	4321	\N	f	\N	\N
+42	AAA	5	02	2012-09-06 18:47:46.623	50	2012-02-07 00:00:00	2012-02-13 00:00:00	3	MY	MYR	1205.00	4	ID	IDR	3632605.05	7	\N	4321	\N	f	\N	\N
+43	AAA	5	02	2012-09-06 18:47:46.765	50	2012-07-21 00:00:00	2012-07-26 00:00:00	3	MY	MYR	700.00	2	ID	IDR	2110227.00	7	\N	4321	\N	t	\N	\N
+44	AAA	5	02	2012-09-06 18:47:46.94	50	2012-03-23 00:00:00	2012-03-27 00:00:00	2	MY	MYR	100.00	1	ID	IDR	301461.00	7	\N	4321	\N	t	\N	\N
+45	AAA	5	02	2012-09-06 18:47:47.135	50	2012-05-20 00:00:00	2012-05-20 00:00:00	2	ID	IDR	500000.00	1	MY	MYR	165.30	6	\N	4321	\N	f	\N	\N
+69	AAA	5	02	2012-09-06 18:47:51.17	50	2012-07-06 00:00:00	2012-07-11 00:00:00	3	MY	MYR	700.00	2	ID	IDR	2110227.00	7	\N	4321	\N	t	\N	\N
+80	AAA	5	02	2012-09-06 18:47:52.879	50	2012-07-14 00:00:00	2012-07-20 00:00:00	3	MY	MYR	150.00	2	ID	IDR	452191.50	7	\N	4321	\N	f	\N	\N
+85	AAA	5	02	2012-09-06 18:47:53.621	50	2012-08-23 00:00:00	2012-08-26 00:00:00	1	ID	IDR	938000.00	2	MY	MYR	310.10	6	\N	4321	\N	t	\N	\N
+49	AAA	5	02	2012-09-06 18:47:47.942	50	2012-05-28 00:00:00	2012-05-30 00:00:00	3	AU	AUD	2579.45	5	ID	IDR	25517312.30	5	\N	4321	\N	t	\N	\N
+50	AAA	5	02	2012-09-06 18:47:48.101	50	2012-04-10 00:00:00	2012-04-15 00:00:00	3	ID	IDR	869500.00	4	AU	AUD	87.87	4	\N	4321	\N	t	\N	\N
+51	AAA	5	02	2012-09-06 18:47:48.262	50	2012-07-08 00:00:00	2012-07-12 00:00:00	3	ID	IDR	1489000.00	4	AU	AUD	150.47	4	\N	4321	\N	t	\N	\N
+52	AAA	5	02	2012-09-06 18:47:48.418	50	2012-09-01 00:00:00	2012-09-03 00:00:00	3	ID	IDR	10800200.00	4	AU	AUD	1091.46	4	\N	4321	\N	f	\N	\N
+53	AAA	5	02	2012-09-06 18:47:48.582	50	2012-06-05 00:00:00	2012-06-05 00:00:00	1	MY	MYR	100.00	2	ID	IDR	301461.00	7	\N	4321	\N	f	\N	\N
+54	AAA	5	02	2012-09-06 18:47:48.73	50	2012-02-07 00:00:00	2012-02-13 00:00:00	3	MY	MYR	150.00	2	ID	IDR	452191.50	7	\N	4321	\N	t	\N	\N
+55	AAA	5	02	2012-09-06 18:47:48.884	50	2012-04-10 00:00:00	2012-04-16 00:00:00	3	MY	MYR	1205.00	4	ID	IDR	3632605.05	7	\N	4321	\N	t	\N	\N
+56	AAA	5	02	2012-09-06 18:47:49.027	50	2012-05-10 00:00:00	2012-05-16 00:00:00	3	MY	MYR	700.00	2	ID	IDR	2110227.00	7	\N	4321	\N	t	\N	\N
+57	AAA	5	02	2012-09-06 18:47:49.168	50	2012-02-07 00:00:00	2012-02-11 00:00:00	2	MY	MYR	100.00	1	ID	IDR	301461.00	7	\N	4321	\N	f	\N	\N
+58	AAA	5	02	2012-09-06 18:47:49.313	50	2012-06-21 00:00:00	2012-06-21 00:00:00	2	ID	IDR	494000.00	1	MY	MYR	163.31	6	\N	4321	\N	t	\N	\N
+59	AAA	5	02	2012-09-06 18:47:49.469	50	2012-05-23 00:00:00	2012-05-24 00:00:00	1	ID	IDR	944000.00	2	MY	MYR	312.08	6	\N	4321	\N	f	\N	\N
+73	AAA	5	02	2012-09-06 18:47:51.767	50	2012-05-17 00:00:00	2012-05-22 00:00:00	4	AU	AUD	50.00	5	ID	IDR	494627.00	5	\N	4321	\N	f	\N	\N
+83	AAA	5	02	2012-09-06 18:47:53.331	50	2012-09-01 00:00:00	2012-09-07 00:00:00	2	MY	MYR	100.00	1	ID	IDR	301461.00	7	\N	4321	\N	f	\N	\N
+75	AAA	5	02	2012-09-06 18:47:52.071	50	2012-05-23 00:00:00	2012-05-23 00:00:00	3	AU	AUD	2580.70	5	ID	IDR	25529677.97	5	\N	4321	\N	f	\N	\N
+94	AAA	5	02	2012-09-06 18:47:55.044	50	2012-07-25 00:00:00	2012-07-26 00:00:00	3	MY	MYR	1205.00	4	ID	IDR	3632605.05	7	\N	4321	\N	t	\N	\N
+81	AAA	5	02	2012-09-06 18:47:53.023	50	2012-04-24 00:00:00	2012-04-26 00:00:00	3	MY	MYR	1205.00	4	ID	IDR	3632605.05	7	\N	4321	\N	f	\N	\N
+87	AAA	5	02	2012-09-06 18:47:53.921	50	2012-07-26 00:00:00	2012-07-27 00:00:00	4	AU	AUD	2579.45	5	ID	IDR	25517312.30	5	\N	4321	\N	t	\N	\N
+97	AAA	5	02	2012-09-06 18:47:55.474	50	2012-05-30 00:00:00	2012-05-30 00:00:00	2	ID	IDR	500000.00	1	MY	MYR	165.30	6	\N	4321	\N	f	\N	\N
+\.
+
+
+--
+-- Data for Name: user_permission; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY user_permission (id, value) FROM stdin;
+\.
+
+
+--
+-- Data for Name: user_requests; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY user_requests (request_time, username, type_id, request_id, request_data, result_data) FROM stdin;
+2012-09-06 18:47:40.714	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@76737f58
+2012-09-06 18:47:43.726	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@ba41381
+2012-09-06 18:47:46.74	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@40213e13
+2012-09-06 18:47:49.753	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@123f9bb1
+2012-09-06 18:47:52.759	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@3e898802
+2012-09-06 18:47:55.765	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@58d3d0d4
+2012-09-06 18:47:58.779	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@7f08a6b1
+2012-09-06 18:48:01.793	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@1e3337df
+2012-09-06 18:48:04.832	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@657d2a06
+2012-09-06 18:48:07.837	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@5c0c0d45
+2012-09-06 18:48:10.85	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@442ac57c
+2012-09-06 18:48:13.863	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@10361bd0
+2012-09-06 18:48:16.886	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@36c44a09
+2012-09-06 18:48:19.907	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@2b27f9cb
+2012-09-06 18:48:22.922	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@34996009
+2012-09-06 18:48:25.934	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@50b5f5f6
+2012-09-06 18:48:28.949	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@7b550f21
+2012-09-06 18:48:31.986	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@3f0bc479
+2012-09-06 18:48:35	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@5b1d21e1
+2012-09-06 18:48:38.014	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@683d2e1e
+2012-09-06 18:48:41.026	\N	-1	\N	DefaultRequestBody(None,Some(RawBuffer(inMemory=0, backedByTemporaryFile=null)),None,None,None,None,false)	play.mvc.Results$AsyncResult@7d0db63f
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY users (id, corporate_code, first_name, last_name, email, password, country_code, city_id, address, gender, birth_date, personal_id_type, personal_id, phone_number, postal_code, supervisor_id, is_admin, photo, status) FROM stdin;
+1	DOK	Faiq	Bratawidjaja	faiq@doku.com	blitzkrieg321	ID	1	Plaza Asia suite	0	1982-01-02	CITIZENID	12992019201	62899000081	12050	\N	t	\N	1
+2	AAA	Bayu	Sembada	bayu.sembada@mobiledoku.com	blitzkrieg321	ID	1	Plaza Asia suite	0	1982-01-02	CITIZENID	72218218	62899000082	12050	1	f	\N	1
+3	AAA	Lukman	Hakim	lukman.hakim@mobiledoku.com	blitzkrieg321	ID	1	Jalan Pramuka VI No. 71B	0	1980-01-02	CITIZENID	12891281091	62899111111	12056	2	f	\N	1
+4	AAA	Widhie	Prihatna	widhie.prihatna@mobiledoku.com	blitzkrieg321	AU	1	Jalan Pramuka VI No. 71B	0	1980-01-02	\N	\N	62899111111	12056	2	f	\N	1
+5	AAA	Fauzi	Assegaff	fauzi@doku.com	blitzkrieg321	ID	1	Jalan Pramuka VI No. 71B	1	1984-05-06	CITIZENID	728127189	628991123311	12056	3	f	\N	1
+6	AAA	Sigit	Nurseto	sigit@doku.com	blitzkrieg321	AU	5	Jalan Canberra Raya 77	1	1980-01-02	\N	\N	62899111111	12056	3	f	\N	1
+7	AAA	Marijose	Prihatna	prihatna.marijosa@doku.com	blitzkrieg321	AU	5	Jalan Canberra Raya 77	1	1980-01-02	\N	\N	62899111111	12056	4	f	\N	1
+8	WAR	Mark	Zuckerberg	dodo@agent.com	123	ID	1	Jalan Pramuka VI No. 71B	1	1984-05-06	\N	\N	628991123311	12056	\N	t	\N	1
+9	WAR	Amanaro	Brin	dodo@mainagent.com	123	ID	1	Jalan Pramuka VI No. 71B	0	1980-01-02	\N	\N	62899111121	12056	\N	f	\N	1
+10	WAR	Sergey	Page	dodo@supervisor.com	123	ID	1	Jalan Pramuka VI No. 71B	1	1980-01-02	\N	\N	6289911231	12056	\N	f	\N	0
+\.
+
+
+--
+-- Data for Name: users_groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY users_groups (users_id, groups_role) FROM stdin;
+1	doku
+2	mainagent
+3	supervisor
+4	supervisor
+5	agent
+6	agent
+7	agent
+8	doku
+9	mainagent
+10	supervisor
+\.
+
+
+--
+-- Data for Name: users_user_permission; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY users_user_permission (users_id, user_permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: pk_audit_logs; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY audit_logs
+    ADD CONSTRAINT pk_audit_logs PRIMARY KEY (id);
+
+
+--
+-- Name: pk_channels; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY channels
+    ADD CONSTRAINT pk_channels PRIMARY KEY (code);
+
+
+--
+-- Name: pk_cities; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY cities
+    ADD CONSTRAINT pk_cities PRIMARY KEY (id);
+
+
+--
+-- Name: pk_corporates; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY corporates
+    ADD CONSTRAINT pk_corporates PRIMARY KEY (code);
+
+
+--
+-- Name: pk_countries; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY countries
+    ADD CONSTRAINT pk_countries PRIMARY KEY (code);
+
+
+--
+-- Name: pk_currencies; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY currencies
+    ADD CONSTRAINT pk_currencies PRIMARY KEY (code);
+
+
+--
+-- Name: pk_customers; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY customers
+    ADD CONSTRAINT pk_customers PRIMARY KEY (id);
+
+
+--
+-- Name: pk_fees; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY fees
+    ADD CONSTRAINT pk_fees PRIMARY KEY (id);
+
+
+--
+-- Name: pk_forex; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY forex
+    ADD CONSTRAINT pk_forex PRIMARY KEY (id);
+
+
+--
+-- Name: pk_forex_references; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY forex_references
+    ADD CONSTRAINT pk_forex_references PRIMARY KEY (id);
+
+
+--
+-- Name: pk_forex_setting; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY forex_setting
+    ADD CONSTRAINT pk_forex_setting PRIMARY KEY (id);
+
+
+--
+-- Name: pk_groups; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY groups
+    ADD CONSTRAINT pk_groups PRIMARY KEY (role);
+
+
+--
+-- Name: pk_news; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY news
+    ADD CONSTRAINT pk_news PRIMARY KEY (id);
+
+
+--
+-- Name: pk_transaction_inquiries; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY transaction_inquiries
+    ADD CONSTRAINT pk_transaction_inquiries PRIMARY KEY (id);
+
+
+--
+-- Name: pk_transactions; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT pk_transactions PRIMARY KEY (id);
+
+
+--
+-- Name: pk_user_permission; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY user_permission
+    ADD CONSTRAINT pk_user_permission PRIMARY KEY (id);
+
+
+--
+-- Name: pk_users; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT pk_users PRIMARY KEY (id);
+
+
+--
+-- Name: pk_users_groups; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users_groups
+    ADD CONSTRAINT pk_users_groups PRIMARY KEY (users_id, groups_role);
+
+
+--
+-- Name: pk_users_user_permission; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users_user_permission
+    ADD CONSTRAINT pk_users_user_permission PRIMARY KEY (users_id, user_permission_id);
+
+
+--
+-- Name: play_evolutions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY play_evolutions
+    ADD CONSTRAINT play_evolutions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: uq_users_email; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT uq_users_email UNIQUE (email);
+
+
+--
+-- Name: ix_audit_logs_user_1; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_audit_logs_user_1 ON audit_logs USING btree (user_id);
+
+
+--
+-- Name: ix_cities_country_2; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_cities_country_2 ON cities USING btree (country_code);
+
+
+--
+-- Name: ix_countries_currency_3; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_countries_currency_3 ON countries USING btree (currency_code);
+
+
+--
+-- Name: ix_customers_agent_4; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_customers_agent_4 ON customers USING btree (agent_id);
+
+
+--
+-- Name: ix_customers_country_5; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_customers_country_5 ON customers USING btree (country_code);
+
+
+--
+-- Name: ix_fees_beneficiarycountry_8; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_fees_beneficiarycountry_8 ON fees USING btree (beneficiary_country_code);
+
+
+--
+-- Name: ix_fees_corporate_6; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_fees_corporate_6 ON fees USING btree (corporate_code);
+
+
+--
+-- Name: ix_fees_currency_9; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_fees_currency_9 ON fees USING btree (currency_code);
+
+
+--
+-- Name: ix_fees_domaincorporate_10; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_fees_domaincorporate_10 ON fees USING btree (domain_corporate_code);
+
+
+--
+-- Name: ix_fees_sendercountry_7; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_fees_sendercountry_7 ON fees USING btree (sender_country_code);
+
+
+--
+-- Name: ix_forex_destination_12; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_forex_destination_12 ON forex USING btree (destination_code);
+
+
+--
+-- Name: ix_forex_origin_11; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_forex_origin_11 ON forex USING btree (origin_code);
+
+
+--
+-- Name: ix_forex_references_forex_13; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_forex_references_forex_13 ON forex_references USING btree (forex_id);
+
+
+--
+-- Name: ix_news_corporate_14; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_news_corporate_14 ON news USING btree (corporate_code);
+
+
+--
+-- Name: ix_transaction_fees_currency_28; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transaction_fees_currency_28 ON transaction_fees USING btree (currency_code);
+
+
+--
+-- Name: ix_transaction_fees_domaincor_29; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transaction_fees_domaincor_29 ON transaction_fees USING btree (domain_corporate_code);
+
+
+--
+-- Name: ix_transaction_fees_fee_27; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transaction_fees_fee_27 ON transaction_fees USING btree (fee_id);
+
+
+--
+-- Name: ix_transaction_fees_transacti_26; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transaction_fees_transacti_26 ON transaction_fees USING btree (transaction_id);
+
+
+--
+-- Name: ix_transaction_inquiries_tran_31; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transaction_inquiries_tran_31 ON transaction_inquiries USING btree (transaction_id);
+
+
+--
+-- Name: ix_transaction_inquiries_user_30; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transaction_inquiries_user_30 ON transaction_inquiries USING btree (user_id);
+
+
+--
+-- Name: ix_transactions_beneficiary_21; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_beneficiary_21 ON transactions USING btree (beneficiary_id);
+
+
+--
+-- Name: ix_transactions_beneficiaryci_25; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_beneficiaryci_25 ON transactions USING btree (beneficiary_city_id);
+
+
+--
+-- Name: ix_transactions_beneficiaryco_22; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_beneficiaryco_22 ON transactions USING btree (beneficiary_country_code);
+
+
+--
+-- Name: ix_transactions_beneficiarycu_23; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_beneficiarycu_23 ON transactions USING btree (beneficiary_currency_code);
+
+
+--
+-- Name: ix_transactions_channel_17; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_channel_17 ON transactions USING btree (channel_code);
+
+
+--
+-- Name: ix_transactions_corporate_15; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_corporate_15 ON transactions USING btree (corporate_code);
+
+
+--
+-- Name: ix_transactions_forexreferenc_24; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_forexreferenc_24 ON transactions USING btree (forex_reference_id);
+
+
+--
+-- Name: ix_transactions_sender_18; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_sender_18 ON transactions USING btree (sender_id);
+
+
+--
+-- Name: ix_transactions_sendercountry_19; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_sendercountry_19 ON transactions USING btree (sender_country_code);
+
+
+--
+-- Name: ix_transactions_sendercurrenc_20; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_sendercurrenc_20 ON transactions USING btree (sender_currency_code);
+
+
+--
+-- Name: ix_transactions_user_16; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_transactions_user_16 ON transactions USING btree (user_id);
+
+
+--
+-- Name: ix_users_city_34; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_users_city_34 ON users USING btree (city_id);
+
+
+--
+-- Name: ix_users_corporate_32; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_users_corporate_32 ON users USING btree (corporate_code);
+
+
+--
+-- Name: ix_users_country_33; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_users_country_33 ON users USING btree (country_code);
+
+
+--
+-- Name: ix_users_supervisor_35; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX ix_users_supervisor_35 ON users USING btree (supervisor_id);
+
+
+--
+-- Name: fk_audit_logs_user_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY audit_logs
+    ADD CONSTRAINT fk_audit_logs_user_1 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_cities_country_2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cities
+    ADD CONSTRAINT fk_cities_country_2 FOREIGN KEY (country_code) REFERENCES countries(code);
+
+
+--
+-- Name: fk_countries_currency_3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY countries
+    ADD CONSTRAINT fk_countries_currency_3 FOREIGN KEY (currency_code) REFERENCES currencies(code);
+
+
+--
+-- Name: fk_customers_agent_4; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY customers
+    ADD CONSTRAINT fk_customers_agent_4 FOREIGN KEY (agent_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_customers_country_5; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY customers
+    ADD CONSTRAINT fk_customers_country_5 FOREIGN KEY (country_code) REFERENCES countries(code);
+
+
+--
+-- Name: fk_fees_beneficiarycountry_8; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY fees
+    ADD CONSTRAINT fk_fees_beneficiarycountry_8 FOREIGN KEY (beneficiary_country_code) REFERENCES countries(code);
+
+
+--
+-- Name: fk_fees_corporate_6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY fees
+    ADD CONSTRAINT fk_fees_corporate_6 FOREIGN KEY (corporate_code) REFERENCES corporates(code);
+
+
+--
+-- Name: fk_fees_currency_9; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY fees
+    ADD CONSTRAINT fk_fees_currency_9 FOREIGN KEY (currency_code) REFERENCES currencies(code);
+
+
+--
+-- Name: fk_fees_domaincorporate_10; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY fees
+    ADD CONSTRAINT fk_fees_domaincorporate_10 FOREIGN KEY (domain_corporate_code) REFERENCES corporates(code);
+
+
+--
+-- Name: fk_fees_sendercountry_7; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY fees
+    ADD CONSTRAINT fk_fees_sendercountry_7 FOREIGN KEY (sender_country_code) REFERENCES countries(code);
+
+
+--
+-- Name: fk_forex_destination_12; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY forex
+    ADD CONSTRAINT fk_forex_destination_12 FOREIGN KEY (destination_code) REFERENCES currencies(code);
+
+
+--
+-- Name: fk_forex_origin_11; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY forex
+    ADD CONSTRAINT fk_forex_origin_11 FOREIGN KEY (origin_code) REFERENCES currencies(code);
+
+
+--
+-- Name: fk_forex_references_forex_13; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY forex_references
+    ADD CONSTRAINT fk_forex_references_forex_13 FOREIGN KEY (forex_id) REFERENCES forex(id);
+
+
+--
+-- Name: fk_news_corporate_14; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY news
+    ADD CONSTRAINT fk_news_corporate_14 FOREIGN KEY (corporate_code) REFERENCES corporates(code);
+
+
+--
+-- Name: fk_transaction_fees_currency_28; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transaction_fees
+    ADD CONSTRAINT fk_transaction_fees_currency_28 FOREIGN KEY (currency_code) REFERENCES currencies(code);
+
+
+--
+-- Name: fk_transaction_fees_domaincor_29; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transaction_fees
+    ADD CONSTRAINT fk_transaction_fees_domaincor_29 FOREIGN KEY (domain_corporate_code) REFERENCES corporates(code);
+
+
+--
+-- Name: fk_transaction_fees_fee_27; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transaction_fees
+    ADD CONSTRAINT fk_transaction_fees_fee_27 FOREIGN KEY (fee_id) REFERENCES fees(id);
+
+
+--
+-- Name: fk_transaction_fees_transacti_26; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transaction_fees
+    ADD CONSTRAINT fk_transaction_fees_transacti_26 FOREIGN KEY (transaction_id) REFERENCES transactions(id);
+
+
+--
+-- Name: fk_transaction_inquiries_tran_31; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transaction_inquiries
+    ADD CONSTRAINT fk_transaction_inquiries_tran_31 FOREIGN KEY (transaction_id) REFERENCES transactions(id);
+
+
+--
+-- Name: fk_transaction_inquiries_user_30; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transaction_inquiries
+    ADD CONSTRAINT fk_transaction_inquiries_user_30 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_transactions_beneficiary_21; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_beneficiary_21 FOREIGN KEY (beneficiary_id) REFERENCES customers(id);
+
+
+--
+-- Name: fk_transactions_beneficiaryci_25; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_beneficiaryci_25 FOREIGN KEY (beneficiary_city_id) REFERENCES cities(id);
+
+
+--
+-- Name: fk_transactions_beneficiaryco_22; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_beneficiaryco_22 FOREIGN KEY (beneficiary_country_code) REFERENCES countries(code);
+
+
+--
+-- Name: fk_transactions_beneficiarycu_23; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_beneficiarycu_23 FOREIGN KEY (beneficiary_currency_code) REFERENCES currencies(code);
+
+
+--
+-- Name: fk_transactions_channel_17; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_channel_17 FOREIGN KEY (channel_code) REFERENCES channels(code);
+
+
+--
+-- Name: fk_transactions_corporate_15; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_corporate_15 FOREIGN KEY (corporate_code) REFERENCES corporates(code);
+
+
+--
+-- Name: fk_transactions_forexreferenc_24; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_forexreferenc_24 FOREIGN KEY (forex_reference_id) REFERENCES forex_references(id);
+
+
+--
+-- Name: fk_transactions_sender_18; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_sender_18 FOREIGN KEY (sender_id) REFERENCES customers(id);
+
+
+--
+-- Name: fk_transactions_sendercountry_19; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_sendercountry_19 FOREIGN KEY (sender_country_code) REFERENCES countries(code);
+
+
+--
+-- Name: fk_transactions_sendercurrenc_20; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_sendercurrenc_20 FOREIGN KEY (sender_currency_code) REFERENCES currencies(code);
+
+
+--
+-- Name: fk_transactions_user_16; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY transactions
+    ADD CONSTRAINT fk_transactions_user_16 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_users_city_34; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT fk_users_city_34 FOREIGN KEY (city_id) REFERENCES cities(id);
+
+
+--
+-- Name: fk_users_corporate_32; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT fk_users_corporate_32 FOREIGN KEY (corporate_code) REFERENCES corporates(code);
+
+
+--
+-- Name: fk_users_country_33; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT fk_users_country_33 FOREIGN KEY (country_code) REFERENCES countries(code);
+
+
+--
+-- Name: fk_users_groups_groups_02; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users_groups
+    ADD CONSTRAINT fk_users_groups_groups_02 FOREIGN KEY (groups_role) REFERENCES groups(role);
+
+
+--
+-- Name: fk_users_groups_users_01; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users_groups
+    ADD CONSTRAINT fk_users_groups_users_01 FOREIGN KEY (users_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_users_supervisor_35; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT fk_users_supervisor_35 FOREIGN KEY (supervisor_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_users_user_permission_user_01; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users_user_permission
+    ADD CONSTRAINT fk_users_user_permission_user_01 FOREIGN KEY (users_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_users_user_permission_user_02; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users_user_permission
+    ADD CONSTRAINT fk_users_user_permission_user_02 FOREIGN KEY (user_permission_id) REFERENCES user_permission(id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

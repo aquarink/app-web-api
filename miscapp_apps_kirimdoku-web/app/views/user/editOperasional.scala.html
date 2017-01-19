@@ -1,0 +1,29 @@
+@(corporate:models.Corporate, role:models.SecurityRole, myForm: Form[models.User])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Edit "+role.description, Seq(
+routes.User.show(corporate.code, Long.parseLong(myForm("id").value)).toString -> myForm("email").value,
+"" -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG112","Edit")
+)) {
+<div class="page-header">
+	<h1>Edit user @role.description</h1>
+</div>
+
+@partial.flash_alert()
+
+@form(routes.User.updateOperasional(corporate.code, Long.parseLong(myForm("id").value)),
+'class -> "form-vertical form-user form-horizontal",
+'enctype -> "multipart/form-data",
+'autocomplete -> "off"
+) {
+<input type="hidden" name="id" value="@myForm("id").value"/>
+
+@user.formBody(role, myForm, false)
+
+}
+} {
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/user.js")'></script>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.chainedSelects.js")'></script>
+}

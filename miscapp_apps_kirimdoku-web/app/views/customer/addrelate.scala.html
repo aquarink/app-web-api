@@ -1,0 +1,217 @@
+@(customer: models.Customer, currentPage: com.avaje.ebean.Page[models.Customer], currentSortBy: String, currentOrder: String, currentFilter: String)
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+        }
+        } else {
+            order = "asc"
+        }
+    }
+    routes.Customer.addRelate(customer.id, newPage, sortBy, order, currentFilter)
+}
+
+@header(key:String, title:String) = {
+<th class="@key" style="text-align: center;">
+	@if(key && key.length > 0) {
+		<a href="@link(currentPage.getPageIndex, key)">@title</a>
+	} else {
+		@title
+	}
+</th>
+}
+
+@layout("Add Customers Relate"){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG529","Add Customers Relate") @customer.firstName @customer.lastName</h1>
+</div>
+
+<div class="row">
+	<div class="span12">
+		<div class="well">
+			<form action="@link(0, "name")" method="GET" class="form-search">
+			<input type="hidden" value="@customer.id" name="id">
+				<div class="input-append">
+					<input type="search" id="searchbox" name="f" class="search-query span4" value="@currentFilter" placeholder='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG109","Filter by Personal ID / Name...")'>
+					<button type="submit" class="btn" style="border-radius:0px;"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+					<button type="button" class="btn" style="border-radius:0px;" id="relate"><i class="icon-plus"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG522","Relate")</button>
+					<a class="btn success" href="@routes.Customer.relate(customer.id)"><i class="icon-repeat"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG131","Back")</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@partial.flash_alert()
+
+<div class="row">
+    <div class="span7">
+
+        @if(currentPage.getTotalRowCount == 0){
+            <div class="well">
+                <em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG280","Data results are not found")</em>
+            </div>
+        } else {
+        	<form action="./" method="post" id="customerList">
+        	<input type="hidden" value="@customer.id" name="id">
+            <table class="customer table table-bordered table-striped table-condensed">
+                <thead>
+                    <tr>
+                    	<th style="text-align: center;">
+					        <input type="checkbox" id="checkAll">
+					    </th>
+                        @header("id", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID"))
+                        @header("country", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG056","Nationality"))
+                        @header("firstName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG051","First Name"))
+                        @header("lastName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG052","Last Name"))
+                        @header("phoneNumber", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone Number"))
+                        @header("action", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG105","Action"))
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(customerRelate <- currentPage.getList) {
+                        <tr>
+                        	<td style="text-align: center;">
+                        		<input type="checkbox" class="chk" name="customerId[]" value="@customerRelate.id">
+                        	</td>
+                            <td>@customerRelate.getIdToken</td>
+							<td>@customerRelate.country.name</td>
+                            <td>@customerRelate.firstName</td>
+                            <td>@customerRelate.lastName</td>
+                            <td>@customerRelate.phoneNumber</td>
+							<td class="actions">
+								<a href="@routes.Customer.summary(customerRelate.id)" class="btn-detail btn-customer-detail" data-remote="true">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG108","Detail")</a>
+							</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+			</form>
+            <div id="pagination" class="pagination pagination-right">
+                <ul>
+					<li>
+						<a class="btn" href="@routes.Customer.csv().toString()"><i class="icon-download-alt"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG128","Export as CSV")</a>
+					</li>
+                    @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    } else {
+                    <li class="prev">
+                        <a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    }
+
+                   <li class="current">
+                       <a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+                   </li>
+
+                    @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    } else {
+                    <li class="next">
+                        <a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+	<div class="span5">
+	   <div class="well" id="customer-detail-container">
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG281","You can view detail of customer by clicking 'Detail' on the desired row of customer")
+		</div>
+    </div>
+</div>
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <center id="myModalLabel">
+	    <h1 class="icon-ok"></h1>
+	    <h3 >Customer Relation Successfully</h3>
+    </center>
+  </div>
+  <div class="modal-body">
+    <center><button id="okayClose" class="btn btn-primary">OK</button></center>
+  </div>
+</div>
+<script type="text/javascript">
+<!--
+	$('#checkAll').change(function() {
+		if(this.checked) {
+			$('.chk').prop('checked', true);
+		} else {
+			$('.chk').prop('checked', false);
+		}
+	});
+	
+	$('#myForm').on('submit', function(e){
+		var statusSubmit = false;
+		$(".chk").each(function() {
+			if(this.checked) {
+				statusSubmit = true;
+				return false;
+			}
+		});
+		if (!statusSubmit) {
+			alert('Please check one or more customer');
+			return false;
+		} else {
+			return true;
+		}
+	});
+	
+	$('#relate').on('click', function(e){
+		var statusSubmit = false;
+		$(".chk").each(function() {
+			if(this.checked) {
+				statusSubmit = true;
+				return false;
+			}
+		});
+		if (!statusSubmit) {
+			alert('Please check one or more customer');
+			return false;
+		} else {
+			console.log('id : '+$('#customerList').serialize())
+			
+			$.ajax({
+			    type: 'POST',
+			    url: '@routes.Customer.addRelateAction()',
+			    data: $('#customerList').serialize(),
+			    error: function( xhr ) {
+			    	alert('Failed Add Relate');
+			    },
+			    beforeSend: function( xhr ) {
+			
+			    },
+			    success: function( xhr ) {
+			        console.log('result : '+xhr)
+			        if (xhr == 'SUCCESS') {
+			        	$("#myModal").modal();
+			        	$("#okayClose").click(function(){
+			        		location.reload();
+			            });
+			        }
+			    }
+			});
+			
+			return true;
+		}
+	});
+	
+//-->
+</script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/customer.js")'></script>
+}

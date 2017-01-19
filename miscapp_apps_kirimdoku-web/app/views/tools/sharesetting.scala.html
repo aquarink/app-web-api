@@ -1,0 +1,138 @@
+@(foType:Integer, foSSPercentage:java.math.BigDecimal, foSSFix:java.math.BigDecimal, feType:Integer, feSSPercentage:java.math.BigDecimal, feSSFix:java.math.BigDecimal, corporate:models.Corporate)
+@import helper._
+@import helper.twitterBootstrap._
+
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@import java.util.Calendar
+@import java.text.SimpleDateFormat
+
+@dateFormat(d:Date) = @{
+    new SimpleDateFormat("yyyy-MM-dd") format d
+}
+
+@layout("Share Setting", Seq(
+routes.Corporate.admin_index().toString -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG354","Corporate management"),
+"" -> corporate.name,
+"" -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG436","Share Setting")
+)){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG437","Share Setting for @corporate.name")</h1>
+</div>
+
+<div>
+	@partial.flash_alert()
+	
+	<div class="well">
+		<form action="@routes.SetupShareSetting.save()" method="post">
+		<input type="hidden" name="corporate" value="@corporate.code">
+		<table cellpadding="3" cellspacing="2">
+			<tr>
+				<td colspan="3"><b>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG438","Forex Share Setting")</b></td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="fo" id="percentage" @if(foType != 2){ checked="checked" } value="1" onchange="
+					if (!this.checked){
+						$('#foSSPercentage').attr('disabled',true);
+						$('#foSSPercentage').val('0.00');
+						$('#foSSFix').attr('disabled',false);
+					}else{
+						$('#foSSPercentage').attr('disabled',false);
+						$('#foSSFix').attr('disabled',true);
+						$('#foSSFix').val('0.00');
+					}">
+				</td>
+				<td>
+					@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG439","Percentage")
+				</td>
+				<td>
+					<input type="number" id="foSSPercentage" name="forexShareSettingPercentage" @if(foType == 2){ disabled="disabled" } value="@foSSPercentage" style="width: 130px;">&nbsp;%
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="fo" id="fix" @if(foType == 2){ checked="checked" } value="2" onchange="
+					if (!this.checked){
+						$('#foSSPercentage').attr('disabled',false);
+						$('#foSSFix').attr('disabled',true);
+						$('#foSSFix').val('0.00');
+					}else{
+						$('#foSSPercentage').attr('disabled',true);
+						$('#foSSPercentage').val('0.00');
+						$('#foSSFix').attr('disabled',false);
+					}">
+				</td>
+				<td>
+					@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG440","Fix")
+				</td>
+				<td>
+					<input type="number" id="foSSFix" name="forexShareSettingFix" @if(foType != 2){ disabled="disabled" } value="@foSSFix" style="width: 150px;">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3"><br><b>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG441","Fee Share Setting")</b></td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="fe" id="percentage" @if(feType != 2){ checked="checked" } value="1" onchange="
+					if (!this.checked){
+						$('#feSSPercentage').attr('disabled',true);
+						$('#feSSPercentage').val('0.00');
+						$('#feSSFix').attr('disabled',false);
+					}else{
+						$('#feSSPercentage').attr('disabled',false);
+						$('#feSSFix').attr('disabled',true);
+						$('#feSSFix').val('0.00');
+					}">
+				</td>
+				<td>
+					@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG439","Percentage")
+				</td>
+				<td>
+					<input type="number" id="feSSPercentage" name="feeShareSettingPercentage" @if(feType == 2){ disabled="disabled" } value="@feSSPercentage" style="width: 130px;">&nbsp;%
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="fe" id="fix" @if(feType == 2){ checked="checked" } value="2" onchange="
+					if (!this.checked){
+						$('#feSSPercentage').attr('disabled',false);
+						$('#feSSFix').attr('disabled',true);
+						$('#feSSFix').val('0.00');
+					}else{
+						$('#feSSPercentage').attr('disabled',true);
+						$('#feSSPercentage').val('0.00');
+						$('#feSSFix').attr('disabled',false);
+					}">
+				</td>
+				<td>
+					@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG440","Fix")
+				</td>
+				<td>
+					<input type="number" id="feSSFix" name="feeShareSettingFix" @if(feType != 2){ disabled="disabled" } value="@feSSFix" style="width: 100px;">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					&nbsp;
+				</td>
+				<td>
+					&nbsp;
+				</td>
+				<td><br>&nbsp;<br>
+					<button class="btn btn-primary" type="submit"><i class="icon-ok icon-white"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG126","Save")</button>
+					<a class="btn" href="@routes.Corporate.admin_index()"><i class="icon-repeat"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+	<br>&nbsp;<br>&nbsp;
+</div>
+<div class="span5" id="viewContainer">
+</div>
+
+}

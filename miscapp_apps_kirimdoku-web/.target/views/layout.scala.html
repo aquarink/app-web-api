@@ -1,0 +1,17 @@
+@(title:String = "", breadcrumbs: Seq[(String, String)] = null)(body: Html)(implicit head: Html = Html(""))
+
+@if((request().headers().get("X-Requested-With") != null) && request().headers().get("X-Requested-With")(0).equalsIgnoreCase("XMLHttpRequest")) {
+	@layoutXhr {
+		@body
+	}
+} else {
+	@if(session.get("isAdmin")) {
+		@layoutAdmin(title, breadcrumbs) {
+			@body
+		}
+	} else {
+		@layoutFront(title) {
+			@body
+		}
+	}
+}

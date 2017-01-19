@@ -1,0 +1,43 @@
+@(myForm: Form[models.News])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Add News") {
+	@partial.flash_alert()
+    <div class="span6 offset3">
+        @helper.form(routes.News.save) {
+            <div class="page-subheader">
+                <h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG458","Add News")</h3>
+            </div>
+
+			<div class="control-group">
+				<div class="row-fluid">
+					<div class="span12">
+						<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG460","Content")</label>
+						<textarea name="content" id="content" class="span12" cols="30" rows="20"></textarea>
+					 </div>
+				</div>
+			</div>
+
+			<!--div class="control-group">
+				<div class="row-fluid">
+					<div class="span12">
+						@select(
+						myForm("status"),
+						options(models.News.options),
+						'_label -> "Status",
+						'_showConstraints -> false,
+						'class -> "status required"
+						)
+					</div>
+				</div>
+			</div-->
+			<input type="hidden" name="corporate.code" value='@session.get("corporateCode")' />
+            <div class="form-actions">
+                <a href="@routes.News.list()" class="btn btn-inverse">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+                <button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG126","Save")</button>
+            </div>
+        }
+    </div>
+}

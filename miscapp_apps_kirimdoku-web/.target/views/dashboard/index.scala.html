@@ -1,0 +1,86 @@
+@(user:models.User, news: List[models.News])
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@layout("Dashboard"){
+<div class="page-header">
+	<h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG024","Dashboard")</h1>
+</div>
+
+@partial.flash_alert()
+
+<div class="row dashboard-region">
+	<div class="span7 dashboard-statistics" data-user="@user.id">
+		<div class="loading"></div>
+	</div>
+	<div class="span5 dashboard-pane">
+		<div class="box box-bordered">
+			<div class="page-subheader">
+				<h4>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG031","Current rate")</h4>
+			</div>
+			<div class="dashboard-forex" data-corporate="@user.corporate.code">
+				<div class="loading"></div>
+			</div>
+		</div>
+
+		<div id="news" class="box box-bordered">
+			<div id="news-carousel" class="carousel slide">
+				<div class="box-content">
+					<div class="page-subheader">
+						<h4>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG036","News")</h4>
+					</div>
+					<!-- Carousel items -->
+					<div class="carousel-inner">
+						@news.zipWithIndex.map{ case (newsItem, i) =>
+						<div class="@if(i==0){active} item news-content">
+							<p>
+								@newsItem.getSubContent
+								<div>
+									<a href="@routes.Dashboard.news(newsItem.id)" class="pull-right muted" style="display:none">Click to read more...</a>
+									&nbsp;
+								</div>
+							</p>
+						</div>
+						}
+					</div>
+				</div>
+				<div class="box-footer row-fluid">
+					<div class="span5">&nbsp;</div>
+					<div class="span4">
+						<!-- Carousel indicator -->
+						<ul class="nav nav-indicator">
+							@news.zipWithIndex.map{ case (obj, i) =>
+							<li @if(i==0){class="selected"}></li>
+							}
+						</ul>
+					</div>
+					<div class="span3 right">
+						<!-- Carousel nav -->
+						<a class="btn btn-small btn-carousel left" href="#news-carousel" data-slide="prev"><i class="icon-chevron-left"></i></a>
+						<a class="btn btn-small btn-carousel right" href="#news-carousel" data-slide="next"><i class="icon-chevron-right"></i></a>
+					</div>
+				</div>
+			</div> <!-- Carousel -->
+		</div>
+	</div>
+
+
+<div class="modal hide" id="newsModal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG036","News")</h3>
+	</div>
+	<div class="modal-body">
+		<p class="news-content">
+			Loading...
+		</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
+
+<script src="@routes.Assets.at("javascripts/bootstrap/bootstrap-carousel.js")"></script>
+<script src="@routes.Assets.at("javascripts/dashboard.js")"></script>
+}

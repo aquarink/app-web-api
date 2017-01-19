@@ -1,0 +1,374 @@
+@(err: String, transactionForm: Form[models.forms.CashInForm])
+@import helper._
+@import helper.twitterBootstrap._
+@import partial._
+
+@layout("Confirmation"){
+<div class="page-header">
+   <h2>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG071","Confirmation Page")</h2>
+</div>
+
+@partial.flash_alert()
+
+<div class="container-transaction-detail-inner">
+@if(err != null) {
+	<div class="row">
+		<div class="span12">
+			<div class="alert alert-error">@err</div>
+		</div>
+	</div>
+		<div class="form-actions">
+			<form action="@routes.Send.create()" method="post" enctype="application/x-www-form-urlencoded">
+			<input type="hidden" name="corporate.code" value=""/>
+			<input type="hidden" name="agent.idToken" value=""/>
+			<input type="hidden" name="channel.code" value=""/>
+			<input type="hidden" name="senderCountry.code" value=""/>
+			<input type="hidden" name="senderCurrency.code" value=""/>
+			<input type="hidden" name="beneficiaryCountry.code" value=""/>
+			<input type="hidden" name="beneficiaryCity" value=""/>
+			<input type="hidden" name="beneficiaryCurrency.code" value=""/>
+			<input type="hidden" name="senderAmount" value=""/>
+			<input type="hidden" name="beneficiaryAmount" value=""/>
+			<input type="hidden" name="inquiry.idToken" value=""/>
+			<input type="hidden" name="senderNote" value=""/>
+			<input type="hidden" name="sendType" value=""/>
+			<input type="hidden" name="voucherCode" value=""/>
+			
+			<input type="hidden" name="sender.idToken" value=""/>
+			<input type="hidden" name="sender.firstName" value=""/>
+			<input type="hidden" name="sender.lastName" value=""/>
+			<input type="hidden" name="sender.phoneNumber" value=""/>
+			<input type="hidden" name="sender.address" value=""/>
+			<input type="hidden" name="sender.country.code" value=""/>
+			<input type="hidden" name="sender.personalIdType" value=""/>
+			<input type="hidden" name="sender.personalId" value=""/>
+			<input type="hidden" name="sender.personalIdIssueDate" value=""/>
+			<input type="hidden" name="sender.personalIdExpireDate" value=""/>
+			<input type="hidden" name="sender.personalIdCountry.code" value=""/>
+			<input type="hidden" name="sender.gender" value=""/>
+			<input type="hidden" name="sender.occupation" value=""/>
+			<input type="hidden" name="sender.cityName" value=""/>
+			<input type="hidden" name="sender.birthDate" value=""/>
+		
+			<input type="hidden" name="beneficiary.idToken" value=""/>
+			<input type="hidden" name="beneficiary.firstName" value=""/>
+			<input type="hidden" name="beneficiary.lastName" value=""/>
+			<input type="hidden" name="beneficiary.phoneNumber" value=""/>
+			<input type="hidden" name="beneficiary.address" value=""/>
+			<input type="hidden" name="beneficiary.country.code" value=""/>
+			<button type="submit" class="btn btn-back"><i class="icon-arrow-left"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</button>
+			</form>
+		</div>
+} else {
+<div>
+	@helper.form(action = routes.Send.process(), 'id -> "send-confirmation-form", 'class -> "row") {
+	
+	<input type="hidden" name="corporate.code" value="@transactionForm("corporate.code").value"/>
+	<input type="hidden" name="agent.idToken" value="@transactionForm("agent.idToken").value"/>
+	<input type="hidden" name="channel.code" value="@transactionForm("channel.code").value"/>
+	<input type="hidden" name="senderCountry.code" value="@transactionForm("senderCountry.code").value"/>
+	<input type="hidden" name="senderCurrency.code" value="@transactionForm("senderCurrency.code").value"/>
+	<input type="hidden" name="beneficiaryCountry.code" value="@transactionForm("beneficiaryCountry.code").value"/>
+	<input type="hidden" name="beneficiaryCity" value="@transactionForm("beneficiaryCity").value"/>
+	<input type="hidden" name="beneficiaryCurrency.code" value="@transactionForm("beneficiaryCurrency.code").value"/>
+	<input type="hidden" name="senderAmount" value="@transactionForm("senderAmount").value"/>
+	<input type="hidden" name="beneficiaryAmount" value="@transactionForm("beneficiaryAmount").value"/>
+	<input type="hidden" name="inquiry.idToken" value="@transactionForm("inquiry.idToken").value"/>
+	<input type="hidden" name="senderNote" value="@transactionForm("senderNote").value"/>
+	<input type="hidden" name="sendType" value="@transactionForm("sendType").value"/>
+	
+	<input type="hidden" name="sender.idToken" value="@transactionForm.get.sender.getIdToken"/>
+	<input type="hidden" name="sender.firstName" value="@transactionForm("sender.firstName").value"/>
+	<input type="hidden" name="sender.lastName" value="@transactionForm("sender.lastName").value"/>
+	<input type="hidden" name="sender.phoneNumber" value="@transactionForm("sender.phoneNumber").value"/>
+	<input type="hidden" name="sender.address" value="@transactionForm("sender.address").value"/>
+	<input type="hidden" name="sender.country.code" value="@transactionForm("sender.country.code").value"/>
+	<input type="hidden" name="sender.personalIdType" value="@transactionForm("sender.personalIdType").value"/>
+	<input type="hidden" name="sender.personalId" value="@transactionForm("sender.personalId").value"/>
+	<input type="hidden" name="sender.personalIdIssueDate" value="@transactionForm("sender.personalIdIssueDate").value"/>
+	<input type="hidden" name="sender.personalIdExpireDate" value="@transactionForm("sender.personalIdExpireDate").value"/>
+	<input type="hidden" name="sender.personalIdCountry.code" value="@transactionForm("sender.personalIdCountry.code").value"/>
+	<input type="hidden" name="sender.gender" value="@transactionForm("sender.gender").value"/>
+	<input type="hidden" name="sender.occupation" value="@transactionForm("sender.occupation").value"/>
+	<input type="hidden" name="sender.cityName" value="@transactionForm("sender.cityName").value"/>
+	<input type="hidden" name="sender.birthDate" value="@transactionForm("sender.birthDate").value"/>
+
+	<input type="hidden" name="beneficiary.idToken" value="@transactionForm.get.beneficiary.getIdToken"/>
+	<input type="hidden" name="beneficiary.firstName" value="@transactionForm("beneficiary.firstName").value"/>
+	<input type="hidden" name="beneficiary.lastName" value="@transactionForm("beneficiary.lastName").value"/>
+	<input type="hidden" name="beneficiary.phoneNumber" value="@transactionForm("beneficiary.phoneNumber").value"/>
+	<input type="hidden" name="beneficiary.address" value="@transactionForm("beneficiary.address").value"/>
+	<input type="hidden" name="beneficiary.country.code" value="@transactionForm("beneficiary.country.code").value"/>
+
+	@if(transactionForm("channel.code").value == "06" || transactionForm("channel.code").value == "05" || transactionForm("channel.code").value == "22" || transactionForm("channel.code").value == "07") {
+		<input type="hidden" name="beneficiaryAccount.bank.code" value="@transactionForm("beneficiaryAccount.bank.code").value"/>
+		<input type="hidden" name="beneficiaryAccount.bank.name" value="@transactionForm("beneficiaryAccount.bank.name").value"/>
+		<input type="hidden" name="beneficiaryAccount.bank.countryCode" value="@transactionForm("beneficiary.country.code").value"/>
+		<input type="hidden" name="beneficiaryAccount.number" value="@transactionForm("beneficiaryAccount.number").value"/>
+		@if(transactionForm("beneficiaryAccount.bank.code").value == "BNIAIDJA") {
+			@if(transactionForm("beneficiary.firstName").value != transactionForm("beneficiary.lastName").value) {
+				<input type="hidden" name="beneficiaryAccount.name" value="@transactionForm("beneficiary.firstName").value @transactionForm("beneficiary.lastName").value"/>
+			}else{
+				<input type="hidden" name="beneficiaryAccount.name" value="@transactionForm("beneficiary.firstName").value"/>
+			}
+		} else {
+			@if(transactionForm("channel.code").value == "06" || transactionForm("channel.code").value == "07") {
+				<input type="hidden" name="beneficiaryAccount.name" value="@transactionForm("beneficiaryAccount.name").value"/>
+			} else {
+				@if(transactionForm("beneficiary.firstName").value != transactionForm("beneficiary.lastName").value) {
+					<input type="hidden" name="beneficiaryAccount.name" value="@transactionForm("beneficiary.firstName").value @transactionForm("beneficiary.lastName").value"/>
+				}else{
+					<input type="hidden" name="beneficiaryAccount.name" value="@transactionForm("beneficiary.firstName").value"/>
+				}
+			}
+		}
+		<input type="hidden" name="beneficiaryAccount.city" value="@transactionForm("beneficiaryAccount.city").value"/>
+		<input type="hidden" name="beneficiaryAccount.address" value="@transactionForm("beneficiaryAccount.address").value"/>
+	}
+	
+	@if(transactionForm("channel.code").value == "21" || transactionForm("channel.code").value == "22") {
+		<input type="hidden" name="voucherCode" value="@transactionForm("voucherCode").value"/>
+	}
+	
+	@if(transactionForm("channel.code").value == "04") {
+		<input type="hidden" name="beneficiaryWalletId" value="@transactionForm("beneficiaryWalletId").value"/>
+		<input type="hidden" name="beneficiaryWalletName" value="@transactionForm("beneficiaryWalletName").value"/>
+		<input type="hidden" name="trackingId" value="@transactionForm("trackingId").value"/>
+	}
+	
+	@if(transactionForm("channel.code").value == "03") {
+		<input type="hidden" name="beneficiaryAccount.bank.code" value="@transactionForm("beneficiaryAccount.bank.code").value"/>
+		<input type="hidden" name="beneficiaryAccount.bank.name" value="@transactionForm("beneficiaryAccount.bank.name").value"/>
+		<input type="hidden" name="beneficiaryAccount.bank.countryCode" value="@transactionForm("beneficiary.country.code").value"/>
+		<input type="hidden" name="beneficiaryAccount.number" value="@transactionForm("beneficiaryAccount.number").value"/>
+		<input type="hidden" name="beneficiaryAccount.city" value="@transactionForm("beneficiaryAccount.city").value"/>
+		<input type="hidden" name="beneficiaryAccount.address" value="@transactionForm("beneficiaryAccount.address").value"/>
+		<input type="hidden" name="beneficiaryAccount.inputMode" value="@transactionForm("beneficiary.inputMode").value"/>
+		@if(transactionForm("beneficiary.inputMode").value == "PINYIN") {
+		<input type="hidden" name="beneficiaryAccount.name" value="@transactionForm("beneficiary.firstName").value"/>
+		}else{ 
+			@if(transactionForm("beneficiary.inputMode").value == "TCODE") {
+				@transactionForm.data().put("beneficiaryAccount.name",transactionForm("beneficiary.tcode").value.replace(";", ","))
+				@if(transactionForm("beneficiaryAccount.name").value.endsWith(",")) {
+		<input type="hidden" name="beneficiaryAccount.name" value="@transactionForm("beneficiaryAccount.name").value.substring(0,transactionForm("beneficiaryAccount.name").value.length()-1)"/>
+				}else{
+		<input type="hidden" name="beneficiaryAccount.name" value="@transactionForm("beneficiaryAccount.name").value"/>
+				}
+			}
+		}
+		<input type="hidden" name="beneficiary.tcode" value="@transactionForm("beneficiary.tcode").value"/>
+		<input type="hidden" name="beneficiary.inputMode" value="@transactionForm("beneficiary.inputMode").value"/>
+		<input type="hidden" name="beneficiary.pinyin" value="@transactionForm("beneficiary.pinyin").value"/>
+	}
+	
+	@defining(transactionForm.get) { transaction =>
+	<fieldset class="span12">
+			<!--legend>Transaction information</legend-->
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG039","Service")</dt>
+						<dd>@transaction.channel.name</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG041","Receiver country")</dt>
+						<dd>@transaction.beneficiaryCountry.name</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG042","Sending amount")</dt>
+						<dd>@transaction.senderAmountFormat @transaction.senderCurrency.code</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG043","Amount to receive")</dt>
+						<dd>@transaction.beneficiaryAmountFormat @transaction.beneficiaryCurrency.code</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG046","Fee")</dt>
+						<dd>@transaction.feesTotal @transaction.senderCurrency.code</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG047","Additional Fee")</dt>
+						<dd>@models.Transaction.formatNumber(transaction.additionalFee) @transaction.beneficiaryCurrency.code</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG045","Exchange rate")</dt>
+						<dd>@models.Transaction.formatNumber(transaction.rate) @transaction.beneficiaryCurrency.code</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG044","Amount to collect")</dt>
+						<dd>@models.Transaction.formatNumber(transaction.collectAmount.add(transaction.feesTotal)) @transaction.senderCurrency.code</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG048","Sending purpose")</dt>
+						<dd>@transaction.senderNote</dd>
+					</dl>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG072","Customer ID of sender")</dt>
+						<dd>@transaction.sender.getIdToken()</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG199","Sender name")</dt>
+						<dd>@transaction.sender.fullName</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG200","Sender phone number")</dt>
+						<dd>@transaction.sender.phoneNumber</dd>
+					</dl>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG073","Customer ID of receiver")</dt>
+						<dd>@transaction.beneficiary.getIdToken()</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG201","Receiver name")</dt>
+						<dd>@transaction.beneficiary.fullName</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG202","Receiver phone number")</dt>
+						<dd>@transaction.beneficiary.phoneNumber</dd>
+					</dl>
+				</div>
+			</div>
+			
+			@if(transaction.channel.code == "06" || transaction.channel.code == "05" || transaction.channel.code == "07") {
+			@defining(transaction.beneficiaryAccount) { account =>
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG496","Bank")</dt>
+						<dd>@account.bank.code - @account.bank.name</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG338","Bank address")</dt>
+						<dd>@account.city</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG065","Account number")</dt>
+						<dd>@account.number</dd>
+						@if(transactionForm("channel.code").value == "06") {
+							@if(transaction.beneficiaryAccount.bank.code != "BNIAIDJA") {
+								<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG336","Account name")</dt>
+								<dd>@account.name</dd>
+							}
+						}else {
+							@if(transactionForm("channel.code").value == "07") {
+								<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG336","Account name")</dt>
+								<dd>@account.name</dd>
+							}
+						}
+					</dl>
+				</div>
+			</div>
+			}
+			}
+			@if(transactionForm("channel.code").value == "22") {
+			@defining(transaction.beneficiaryAccount) { account =>
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG496","Bank")</dt>
+						<dd>@account.bank.code - @account.bank.name</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG338","Bank address")</dt>
+						<dd>@account.address - @account.city</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG065","Account number")</dt>
+						<dd>@account.number</dd>
+					</dl>
+				</div>
+			</div>
+			}
+			}
+			@if(transaction.channel.code == "21" || transaction.channel.code == "22") {
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG214","Voucher Code")</dt>
+						<dd>@transaction.voucherCode</dd>
+					</dl>
+				</div>
+			</div>
+			}
+			
+			@if(transaction.channel.code == "04") {
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG215","Doku Wallet Id")</dt>
+						<dd>@transaction.beneficiaryWalletId</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG216","Doku Wallet Name")</dt>
+						<dd>@transaction.beneficiaryWalletName</dd>
+					</dl>
+				</div>
+			</div>
+			}
+		</fieldset>
+
+		<div class="span12">
+			<div class="form-actions">
+				<!--button onclick="window.history.back()" class="btn btn-back" type="reset"><i class="icon-arrow-left"></i> Back</button-->
+				<button type="button" class="btn btn-primary btn-forward">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG074","Proceed") <i class="icon-arrow-right"></i></button>
+			</div>
+		</div>
+
+		<div class="modal fade hide" id="send-confirmation-dialog">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG203","Send confirmation")</h3>
+			</div>
+			<div class="modal-body">
+				<div class="control-groups">
+					<p>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG204","In order to securing your transaction, we are highly advice to ask the customer to directly input their PIN on the form below")</p>
+				</div>
+				<hr/>
+				<div class="">
+					<p style="text-align: center;"><center>
+						<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG205","Please input new PIN below:")</label>
+						<div class="control-group">
+							<div class="input">
+								<input id="auth1" type="password" name="auth1" class="required" minlength="4" maxlength="4" placeholder="New PIN" style="text-align: center;"/>
+							</div>
+						</div>
+						<br/>
+						<div class="control-group">
+							<div class="input">
+								<input id="auth2" type="password" name="auth2" class="required" minlength="4" maxlength="4" placeholder="Confirm new PIN" style="text-align: center;"/>
+							</div>
+						</div>
+						<div id="auth2_field">
+						</div>
+					</center></p>
+				</div>
+				<p class="container-error">
+					
+				</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+				<button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG074","Proceed") <i class="icon-arrow-right"></i></button>
+			</div>
+		</div>
+
+		<div class="modal fade hide" id="send-authorization-dialog">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Send require authorization</h3>
+			</div>
+			<div class="modal-body">
+				<div class="control-groups">
+					<p>In order to proceed, please ask your supervisor to enter their password in the form below</p>
+				</div>
+				<hr/>
+				<div class="">
+					<p style="text-align: center;"><center>
+						<label>Supervisor</label>
+						<div class="control-group">
+							<div class="input">
+								<input id="author1" type="text" name="supervisor.email" class="disabled" value="@transaction.supervisor.email" readonly="readonly"/>
+							</div>
+						</div>
+						<br/>
+						<div class="control-group">
+							<div class="input">
+								<input id="author2" type="password" name="supervisor.password" placeholder="Enter supervisor password"/>
+							</div>
+						</div>
+						<div id="author2_field">
+						</div>
+					</center></p>
+				</div>
+				<p class="container-error">
+					
+				</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+				<button type="submit" class="btn btn-primary">Authorize &amp; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG074","Proceed")  <i class="icon-arrow-right"></i></button>
+			</div>
+		</div>
+	}
+
+</div>
+	}
+}
+
+} {
+<script type="text/javascript" src='@routes.Assets.at("javascripts/send.js")'></script>
+}

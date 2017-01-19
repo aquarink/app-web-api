@@ -1,0 +1,137 @@
+@(currentPage: com.avaje.ebean.Page[models.Channel], currentSortBy: String, currentOrder: String, currentFilter: String)
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+        }
+        } else {
+            order = "asc"
+        }
+    }
+    routes.Channels.list(newPage, sortBy, order, currentFilter)
+}
+
+@header(key:String, title:String) = {
+<th class="@key" style="text-align: center;">
+	@if(key && key.length > 0) {
+	<a href="@link(currentPage.getPageIndex, key)" style="white-space: nowrap;">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@layout("Set Bank Routing"){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG397","Set Bank Routing")</h1>
+</div>
+
+<div class="row">
+	<div class="span12">
+		<div class="well">
+			<form action="@link(0, "name")" method="GET" class="form-search">
+				<div class="input-append">
+					<input type="search" id="searchbox" name="f" class="search-query span4" value="@currentFilter" placeholder='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG489","Search Service Id / Name...")'><button type="submit" class="btn"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@partial.flash_alert()
+
+<div class="row">
+    <div class="span7">
+
+        @if(currentPage.getTotalRowCount == 0){
+            <div class="well">
+                <em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG280","Data results are not found")</em>
+            </div>
+        } else {
+            <table class="channel table table-bordered table-striped table-condensed">
+                <thead>
+                    <tr>
+                        @header("code", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG398","Service ID"))
+                        @header("name", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG399","Service Name"))
+                        @header("", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG105","Action"))
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(channel <- currentPage.getList) {
+                        <tr>
+							<td style="text-align: center;">@channel.code</td>
+                            <td>@channel.name</td>
+							<td class="actions" style="text-align: center;">
+								<a href="@routes.Channels.edit(channel.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG400","Manage Route")</a>
+							</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div id="pagination" class="pagination pagination-right">
+                <ul>
+                    @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    } else {
+                    <li class="prev">
+                        <a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    }
+
+                   <li class="current">
+                       <a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+                   </li>
+
+                    @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    } else {
+                    <li class="next">
+                        <a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+	<div class="span5">
+	   <div class="well" id="channel-detail-container">
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG401","You can view detail of channel by clicking 'Detail' on the desired row of channel")
+		</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+<!--
+	(function() {
+	  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+	  $(__bind(function() {
+	    var $detailContainer;
+	    $detailContainer = $("#channel-detail-container");
+	    return $('a.btn-channel-detail').on('ajax:beforeSend', function() {
+	      return $detailContainer.loading();
+	    }).on('ajax:success', function(e, data) {
+	      return $detailContainer.html(data);
+	    }).on('ajax:error', function(e, err) {
+	      return $detailContainer.html(e);
+	    });
+	  }, this));
+	}).call(this);
+//-->
+</script>
+
+}

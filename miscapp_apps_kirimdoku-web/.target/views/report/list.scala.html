@@ -1,0 +1,287 @@
+@(filterForm: Form[controllers.Report.FilterForm], currentPage: com.avaje.ebean.Page[models.Transaction], currentSortBy: String, currentOrder: String, userCorporateCountry: String)
+@import helper._
+@import helper.twitterBootstrap._
+
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@import java.util.Calendar
+@import java.text.SimpleDateFormat;
+
+@import java.math.BigInteger; var is_restrict = 0
+
+@urlFilterize(url:String) = @{
+var newUrl = url
+if(!url.contains("?")) {
+	newUrl = newUrl + "?"
+}
+newUrl +
+"&corporate.code="+filterForm("corporate.code").value +
+"&agentCode="+filterForm("agentCode").value +
+"&trxStartDate="+filterForm("trxStartDate").value +
+"&trxEndDate="+filterForm("trxEndDate").value +
+"&senderCountry.code="+filterForm("senderCountry.code").value +
+"&beneficiaryCountry.code="+filterForm("beneficiaryCountry.code").value +
+"&transactionsStatus="+filterForm("transactionsStatus").value
+}
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+            }
+        } else {
+            order = "asc"
+        }
+    }
+
+	urlFilterize(routes.Report.list(newPage, sortBy, order).url)
+}
+
+@dateFormat(d:Date) = @{
+    new SimpleDateFormat("yyyy-MM-dd") format d
+}
+
+
+@header(key:String, title:String) = {
+<th class="@key" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+	@if(key && key.length > 0) {
+	<a href="@link(currentPage.getPageIndex, key)">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@layout("Reporting"){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG017","Report")</h1>
+</div>
+
+<div>
+	@partial.flash_alert()
+
+    <div id="filter" class="well">
+        <form action="@link(0, "id")" method="GET" id="form-filter">
+        <div class="row-fluid">
+            <div class="span4">
+				@select(filterForm("corporate.code"),
+				options(models.Corporate.options),
+				'_showConstraints -> false,
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG133","Corporate")
+				)
+            </div>
+            <div class="span4">
+				@restrict(la(as("admin"), as("finance"), as("mainagent"), as("supervisor"))) {
+				@inputText(filterForm("agentCode"),
+				'_showConstraints -> false,
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG102","Agent ID"),
+				'placeholder -> "Input agent code.."
+				)
+				}
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span4">
+            	<!-- Stevano Edited 18 Jun 2015 -->
+            	@restrict(la(as("mainagent"), as("supervisor"), as("operator"))) {
+					@{is_restrict=1}
+				}
+            	
+				@if(is_restrict == 1){
+					@if(controllers.helpers.SessionHelper.getUser().corporate.permission == 2) {
+						<label for="senderCountry_code">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG040","Sending country")</label>
+						<div class="input">
+							<select id="senderCountry_code" name="senderCountry.code">
+							@for((code, name) <- models.Country.options) {
+								@if(code == userCorporateCountry){
+								  <option value="@code">@name</option>
+								}
+							}
+							</select>
+						</div>
+					}
+					@if(controllers.helpers.SessionHelper.getUser().corporate.permission == 4 || controllers.helpers.SessionHelper.getUser().corporate.permission == 6) {
+						@select(filterForm("senderCountry.code"),
+						options(models.Country.options),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG040","Sending country")
+						)
+					}
+				}else {
+					@select(filterForm("senderCountry.code"),
+					options(models.Country.options),
+					'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG040","Sending country")
+					)
+				}
+				<!-- End Edited -->
+			</div>
+            <div class="span4">
+				@if(is_restrict == 1){
+					@if(controllers.helpers.SessionHelper.getUser().corporate.permission == 4) {
+						<label for="senderCountry_code">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG134","Receiving country")</label>
+						<div class="input">
+							<select id="senderCountry_code" name="senderCountry.code">
+							@for((code, name) <- models.Country.options) {
+								@if(code == userCorporateCountry){
+								  <option value="@code">@name</option>
+								}
+							}
+							</select>
+						</div>
+					}
+					@if(controllers.helpers.SessionHelper.getUser().corporate.permission == 2 || controllers.helpers.SessionHelper.getUser().corporate.permission == 6) {
+						@select(filterForm("beneficiaryCountry.code"),
+						options(models.Country.options),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG134","Receiving country")
+						)
+					}
+				}else {
+					@select(filterForm("beneficiaryCountry.code"),
+					options(models.Country.options),
+					'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG134","Receiving country")
+					)
+				}
+			</div>
+        </div>
+        <div class="row-fluid">
+            <div class="span4">
+				@inputDate(filterForm("trxStartDate"), 
+				'_showConstraints -> false, 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG135","Transaction Start Date"), 
+				'_class -> "", 'class -> "datepicker")
+            </div>
+            <div class="span4">
+				@inputDate(filterForm("trxEndDate"), 
+				'_showConstraints -> false, 
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG136","Transaction End Date"), 
+				'_class -> "", 'class -> "datepicker")
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span4">
+				<div id="transactions_status" class="clearfix  ">
+				    <label for="transactions_status">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG132","Transaction Status")</label>
+				    <div class="input">
+						<select id="transactionsStatus" name="transactionsStatus">
+							<option></option>
+				            @for(list <- filterForm.get().transactionStatusList) {
+				            	<option value="@list.id" @if(filterForm.get().transactionsStatus == list.id){ selected="selected" }>@list.status</option>
+				            }
+			            </select>
+				        <span class="help-inline"></span>
+				        <span class="help-block"></span> 
+				    </div>
+				</div>
+			</div>
+            <div class="span4">
+				&nbsp;
+			</div>
+        </div>
+		<div id="filter-action" class="form-actions">
+			<a class="btn" href="@routes.Report.list()"><i class="icon-repeat"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG131","Back")</a>
+			<button type="submit" class="btn"><i class="icon-filter"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG130","Filter")</button>
+		</div>
+		</form>
+	</div>
+
+	@if(currentPage != null) {
+    @if(currentPage.getTotalRowCount == 0){
+    <div class="well">
+        <em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG286","Results are empty")</em>
+    </div>
+    } else {
+	<div class="row">
+		<div class="span12">
+		@if(filterForm("agent.id").value != null) {
+		<span class="">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG287","List reports from user") <strong>@filterForm("agent.fullName").value</strong> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG288","and agents under it")</span>
+		}
+			<div class="pull-right">
+				<!--a class="btn" href="@urlFilterize(routes.Report.pdf().toString())"><i class="icon-download-alt"></i> Download as PDF</a-->
+				<a class="btn" href="@urlFilterize(routes.Report.excel().toString())"><i class="icon-download-alt"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG137","Download as Excel")</a>
+			</div>
+		</div>
+	</div>
+	<br/>
+    <table class="transaction table-bordered table-striped table-condensed" style="width:100%;text-align: center;">
+        <thead>
+        <tr>
+            @header("id", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG138","Transaction ID"))
+            @header("user", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG102","Agent ID"))
+            @header("channel", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG139","Channel"))
+            @header("sender", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG140","Sender ID"))
+            @header("senderCountry", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG103","Sender Country"))
+            @header("senderAmount", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG141","Sender Amount"))
+            @header("beneficiary", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG142","Receiver ID"))
+            @header("beneficiaryCountry", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG104","Receiver Country"))
+            @header("beneficiaryAmount", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG143","Receiver Amount"))
+            @header("rate", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG144","Rate"))
+            @header("fee", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG145","Fee"))
+            @header("status", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG130","Status"))
+            @header("createdTime", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG146","Date"))
+        </tr>
+        </thead>
+        <tbody>
+        @for(transaction <- currentPage.getList) {
+        <tr>
+            <td class="left">@transaction.getIdToken</td>
+			<td>@transaction.agent.getIdToken</td>
+			<td>@transaction.channel.name</td>
+            <td>@transaction.sender.getIdToken</td>
+            <td>@transaction.senderCountry.name</td>
+            <td class="right" nowrap>@transaction.senderAmountFormat</td>
+            <td>@transaction.beneficiary.getIdToken</td>
+            <td>@transaction.beneficiaryCountry.name</td>
+            <td class="right" nowrap>@transaction.beneficiaryAmountFormat</td>
+            <td>@transaction.forexReference.rateFormat</td>
+            <td class="right" nowrap>@transaction.feesTotalFormat</td>
+            <td>@transaction.statusText</td>
+            <td>@models.Transaction.formatDate(transaction.createdTime, true)</td>
+        </tr>
+        }
+        </tbody>
+    </table>
+
+    <div id="pagination" class="pagination pagination-right">
+        <ul>
+            @if(currentPage.hasPrev) {
+            <li class="prev">
+                <a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+            </li>
+            } else {
+            <li class="prev">
+                <a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+            </li>
+            }
+
+            <li class="current">
+                <a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+            </li>
+
+            @if(currentPage.hasNext) {
+            <li class="next">
+                <a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+            </li>
+            } else {
+            <li class="next">
+                 <a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+            </li>
+            }
+        </ul>
+    </div>
+    }
+	}
+</div>
+<div class="span5" id="viewContainer">
+</div>
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/transaction.js")'></script>
+}

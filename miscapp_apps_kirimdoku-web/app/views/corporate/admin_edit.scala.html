@@ -1,0 +1,39 @@
+@(myForm: Form[models.Corporate], channels: List[models.Channel], mapChannel: Map[String, String])
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Corporate", Seq(
+routes.Corporate.admin_index().toString -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG190","Corporates management"),
+"" -> myForm("name").value.toString(),
+"" -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG112","Edit")
+)) {
+<div class="page-header">
+	<h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG352","Edit Corporate")</h1>
+</div>
+
+@partial.flash_alert()
+
+@form(routes.Corporate.admin_update(myForm("code").value), 'enctype -> "multipart/form-data", 'class -> "form form-horizontal") {
+	@if(myForm.hasErrors) {
+	<p class="alert alert-error">
+		@myForm.errors()
+	</p>
+	}
+	
+	<div class="hidden">
+		@input(myForm("status"), 'showConstraints -> false) { (id, name, value, args) =>
+		<input type="hidden" name="@name" value="@value"/>
+		}
+	</div>
+
+	@formBody(myForm, true, channels, mapChannel)
+}
+} {
+
+<script type="text/javascript">
+$(function() {
+	$('.colorpicker').colorpicker();
+});
+</script>
+
+}

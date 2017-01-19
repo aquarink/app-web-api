@@ -1,0 +1,66 @@
+@(user:models.User, latestTransactions: List[models.Transaction])
+
+<div>
+	<h3>Latest transactions</h3>
+	<div>
+		@if(latestTransactions.isEmpty) {
+		<div class="alert alert-message">No transactions data could be found</div>
+		} else {
+		<table class="top-transaction table table-bordered table-striped table-condensed">
+			<thead>
+				<tr>
+
+					<th style="text-align: center;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG026","Transaction ID")</th>
+					<th style="text-align: center;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG103","Sender Country")</th>
+					<th style="text-align: center;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG027","Receive country")</th>
+					<th style="text-align: center;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG028","Send amount")</th>
+					<th style="text-align: center;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG043","Receive amount")</th>
+					<th style="text-align: center;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG029","Date")</th>
+
+				</tr>
+			</thead>
+			<tbody>
+			@for(t <- latestTransactions){
+				<tr>
+					<td>@t.getIdToken</td>
+					<td>@t.senderCountry.name</td>
+					<td>@t.beneficiaryCountry.name</td>
+					<td class="right">@t.senderAmountFormat</td>
+					<td class="right">@t.beneficiaryAmountFormat</td>
+					<td>@t.cashInTime.getTime().format("dd-MMM-yyyy")</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+		}
+	</div>
+</div>
+<div class="row-fluid visible-desktop">
+	<div class="span12">
+		<div class="graph box box-bordered" data-graphType="performances" data-userId="@user.id">
+			<h4>Transaction Performance</h4>
+			<div id="chart1">
+				<svg style="height: 200px;"></svg>
+			</div>
+		</div>
+		<div class="graph box box-bordered" data-graphType="volumes" data-userId="@user.id">
+			<h4>Volume Performance</h4>
+			<div id="chart2">
+				<svg style="height: 200px;"></svg>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script src="@routes.Assets.at("javascripts/nvd3/lib/d3.v2.js")"></script>
+<script src="@routes.Assets.at("javascripts/nvd3/nv.d3.js")"></script>
+<!--script src="@routes.Assets.at("javascripts/nvd3/src/tooltip.js")"></script-->
+<script src="@routes.Assets.at("javascripts/nvd3/src/utils.js")"></script>
+<script src="@routes.Assets.at("javascripts/nvd3/src/models/legend.js")"></script>
+<script src="@routes.Assets.at("javascripts/nvd3/src/models/axis.js")"></script>
+<script src="@routes.Assets.at("javascripts/nvd3/src/models/scatter.js")"></script>
+<script src="@routes.Assets.at("javascripts/nvd3/src/models/line.js")"></script>
+<script src="@routes.Assets.at("javascripts/nvd3/src/models/lineChart.js")"></script>
+<script src="@routes.Assets.at("javascripts/dashboard.statistics.js")"></script>

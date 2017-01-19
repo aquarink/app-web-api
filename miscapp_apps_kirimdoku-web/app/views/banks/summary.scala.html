@@ -1,0 +1,19 @@
+@(bank:models.Bank)
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/customer.css")">
+
+<dl class="dl-horizontal dl-aligned">
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG060","Bank Name") </dt>
+	<dd>: @bank.name</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG394","Group Name") </dt>
+	<dd>: @bank.groupBank</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG365","ID")</dt>
+	<dd>: @bank.id</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG064","SWIFT Code")</dt>
+	<dd>: @bank.code</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG062","City")</dt>
+	<dd>: @bank.city</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country")</dt>
+	<dd>: @bank.countryCode</dd>
+	<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG061","Province")</dt>
+	<dd>: @bank.province</dd>
+</dl>

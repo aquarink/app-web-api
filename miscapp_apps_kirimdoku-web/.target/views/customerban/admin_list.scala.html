@@ -1,0 +1,153 @@
+@(filterForm: Form[models.Customer], currentPage: com.avaje.ebean.Page[models.CustomerBan], currentSortBy: String, currentOrder: String, currentFilter: String)
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Banned list") {
+<div class="page-header">
+  <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG193","Banned list")</h1>
+</div>
+
+<div class="common-container">
+	<div class="well common-container-filter">
+		@form(action = routes.CustomerBan.admin_list(), 'id -> "customer-ban-filter-form", 'class -> "form form-horizontal row") {
+			<div class="control-group span12">
+				@input(filterForm("f"), '_showConstraints -> false, '_class -> "nolabel", '_label -> "", 'class -> "span4", 
+				'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG493","Search by ID, name, or email address")
+				) { (id, name, value, args) =>
+				<div class="input-append">
+					<input type="search" name="@name" value="@value" @toHtmlArgs(args)>
+					<button type="submit" class="btn"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+				</div>
+				<a role="add" class="btn" href="#ban-add" data-toggle="modal"><i class="icon-plus"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG375","Add New")</a>
+				}
+			</div>
+		}
+	</div>
+
+	<div class="common-container-inner">
+		@if(currentPage.getTotalRowCount == 0){
+		<div class="well">
+			<em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG459","There are no news data to be displayed")</em>
+		</div>
+		} else {
+            <table class="customer table table-bordered table-striped table-condensed">
+                <thead>
+                    <tr>
+                        @header("customer.id", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID"))
+                        @header("customer.country", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country"))
+                        @header("customer.firstName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG051","First name"))
+                        @header("customer.lastName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG052","Last name"))
+                        @header(null, doku.kirimdoku.util.MultiLanguage.getLanguage("LANG476","Ban reason"))
+                        @header(null, doku.kirimdoku.util.MultiLanguage.getLanguage("LANG105","Action"))
+                    </tr>
+                </thead>
+                <tbody>
+					@for(ban <- currentPage.getList) {
+                        <tr>
+                            <td>@ban.customer.getIdToken</td>
+							<td>@if(ban.country != null) {
+							@ban.country.name
+							}</td>
+                            <td>@ban.firstName</td>
+                            <td>@ban.lastName</td>
+                            <td>@ban.reason</td>
+							<td class="actions">
+								<a href="@routes.CustomerBan.admin_unban(ban.id)" data-confirm='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG480","Are you sure you want to unban this customer?")'><i class="icon-remove"></i>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG369","Unban")</a>
+							</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+		
+            <div id="pagination" class="pagination pagination-right">
+                <ul>
+                    @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    } else {
+                    <li class="prev">
+                        <a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    }
+
+                   <li class="current">
+                       <a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+                   </li>
+
+                    @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    } else {
+                    <li class="next">
+                        <a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+		}
+	</div>
+
+	<!-- Modal -->
+	<div id="ban-add" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		@form(action = routes.CustomerBan.admin_add(), 'class -> "form") {
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG477","Add banned list")</h3>
+			</div>
+			<div class="modal-body">
+				<div class="control-group">
+					@inputText(filterForm("customer.idToken"), '_showConstraints -> false, '_class -> "", 
+					'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID"), 
+					'class -> "required", 
+					'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG494","Enter customer ID")
+					)
+				</div>
+				<div class="control-group">
+					@textarea(filterForm("reason"), '_showConstraints -> false, '_class -> "", 
+					'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG478","Reason for banning"), 
+					'class -> "required", 
+					'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG495","Enter reason")
+					)
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG479","Close")</button>
+				<button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG308","Submit")</button>
+			</div>
+		}
+	</div>
+</div>
+}
+
+
+@header(key:String, title:String) = {
+<th class="@key">
+	@if(key && key.length > 0) {
+	<a href="@link(currentPage.getPageIndex, key)">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+        }
+        } else {
+            order = "asc"
+        }
+    }
+    routes.CustomerBan.admin_list(newPage, sortBy, order, currentFilter)
+}

@@ -1,0 +1,53 @@
+@(uploadForm: Form[controllers.helpers.BatchUploadHelper])
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@layout("Batch Upload"){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG497","Batch Upload")</h1>
+</div>
+
+@partial.flash_alert()
+
+<div class="row">
+	<div class="well span12">
+		@if(uploadForm.get().getErrorDescription() != null && !uploadForm.get().getErrorDescription().equals("")){
+			<div class="row-fluid">
+				<div class="span12 alert alert-error">
+					<img src="@routes.Assets.at("images/alert-error.png")"/>
+					@uploadForm.get().getErrorDescription()
+				</div>
+			</div>
+		}
+		@helper.form(action = routes.BatchUpload.actionUpload, 'method -> "POST", 'enctype -> "multipart/form-data", 'class -> "form-horizontal form-transaction-filter") {
+            <input type="hidden" id="token" name="token" value="@uploadForm.get().getToken()">
+            <div class="input-append">
+				<input type="file" name="fileUpload" value="" id="fileUpload"><a class="btn" href="@routes.Transaction.listBatchInquiry()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG131","Back")</a>
+				<button id="uploadBtn" type="submit" class="btn" style="display:none;"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG508","Upload")</button>
+			</div>
+		}
+
+    </div>
+</div>
+
+<div class="row">
+	<div class="span12">
+		<div id="transaction-detail-container">
+		</div>
+    </div>
+</div>
+<script type="text/javascript">
+<!--
+	$("input:file").change(function (){
+	    var fileName = $(this).val();
+	    if (fileName != ""){
+	    	$("#uploadBtn").show();
+	    } else {
+	    	$("#uploadBtn").hide();
+	    }
+	});
+//-->
+</script>
+}

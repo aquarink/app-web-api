@@ -1,0 +1,97 @@
+@(trx: org.codehaus.jackson.JsonNode)
+
+@import java.util._
+
+<h6>Transaction Summary - <small>@trx.path("idToken").getTextValue()</small></h6>
+<dl class="dl-horizontal dl-aligned dl-aligned-right trx-summary">
+    <dt>Sending Country:</dt>
+    <dd>@trx.path("fund").path("origin").path("country").path("name").getTextValue()</dd>
+
+    <dt>Receiving Country:</dt>
+    <dd>@trx.path("fund").path("destination").path("country").path("name").getTextValue()</dd>
+
+    <dt>Remit options:</dt>
+    <dd>@trx.path("channel").path("name").getTextValue()</dd>
+
+	@defining(trx.path("fund").path("origin").path("amount").getNumberValue()) { total =>
+    <dt>Sending Amount</dt>
+	<dd>@models.Currency.format(total, trx.path("fund").path("origin").path("currency").getTextValue()) @trx.path("fund").path("origin").path("currency").getTextValue()</dd>
+	}
+	@defining(trx.path("fund").path("destination").path("amount").getNumberValue()) { total =>
+    <dt>Receiving Amount</dt>
+	<dd>@models.Currency.format(total, trx.path("fund").path("destination").path("currency").getTextValue()) @trx.path("fund").path("destination").path("currency").getTextValue()</dd>
+	}
+    <dt>Fee Included</dt>
+    <dd>@if(trx.path("fund").path("fees").path("feeIncluded").getBooleanValue()) {Yes} else {No}</dd>
+	@*
+	<dt>Fees</dt>
+	@defining(trx.path("fund").path("fees").path("components")) { fees =>
+	
+	fees.map { fee =>
+	<dd>@fee.amount <span class="muted">@fee.description</span></dd>
+	}
+	}*@
+    <!--dt>Trx Time:</dt>
+    @defining(new Date(trx.path("createdTime").getLongValue())) { trxTimeStr =>
+    <dd>@trxTimeStr</dd-->
+    }
+
+    <dt>Fund source</dt>
+    <dd>@trx.path("fundSource").getTextValue()</dd>
+    <dt>Send purpose</dt>
+    <dd>@trx.path("senderNote").getTextValue()</dd>
+
+    @defining(trx.path("sender")) { sender =>
+        <hr/>
+        <dt>Sender Member Id:</dt>
+        <dd>@sender.path("id").getTextValue()</dd>
+        <dt>First Name: </dt>
+        <dd>@sender.path("firstName").getTextValue()</dd>
+        <dt>Last Name: </dt>
+        <dd>@sender.path("lastName").getTextValue()</dd>
+        <dt>Personal ID: </dt>
+        <dd>@sender.path("personalId").getTextValue()</dd>
+        <dt>Gender: </dt>
+        <dd>@sender.path("gender").getTextValue()</dd>
+        <dt>Date of Birth: </dt>
+        <dd>@sender.path("birthDate").getTextValue()</dd>
+        <dt>Country: </dt>
+        <dd>@sender.path("country").path("name").getTextValue()</dd>
+        <dt>City: </dt>
+        <dd>@sender.path("cityName").getTextValue()</dd>
+        <dt>Phone Number: </dt>
+        <dd>@sender.path("phoneNumber").getTextValue()</dd>
+        <dt>Postal Code: </dt>
+        <dd>@sender.path("postalCode").getTextValue()</dd>
+        <dt>Email: </dt>
+        <dd>@sender.path("email").getTextValue()</dd>
+    }
+
+    @defining(trx.path("beneficiary")) { beneficiary =>
+        <hr/>
+        <dt>Receiver Member Id:</dt>
+        <dd>@beneficiary.path("id").getTextValue()</dd>
+        <dt>First Name: </dt>
+        <dd>@beneficiary.path("firstName").getTextValue()</dd>
+        <dt>Last Name: </dt>
+        <dd>@beneficiary.path("lastName").getTextValue()</dd>
+        <dt>Personal ID: </dt>
+        <dd>@beneficiary.path("personalId").getTextValue()</dd>
+        <dt>Gender: </dt>
+        <dd>@beneficiary.path("gender").getTextValue()</dd>
+        <dt>Date of Birth: </dt>
+        <dd>@beneficiary.path("birthDate").getTextValue()</dd>
+        <dt>Address: </dt>
+        <dd>@beneficiary.path("address").getTextValue()</dd>
+        <dt>Country: </dt>
+        <dd>@beneficiary.path("country").path("name").getTextValue()</dd>
+        <dt>City: </dt>
+        <dd>@beneficiary.path("cityName").getTextValue()</dd>
+        <dt>Phone Number: </dt>
+        <dd>@beneficiary.path("phoneNumber").getTextValue()</dd>
+        <dt>Postal Code: </dt>
+        <dd>@beneficiary.path("postalCode").getTextValue()</dd>
+        <dt>Email: </dt>
+        <dd>@beneficiary.path("email").getTextValue()</dd>
+    }
+</dl>

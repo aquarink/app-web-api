@@ -1,0 +1,51 @@
+@(transactionForm: Form[models.forms.CashInForm], result: org.codehaus.jackson.JsonNode)
+
+@if(result.path("status").getIntValue() != 0) {
+<div class="alert alert-block alert-error">
+	<strong>Transaction information failed</strong>
+	<br/>
+    @result.path("message").getTextValue()
+</div>
+} else {
+<div id="send-summary-inner" class="print">
+    @defining(result.path("inquiry")) { trx =>
+		<div class="pull-right noprint">
+			<!--<a href="#" class="btn-print" data-target="send-summary-inner"><i class="icon-print"></i></a>-->
+		</div>
+        <h6>Send Money Summary</h6>
+        <dl class="dl-horizontal trx-summary">
+            <dt>Sending country:</dt>
+            <dd>@trx.path("fund").path("origin").path("countryName").getTextValue()</dd>
+            <dt>Receiving country:</dt>
+            <dd>@trx.path("fund").path("destination").path("countryName").getTextValue()</dd>
+            <dt>Remit options:</dt>
+            <dd>@trx.path("channel").path("name").getTextValue()</dd>
+            <hr/>
+
+            @defining(trx.path("forex")) { forex =>
+                <dt>Rate: </dt>
+                <dd>@models.Forex.format(forex.path("rate").getDoubleValue())</dd>
+            }
+            @defining(trx.path("fund")) { fund =>
+                <dt>Send amount: </dt>
+                <dd>@models.Currency.format(fund.path("origin").path("amount").getNumberValue(), trx.path("fund").path("origin").path("currency").getTextValue()) @trx.path("fund").path("origin").path("currency").getTextValue()</dd>
+                <dt>Fee: </dt>
+                <dd>@models.Currency.format(fund.path("fees").path("total").getNumberValue(), trx.path("fund").path("fees").path("currency").getTextValue()) @trx.path("fund").path("fees").path("currency").getTextValue()</dd>
+                <dt>Total: </dt>
+                @defining(fund.path("origin").path("amount").getDoubleValue()+fund.path("fees").path("total").getDoubleValue()) { total =>
+                    <dd>@models.Currency.format(total, trx.path("fund").path("origin").path("currency").getTextValue()) @trx.path("fund").path("origin").path("currency").getTextValue()</dd>
+                }
+                <dt>Receive amount: </dt>
+                <dd>@models.Currency.format(
+                    fund.path("destination").path("amount").getDoubleValue(),
+                    fund.path("destination").path("currency").getTextValue()
+                )
+                @trx.path("fund").path("destination").path("currency").getTextValue()</dd>
+            }
+
+			@if(transactionForm.get().sender.id != null) {
+			}
+        </dl>
+    }
+</div>
+}

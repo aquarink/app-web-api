@@ -1,0 +1,30 @@
+@(code:String, myForm: Form[models.Channel], banks: java.util.List[models.Bank], channelBanks: java.util.Map[String, String])
+
+@layout("Channel") {
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/customer.css")">
+    <div class="span8 offset2">
+        @helper.form(routes.Channels.update(code), 'autoComplete -> "off") {
+            <div class="page-subheader">
+                <h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG400","Manage Route")</h3>
+            </div>
+
+            @channels.formBody(myForm, true, banks, channelBanks)
+
+            <a href="@routes.Channels.list()" class="btn btn-inverse">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+            <button type="button" class="btn btn-inverse" id="clearAll">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG402","Clear All")</button>
+            <button type="button" class="btn btn-inverse" id="selectAll">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG403","Select All")</button>
+            <button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG397","Set Bank Routing")</button>
+        }
+    </div>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.chainedSelects.js")'></script>
+	<script type="text/javascript">
+	<!--
+		$('#clearAll').click(function() {
+		    $(".bankAvaliable").prop('checked', false);
+		});
+		$('#selectAll').click(function() {
+		    $(".bankAvaliable").prop('checked', true);
+		});
+	//-->
+	</script>
+}

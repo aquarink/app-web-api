@@ -1,0 +1,26 @@
+@(myForm: Form[models.Customer], isEdit: Boolean, countryCode: String)
+
+@import views.html.customer.formBody
+
+@actionUrl = @{
+	if(isEdit) {
+		routes.Customer.update(myForm.get.id)
+	} else {
+		routes.Customer.save
+	}
+}
+
+@helper.form(routes.Send.customerSave) {
+@if(isEdit) {
+<input type="hidden" name="id" value="@myForm.get().id"/>
+} else {
+<input type="hidden" name="id" value=""/>
+}
+
+@formBody(myForm, isEdit)
+
+<input type="hidden" id="countryCodeSelected" name="countryCodeSelected" value="@{countryCode}" />
+<button type="submit" class="btn"><i class="icon-ok"></i> Save</button>
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/customer.js")'></script>
+}

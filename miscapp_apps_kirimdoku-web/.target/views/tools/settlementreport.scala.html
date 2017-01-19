@@ -1,0 +1,209 @@
+@(settlementReportRequest : Form[models.SettlementReportRequest], corporates : List[models.Corporate])
+@import helper._
+@import helper.twitterBootstrap._
+
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@import java.util.Calendar
+@import java.text.SimpleDateFormat
+
+@dateFormat(d:Date) = @{
+    new SimpleDateFormat("yyyy-MM-dd") format d
+}
+
+@minLimit() = @{
+	var newDateCalendar = Calendar.getInstance();
+	newDateCalendar.setTime(new Date());
+	newDateCalendar.add(Calendar.MONTH, -3);
+	dateFormat(newDateCalendar.getTime());
+}
+
+@maxLimit() = @{
+	dateFormat(new Date());
+}
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = settlementReportRequest.get().getSortBy
+    var order = settlementReportRequest.get().getOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(settlementReportRequest.get().getSortBy == newSortBy) {
+            if(settlementReportRequest.get().getOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+            }
+        } else {
+            order = "asc"
+        }
+    }
+	"gotoPage("+newPage+",'"+sortBy+"','"+order+"')"
+}
+
+
+@header(key:String, title:String) = {
+	<th class="@key">
+	@if(key && key.length > 0) {
+		<a href="#" onclick="@link(settlementReportRequest.get().getSettlementReports().getPageIndex, key)">@title</a>
+	} else {
+		@title
+	}
+	</th>
+}
+
+@pager(page:Int) = @{
+	var pageLink = "";
+	
+	if (page >= 0){
+		pageLink = "gotoPage("+page+",'"+settlementReportRequest.get().getSortBy+"','"+settlementReportRequest.get().getOrder+"')";
+	}	
+	pageLink
+}
+
+@layout("Settlement Report", Seq(
+routes.SettlementReport.list().toString -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG444","Settlement Report")
+)){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG444","Settlement Report")</h1>
+</div>
+
+<div>
+	@partial.flash_alert()
+	
+	<div class="well">
+		<form action="@routes.SettlementReport.list()" method="post">
+		<input type="hidden" name="sortBy" id="sortBy">
+		<input type="hidden" name="page" id="page" value="0">
+		<input type="hidden" name="order" id="order" value="asc">
+		<table cellpadding="3" cellspacing="2">
+			<tr>
+				<td>
+					@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG225","Corporate Name")
+				</td>
+				<td>
+					<select class="control-group" name="corporate" id="corporate">
+						<option value="">--All Corporate--</option>
+					@for(corporate <- corporates) {
+						<option value="@corporate.code" @if(corporate.code == settlementReportRequest.get().getCorporate){ selected="selected" } >@corporate.name</option>
+					}
+					</select>
+				</td>
+				<td>
+					&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<td>
+					@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG445","Report Date Range")
+				</td>
+				<td>
+					<input type="date" value="@settlementReportRequest.get().getReportDateStart" name="reportDateStart" min="@minLimit()" max="@maxLimit()">
+				</td>
+				<td>
+					<input type="date" value="@settlementReportRequest.get().getReportDateEnd" name="reportDateEnd" min="@minLimit()" max="@maxLimit()">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					&nbsp;
+				</td>
+				<td>
+					<a class="btn" href="@routes.SettlementReport.list()"><i class="icon-repeat"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG068","Reset")</a>
+					<button class="btn btn-primary" type="submit" id="searchBtn"><i class="icon-search icon-white"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+				</td>
+				<td>
+					&nbsp;
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+	@if(settlementReportRequest.get().getSettlementReports != null){
+    <table class="transaction table-bordered table-striped table-condensed" style="width:100%;text-align: center;">
+        <thead>
+        <tr>
+            @header("0", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG446","Report Date"))
+            @header("1", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG316","Corporate Code"))
+            @header("2", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG225","Corporate Name"))
+            @header("3", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG447","Filename"))
+            @header("4", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG105","Action"))
+        </tr>
+        </thead>
+        <tbody>
+        @if(settlementReportRequest.get().getSettlementReports != null && settlementReportRequest.get().getSettlementReports().getList != null && settlementReportRequest.get().getSettlementReports().getList().size > 0){
+        	@for(settlementReport <- settlementReportRequest.get().getSettlementReports().getList) {
+        	<tr>
+        		<td style="width: 90px;">@dateFormat(settlementReport.getReportDate)</td>
+        		<td style="width: 80px;">@settlementReport.getCorporate.code</td>
+        		<td style="width: 200px; text-align: left;">@settlementReport.getCorporate.name</td>
+        		<td style="width: 150px; text-align: left;">@settlementReport.getFilename</td>
+        		@if(settlementReport.getStatus().equals("D")){
+        			<td style="width: 80px;"><a target="_blank" href="@(routes.SettlementReport.list())/@(settlementReport.getFilename).xls">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG448","Download")</a></td>
+        		}else{
+        			<td style="width: 80px;">
+        			<!--<form style="margin:0px;" action="@routes.SettlementReport.generateById(settlementReport.getId)" method="post">
+					<input type="hidden" name="sortBy" id="sortBys" value="@settlementReportRequest.get().getSortBy">
+					<input type="hidden" name="page" id="pages" value="@settlementReportRequest.get().getPage">
+					<input type="hidden" name="order" id="orders" value="@settlementReportRequest.get().getOrder">
+					<input type="hidden" name="corporate" id="corporates" value="@settlementReportRequest.get().getCorporate">
+					<input type="hidden" name="reportDateStart" id="reportDateStarts"  value="@settlementReportRequest.get().getReportDateStart">
+					<input type="hidden" name="reportDateEnd" id="reportDateEnds" value="@settlementReportRequest.get().getReportDateEnd">
+					<button type="submit" class="btn">-->
+					@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG449","Generate")
+					<!--</button>
+					</form>-->
+        			</td>
+        		}
+        	</tr>
+        	}
+        }
+        </tbody>
+    </table>
+	    <script type="text/javascript">
+	    	
+	    	function gotoPage(page,sortBy,order) {
+	    		$("#page").val(page);
+	    		$("#sortBy").val(sortBy);
+	    		$("#order").val(order);
+	    		$("#searchBtn").click();
+	    	}
+	    
+	    </script>
+	    <div id="pagination" class="pagination pagination-right">
+			<ul>
+				@if(settlementReportRequest.get().getSettlementReports != null && settlementReportRequest.get().getSettlementReports().hasPrev) {
+				<li class="prev">
+					<a href="#" onclick="@pager(settlementReportRequest.get().getSettlementReports().getPageIndex - 1)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+				</li>
+				} else {
+				<li class="prev">
+					<a style="color: #cccccc;">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+				</li>
+				}
+				@if(settlementReportRequest.get().getSettlementReports != null){
+				<li class="current">
+					<a>Displaying @settlementReportRequest.get().getSettlementReports().getDisplayXtoYofZ(" to ", " of ")</a>
+				</li>
+				}
+				@if(settlementReportRequest.get().getSettlementReports != null && settlementReportRequest.get().getSettlementReports().hasNext) {
+				<li class="next">
+					<a href="#" onclick="@pager(settlementReportRequest.get().getSettlementReports().getPageIndex + 1)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+				</li>
+				} else {
+				<li class="next">
+					<a style="color: #cccccc;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+				</li>
+				}
+			</ul>
+	    </div>
+	}
+	<br>&nbsp;<br>&nbsp;
+</div>
+<div class="span5" id="viewContainer">
+</div>
+
+}

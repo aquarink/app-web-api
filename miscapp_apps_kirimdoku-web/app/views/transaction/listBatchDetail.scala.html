@@ -1,0 +1,174 @@
+@(batchId: Int, filter: String, currentPage: com.avaje.ebean.Page[models.TransactionInquiry], token: String, status: String, listBank: java.util.Map[String, String], page: String)
+@import helper._
+@import helper.twitterBootstrap._
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    routes.Transaction.showBatchDetail(batchId,newPage, filter, page)
+    
+}
+
+
+@layout("Transactions Inquiry management"){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG515","Batch Transactions management")</h1>
+</div>
+
+@partial.flash_alert()
+
+<form id="myForm" action="@routes.BatchUpload.actionRemit(token,batchId)"" method="POST" class="form-horizontal form-transaction-filter">
+	<div class="row">
+		<div class="span12">
+			<div id="action" class="well">
+	            <div class="input-append">
+		            @if(currentPage.getTotalRowCount > 0){
+		               	@restrict(la(as("supervisor"))) {
+		               		@if(status == "I"){
+								<button type="submit" class="btn" style="border-radius:0px;"><i class="icon-plus"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG510","Execute Remit")</button>
+							}
+						}
+					}
+					<a class="btn" href="@routes.Transaction.listBatchInquiry()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG131","Back")</a>
+				</div>
+			</div>
+	    </div>
+	</div>
+	
+	<div class="row">
+	    <div class="span12">
+			@if(currentPage.getTotalRowCount == 0){
+			<div class="well">
+				<em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG271","There are no transaction data to be displayed")</em>
+			</div>
+			} else {
+			<div class="span12" style="overflow: scroll; margin-left: 0px;">
+			<table class="table transaction table-bordered table-striped table-condensed" style="text-align: center;">
+				<thead>
+				<tr>
+					@restrict(la(as("supervisor"))) {
+						<th style="text-align:center;white-space:nowrap;">
+							@if(status == "I"){
+								<input type="checkbox" id="checkAll">
+							}
+						</th>
+					}
+					@restrict(la(as("operator"))) {
+						<th style="text-align:center;white-space:nowrap;">
+							&nbsp;
+						</th>
+					}
+					<th style="text-align:center;white-space:nowrap;">Sender First Name</th>
+					<th style="text-align:center;white-space:nowrap;">Sender Last Name</th>
+					<th style="text-align:center;white-space:nowrap;">Beneficiary First Name</th>
+					<th style="text-align:center;white-space:nowrap;">Beneficiary Last Name</th>
+					<th style="text-align:center;white-space:nowrap;">Channel</th>
+					<th style="text-align:center;white-space:nowrap;">Bank Name</th>
+					<th style="text-align:center;white-space:nowrap;">Bank Account Number</th>
+					<th style="text-align:center;white-space:nowrap;">Sending Amount</th>
+					<th style="text-align:center;white-space:nowrap;">Receiving Amount</th>
+					@if(page == "i"){
+						<th style="text-align:center;white-space:nowrap;">RC Inquiry</th>
+						<th style="text-align:center;white-space:nowrap;">Response Message Inquiry</th>
+					}
+					@if(page == "r"){
+						<th style="text-align:center;white-space:nowrap;">RC Remit</th>
+						<th style="text-align:center;white-space:nowrap;">Response Message Remit</th>
+					}
+				</tr>
+				</thead>
+				<tbody>
+				@for(inquiry <- currentPage.getList) {
+				<tr>
+					@restrict(la(as("supervisor"))) {
+						<td>
+							@if(inquiry.status == 'S' && inquiry.state == 'D' && status == "I"){
+								<input type="checkbox" class="chk" name="inq@inquiry.id" value="@inquiry.id">
+							}else{
+								@if(inquiry.status == 'S' && inquiry.state == 'R'){
+									<input type="checkbox" disabled="disabled" checked="checked">
+								}else{
+									@if(inquiry.status == 'F'){
+										&nbsp;
+									}
+								}
+							}
+						</td>
+					}
+					@restrict(la(as("operator"))) {
+						@if(inquiry.transaction != null){
+							<td>
+								<input type="checkbox" class="chk" checked="checked" disabled="disabled">
+							</td>
+						} else {
+							<td>
+								&nbsp;
+							</td>
+						}
+					}
+					<td>@inquiry.senderFirstName</td>
+					<td>@inquiry.senderLastName</td>
+					<td>@inquiry.beneficiaryFirstName</td>
+					<td>@inquiry.beneficiaryLastName</td>
+					<td>
+					@if(inquiry.channel != null){
+						@inquiry.channel.code
+					}
+					</td>
+					<td>@listBank.get(inquiry.accountBankId)</td>
+					<td>@inquiry.accountId</td>
+					<td>@inquiry.sendingAmount</td>
+					<td>@inquiry.beneficiaryAmount</td>
+					@if(page == "i"){
+						<td>@inquiry.inquiryResponseCode</td>
+						<td>@inquiry.inquiryResponseMessage</td>
+					}
+					@if(page == "r"){
+						@if(inquiry.transaction != null){
+							<td>@inquiry.transaction.remitResponseCode</td>
+							<td>@inquiry.transaction.remitResponseMessage</td>
+						} else {
+							<td></td>
+							<td></td>
+						}
+					}
+				</tr>
+				}
+				</tbody>
+			</table>
+			</div>
+			}
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+<!--
+	$('#checkAll').change(function() {
+		if(this.checked) {
+			$('.chk').prop('checked', true);
+		} else {
+			$('.chk').prop('checked', false);
+		}
+	});
+	
+	$('#myForm').on('submit', function(e){
+		var statusSubmit = false;
+		$(".chk").each(function() {
+			if(this.checked) {
+				statusSubmit = true;
+				return false;
+			}
+		});
+		if (!statusSubmit) {
+			alert('Please check one or more inquiry row');
+			return false;
+		} else {
+			return true;
+		}
+	});
+	
+//-->
+</script>
+}

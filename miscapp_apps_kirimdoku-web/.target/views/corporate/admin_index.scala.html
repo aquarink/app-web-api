@@ -1,0 +1,149 @@
+@(currentPage: com.avaje.ebean.Page[models.Corporate], currentSortBy: String, currentOrder: String, currentFilter: String)
+
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+@import java.lang.String; var restrictUser = ""
+
+@link(newPage:Int, newSortBy:String) = @{
+	var sortBy = currentSortBy
+	var order = currentOrder
+
+	if(newSortBy != null) {
+		sortBy = newSortBy
+		if(currentSortBy == newSortBy) {
+			if(currentOrder == "asc") {
+				order = "desc"
+			} else {
+				order = "asc"
+			}
+		} else {
+			order = "asc"
+		}
+	}
+	routes.Corporate.admin_index(newPage, sortBy, order, currentFilter)
+}
+
+@header(key:String, title:String) = {
+<th class="@key">
+	@if(key && key.length > 0) {
+	<a href="@link(currentPage.getPageIndex, key)">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@layout("Corporates management") {
+	<div class="page-header">
+		<h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG190","Corporates management")</h1>
+	</div>
+	
+	@partial.flash_alert()
+
+	<div>
+		<div class="well">
+			<form action="@link(0, "name")" method="GET" class="form-search">
+			<div class="input-append">
+				<input type="search" id="searchbox" class="search-query span4" name="f" value="@currentFilter" placeholder='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG487","Filter by name...")'><button type="submit" id="searchsubmit" value="Search" class="btn" style="border-radius:0px;"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+				@restrict(la(as("admin"))) {
+				<a class="btn success" href="@routes.Corporate.admin_new()"><i class="icon-plus"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG191","Add New Corporate")</a>
+				}
+			</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="row container-corporates">
+		<div class="span7">
+			@if(currentPage.getTotalRowCount == 0){
+			<div class="well">
+				<em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG286","Results are empty")</em>
+			</div>
+			} else {
+			<table class="table-corporates table-bordered table-striped table-condensed" style="width:100%;">
+				<thead>
+				<tr>
+					@header("code", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG309","Code"))
+					@header("country.code", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG118","Country"))
+					@header("name", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG295","Name"))
+					@header("", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG105","Action"))
+				</tr>
+				</thead>
+				<tbody>
+				@restrict(la(as("admin"))) {
+					@{restrictUser = "admin"}
+				}
+				@restrict(la(as("finance"))) {
+					@{restrictUser = "finance"}
+				}
+				@restrict(la(as("admin_operasional"))) {
+					@{restrictUser = "admin_operasional"}
+				}
+				
+				@for(corporate <- currentPage.getList) {
+				<tr>
+					<td>@corporate.code</td>
+					<td>@if(corporate.country != null) {@corporate.country.name}</td>
+					<td>@corporate.name</td>
+					<td class="actions">
+						<a href="@routes.Corporate.show(corporate.code)" class="btn-link btn-detail">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG108","Detail")</a>
+						@if(restrictUser.equals("admin")) {
+						<a href="@routes.Corporate.admin_edit(corporate.code)" class="btn-link">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG112","Edit")</a>
+						<a href="@routes.User.index(corporate.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG310","Users")</a>
+						}
+						@if(restrictUser.equals("finance")) {
+						<a href="@routes.Forex.admin_index(corporate.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG311","Forex")</a>
+						<a href="@routes.Fee.admin_index(corporate.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG312","Fees")</a>
+						<a href="@routes.Credit.admin_index(corporate.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG313","Credit")</a>
+						<a href="@routes.SetupShareSetting.view(corporate.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG314","Share")</a>
+						<a href="@routes.User.indexOperasional(corporate.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG310","Users")</a>
+						}
+						@if(restrictUser.equals("admin_operasional")) {
+						<a href="@routes.Forex.admin_index(corporate.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG311","Forex")</a>
+						<a href="@routes.Fee.admin_index(corporate.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG312","Fees")</a>
+						<a href="@routes.User.indexOperasional(corporate.code)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG310","Users")</a>
+						}
+					</td>
+				</tr>
+				}
+				</tbody>
+			</table>
+
+			<div id="pagination" class="pagination pagination-right">
+				<ul>
+					@if(currentPage.hasPrev) {
+					<li class="prev">
+						<a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+					</li>
+					} else {
+					<li class="prev">
+						<a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+					</li>
+					}
+
+					<li class="current">
+						<a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+					</li>
+
+					@if(currentPage.hasNext) {
+					<li class="next">
+						<a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+					</li>
+					} else {
+					<li class="next">
+						<a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+					</li>
+					}
+				</ul>
+			</div>
+		}
+		</div>
+		<div class="span5">
+			<div id="detail-container" class="well">
+				@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG315","Please click 'detail' for more information")
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/corporate.js")'></script>
+}

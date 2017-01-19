@@ -1,0 +1,121 @@
+@(result: org.codehaus.jackson.JsonNode, customer: org.codehaus.jackson.JsonNode)
+<div style="font-family: helvetica; font-size: 14px; padding: 3em;">
+
+	<div>
+		@defining(result.path("transaction")) { trx =>
+		<p>Dear @customer.path("firstName").getTextValue @customer.path("lastName").getTextValue, </p>
+		<p>Thank you for using our service.</p>
+		<p>Congratulations! By this email we would like to inform you that disbursement has been succesfully.</p>
+
+		<p>To facilitate of Disbursement process just mention your  <b>ID Member</b> for next transaction.</p><br/>
+		<h3>Member ID &nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;
+			<font color="#FF0000">@customer.path("id").getTextValue</font>&nbsp;&nbsp;&nbsp;<span style="font-size: 12px; font-weight: normal;"><sup>*Please be sure to keep your ID.</sup></span></h3>
+		<br/>
+		@defining(trx.path("fund")) { fund =>
+		<h4>Disbursement</h4><hr style="margin-top: -13px;"/>
+		<table style="width: 60%; font-family: helveticaneue-light; font-size: 12px;">
+			<tr>
+				<td width="160px">Agent ID</td>
+				<td align="center">:</td>
+				<td>@trx.path("agent").path("code").getTextValue</td>
+			</tr>
+			<tr>
+				<td>Transaction Code</td>
+				<td align="center">:</td>
+				<td>@trx.path("id").getTextValue</td>
+			</tr>
+
+			<tr>
+				<td>Send Purpose</td>
+				<td align="center">:</td>
+				<td>@trx.path("senderNote").getTextValue</td>
+
+			</tr>
+			<tr>
+				<td>Date of Sending</td>
+				<td align="center">:</td>
+				<td>@models.Transaction.formatDate(new java.util.Date(trx.path("cashInTime").getLongValue))</td>
+			</tr>
+			<tr>
+				<td>Date of Disbursement</td>
+				<td align="center">:</td>
+				<td>@models.Transaction.formatDate(new java.util.Date(trx.path("cashOutTime").getLongValue))</td>
+			</tr>
+			<tr>
+				<td>Status</td>
+				<td align="center">:</td>
+				<td><strong>@models.Transaction.statusText(trx.path("status").getIntValue).toUpperCase()</strong></td>
+			</tr>
+		</table>
+
+		<h4>Amount</h4><hr style="margin-top: -13px;"/>
+		<table style="width: 60%; font-family: helveticaneue-light; font-size: 12px;">
+			<tr>
+				<td width="160px">Send Amount</td>
+				<td align="center">:</td>
+				<td align="right" width="160px">@models.Currency.format(
+					fund.path("origin").path("amount").getNumberValue,
+					fund.path("origin").path("currency").getTextValue)
+				</td>
+				<td>@fund.path("origin").path("currency").getTextValue</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Receive Amount</td>
+				<td align="center">:</td>
+				<td align="right">@models.Currency.format(
+					fund.path("destination").path("amount").getNumberValue,
+					fund.path("destination").path("currency").getTextValue)
+				</td>
+				<td>@fund.path("destination").path("currency").getTextValue</td>
+				<td>&nbsp;</td>
+			</tr>
+		</table>
+		}
+		<br/>
+		@defining(trx.path("sender")) { c =>
+		<h4>Sender</h4><hr style="margin-top: -13px;"/>
+		<table style="width: 60%; font-family: helveticaneue-light; font-size: 12px;">
+
+			<tr>
+				<td width="160px">Full name</td>
+				<td align="center">:</td>
+				<td>@c.path("firstName").getTextValue @c.path("lastName").getTextValue</td>
+			</tr>
+			<tr>
+				<td>Address</td>
+				<td align="center">:</td>
+				<td>@c.path("address").getTextValue</td>
+			</tr>
+			<tr>
+				<td>Mobile Phone</td>
+				<td align="center">:</td>
+				<td>@c.path("phoneNumber").getTextValue</td>
+			</tr>
+			<tr>
+				<td>Email</td>
+				<td align="center">:</td>
+				<td>@c.path("email").getTextValue</td>
+			</tr>
+		</table>
+		}
+		}
+	</div>
+
+		<br/>
+		<br/>
+		<br/>
+	<div>
+		<center><p style="text-shadow:#666666; font-size:16px ; font-weight:bold"><i>Send Money Made Easy</i></p></center><p align="center" style="font-size:10px; margin-top:-15px;">"Thank you for using our services and have a nice day"</p>
+		<p align="right"><b>Customer Care DOKU </b> +62 21 555 666 (Monday - Sunday)</p>
+		<hr/>
+		<p style="font-size: 11px;"><b>Copyright @@ 2012 DOKU</b> Please be sure to keep your <b>transaction and verification code (PIN)</b>.
+			Make sure you send the codes to the person that registered in the data sender or receiver. <b>Strictly prohibited</b> to give
+			<b>the transaction code and verification code (PIN)</b> to unregistered person in the data sender or receiver. All kinds of offenses or omission will be dealt according to company rules and remittance regulations.
+			Content of this email and all attachment is intended for the email recipient only. Any opinions that contained in this email, is the personal opinion
+			of the sender and not the representation of <b>DOKU</b>. If you are not the recepient of this email, you have no right to copying and showing this email to another person.
+			Please contact the sender of this email, if you are sure that this email is not intende for you.
+		</p><hr/>
+
+	</div>
+</div>

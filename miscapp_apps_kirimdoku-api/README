@@ -1,0 +1,18 @@
+Blitzkrieg-API
+=====================================
+
+How to install to production:
+- Deploy this application to server production (example: /home/user/blitzkrieg-api)
+    As alternative, we can easily git clone ssh://dev1@103.10.131.191/~/repositories/blitzkrieg-api instead
+- Download play framework 2.0.2 from http://download.playframework.org/releases/play-2.0.2.zip
+- Extract play framework
+- Make sure PATH also point to the play framework directory (example: export PATH="${PATH}:/home/user/play-2.0.2") put it into your ~/.bash_profile
+- cd ~/blitzkrieg-api
+- setup/config your application
+    create config/application.conf (you can copy it from conf/application.default.conf)
+    and configure it properly (such as database url, etc.)
+- to run as development/test/trial, type
+    play "run 9000"
+- to run as production, type
+    play "start 9000"
+    (this will produce application monitor log, which will fork background the apps and you can easily Ctrl-D to continue process to the background)

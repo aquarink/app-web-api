@@ -1,0 +1,69 @@
+@(user: models.User)
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+<fieldset>
+	@dynamicOr("editUser", String.valueOf(user.id)) {
+		@restrictOr(la(as("admin_operasional"))) {
+			<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG289","Account information") <span class="pull-right"><a class="btn btn-link" href="@routes.User.editOperasional(user.corporate.code, user.id)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG290","Edit user profile")</a></span></legend>
+		} {
+			<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG289","Account information") <span class="pull-right"><a class="btn btn-link" href="@routes.User.edit(user.corporate.code, user.id)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG290","Edit user profile")</a></span></legend>
+		}
+	} {
+			@restrictOr(la(as("finance"))) {
+			<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG289","Account information") <span class="pull-right"><a class="btn btn-link" href="@routes.User.editOperasional(user.corporate.code, user.id)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG290","Edit user profile")</a></span></legend>
+			} {
+			<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG289","Account information")</legend>
+			}
+	}
+	<img src="@routes.User.photo(user.id)" width="120" height="120"/>
+	<dl class="dl-horizontal dl-aligned dl-aligned-right">
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG102","Agent ID")</dt>
+		<dd>@user.getIdToken</dd>
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG030","Status")</dt>
+		<dd>@user.status</dd>
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG291","Username")</dt>
+		<dd>@user.email</dd>
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG004","Password")</dt>
+		<dd>***** 
+		@dynamic("changePassword", String.valueOf(user.id)) {
+		<a href="@routes.User.changePassword(user.corporate.code, user.id)">(@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG292","Change password"))</a>
+		}
+		</dd>
+	</dl>
+</fieldset>
+
+<fieldset>
+	<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG293","Personal information") <!-- <small><a href="@routes.User.edit(user.corporate.code, user.id)">(Change profile)</a></small>  --></legend>
+	<dl class="dl-horizontal dl-aligned dl-aligned-right">
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG294","Username / Email")</dt>
+		<dd>@user.email</dd>
+
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG295","Name")</dt>
+		<dd>@user.fullName</dd>
+
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG056","Nationality")</dt>
+		<dd>@user.country.name</dd>
+
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG296","Personal ID Type / Number")</dt>
+		<dd>(@user.personalIdType) @user.personalId</dd>
+
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG062","City")</dt>
+		<dd>@user.cityName</dd>
+
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number")</dt>
+		<dd>@user.phoneNumber</dd>
+
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG297","Mobile number")</dt>
+		<dd>@user.mobileNumber</dd>
+
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG122","Address")</dt>
+		<dd>@user.address</dd>
+
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG123","Postal code")</dt>
+		<dd>@user.postalCode</dd>
+
+		<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG298","Birth date")</dt>
+		<dd>@if(user.birthDate != null) {@user.getBirthDateFormatted} else {}</dd>
+	</dl>
+</fieldset>

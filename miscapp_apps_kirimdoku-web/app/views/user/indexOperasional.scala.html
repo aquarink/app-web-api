@@ -1,0 +1,109 @@
+@(corporate:models.Corporate, user:models.User, role:models.SecurityRole, filter: String = "")
+
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@breadcrumbs(user:models.User) = @{
+	if(user.hasRole("admin_operasional")) {
+		Seq(
+			routes.Corporate.admin_index(0).toString() -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG354","Corporate management")
+			, "" -> corporate.name
+			, "" -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG357","Operator management")
+		)
+	} else {
+		Seq(
+			routes.Corporate.admin_index(0).toString() -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG354","Corporate management")
+			, "" -> corporate.name
+			, "" -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG358","Management")
+		)
+	}
+}
+
+@layout(role.description+" Users Management", breadcrumbs(user)) {
+<div class="page-header">
+    <h1>@role.description Management</h1>
+</div>
+	@partial.flash_alert()
+
+<div class="container-users">
+	<div class="row">
+		<div class="span12 well">
+			<form action="@routes.User.indexOperasional(corporate.code)" method="GET" class="form-search">
+			<div class="input-append">
+				<input type="search" id="searchbox" class="search-query span4" name="filter" value="" placeholder="Filter by name..."><button type="submit" id="searchsubmit" value="Search" class="btn"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+			</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="span7">
+			<div class="carousel slide">
+				<div class="carousel-inner">
+                    <div class="item active" data-url="@{routes.User.listOperasional(corporate.code).toString()+"?filter="}@filter.replace(' ', '+')">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="span5">
+			<div id="detail-container" class="well">
+				@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG359","You can view detail of user by clicking 'Detail' on the desired row")
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade hide" id="modal-ban">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>Confirmation</h3>
+    </div>
+	<form method="GET" class="form-horizontal" data-remote="true">
+		<div class="modal-body">
+			<div class="control-groups">
+				<p class="ban">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG361","Are you sure you want to ban this user?")</p>
+				<p class="unban">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG362","Are you sure you want to unban this user?")</p>
+
+				<dl>
+					<dt><label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG363","Give a specific reason")</label></dt>
+					<dd><input type="text" class="input-xlarge" name="reason" value="" placeholder=""></dd>
+				</dl>
+			</div>
+			<p class="container-error"></p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+			<button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG074","Proceed")</button>
+		</div>
+	</form>
+</div>
+
+<div class="modal fade hide" id="modal-promote">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG360","Confirmation")</h3>
+    </div>
+	<form method="POST" class="form-horizontal">
+		<div class="modal-body">
+			<div class="control-groups">
+				<p>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG306","Are you sure you want to promote this user?")</p>
+
+				<dl>
+					<dt><label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG363","Give a specific reason")</label></dt>
+					<dd><input type="text" class="input-xlarge" name="reason" value="" placeholder=""></dd>
+				</dl>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+			<button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG074","Proceed")</button>
+		</div>
+	</form>
+</div>
+
+<div class="modal fade hide" id="modal-demote">
+	<div class="loading"></div>
+</div>
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/user.js")'></script>
+}

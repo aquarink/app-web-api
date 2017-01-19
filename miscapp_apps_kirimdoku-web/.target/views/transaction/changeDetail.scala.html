@@ -1,0 +1,459 @@
+@(err: String, transactionForm: Form[models.Transaction])
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+@import helper._
+@import helper.twitterBootstrap._
+@import partial._
+
+@layout("Transaction change"){
+
+@partial.flash_alert()
+
+<div class="container-transaction-detail-inner">
+@if(err) {
+	<div class="row">
+		<div class="span12">
+			<div class="alert alert-error">@err</div>
+		</div>
+	</div>
+} else {
+	@defining(transactionForm.get) { transaction =>
+	@helper.form(action = routes.Transaction.changeProcess(transaction.idToken), 'id -> "change-form", 'class -> "row form-horizontal", Symbol("data-url-receipt") -> routes.Transaction.changeReceipt(transaction.idToken).url, Symbol("data-remote") -> "true") {
+		<fieldset class="span12">
+			<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG038","Transaction information")</legend>
+			<div class="hide">
+				<div class="control-group span4 well">
+					<input type="hidden" name="inquiry.idToken"/>
+					<input type="hidden" name="user.idToken" value="@transaction.agent.idToken"/>
+					<input type="hidden" name="corporate.code" value="@transaction.agent.corporate.code"/>
+					@select(
+						transactionForm("senderCountry.code"),
+						options(models.Country.options),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG040","Sending country"), 
+						'_default -> "-- Choose a country --",
+						'_showConstraints -> false, 'class -> "required"
+					)
+					@select(transactionForm("senderCurrency.code"),
+						options("" -> "--"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG218","Sender currency"), 
+						'class -> "currency",
+						'_showConstraints -> false)
+
+					@select(transactionForm("beneficiaryCurrency.code"),
+						options(models.Currency.options),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG220","Receive currency"),
+						'class -> "currency",
+						'_showConstraints -> false)
+					@inputText(transactionForm("fundSource"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG219","Source of fund"),
+						'class -> "input-large",
+						'_help -> "(Optional field)"
+					)
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("channel.name"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG039","Service"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.input(
+						transactionForm("statusText"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG030","Status"), 
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+					) { (id, name, value, args) =>
+						<input type="text" id="@id" name="@name" value="@transaction.statusText" @toHtmlArgs(args)>
+					}
+				</div>
+				<div class="span4">
+					@helper.input(
+						transactionForm("agent.fullName"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG247","Operator"), 
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+					) { (id, name, value, args) =>
+						<input type="text" id="@id" name="@name" value="@transaction.agent.fullName" @toHtmlArgs(args)>
+					}
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("beneficiaryCountry.name"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG027","Receive country"), 
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("beneficiaryCity"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG217","Receive city"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> ""
+					)
+				</div>
+				<div class="span4">
+					@helper.input(
+						transactionForm("forexReference.rate"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG045","Exchange rate"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'disabled -> "disabled",
+						'class -> "required right rate"
+					) { (id, name, value, args) =>
+						<input type="text" id="@id" name="@name" value="@transaction.forexReference.rateFormat" @toHtmlArgs(args)>
+					}
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.input(
+						transactionForm("senderAmount"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG042","Sending amount"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required right"
+					) { (id, name, value, args) =>
+					<input type="text" id="@id" name="@name" value="@transaction.senderAmountFormat" @toHtmlArgs(args)>
+					}
+				</div>
+				<div class="span4">
+					@helper.input(
+						transactionForm("beneficiaryAmount"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG207","Amount to receive"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required right"
+					) { (id, name, value, args) =>
+					<input type="text" id="@id" name="@name" value="@transaction.beneficiaryAmountFormat" @toHtmlArgs(args)>
+					}
+				</div>
+				<div class="span4">
+					@helper.input(
+						transactionForm("feesTotal"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG046","Fee"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required right"
+					) { (id, name, value, args) =>
+					<input type="text" id="@id" name="@name" value="@transaction.feesTotalFormat" @toHtmlArgs(args)>
+					}
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.input(
+						transactionForm("collectAmount"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG044","Amount to collect"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required right"
+					) { (id, name, value, args) =>
+					<input type="text" id="@id" name="@name" value="@transaction.collectAmountFormat" @toHtmlArgs(args)>
+					}
+				</div>
+				<div class="span8">
+					@helper.inputText(
+						transactionForm("senderNote"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG048","Sending purpose"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "input-xlarge",
+						'style -> "width: 95%"
+					)
+				</div>
+			</div>
+		</fieldset>
+		
+		<fieldset class="span12">
+			<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG049","Sender information")</legend>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.idToken"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "input-xlarge",
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.firstName"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG051","First name"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.lastName"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG052","Last name"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> ""
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.phoneNumber"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.address"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG122","Address"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> ""
+					)
+				</div>
+				<div class="span4">
+					@helper.select(
+						transactionForm("sender.country.code"),
+						options(models.Country.options),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG056","Nationality"), 
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.personalIdType"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG054","ID type"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.personalId"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG055","ID number"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+					)
+				</div>
+				<div class="span4">
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputDate(
+						transactionForm("sender.personalIdIssueDate"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG120","Issue date"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> ""
+						, 'maxlength -> 10
+					)
+				</div>
+				<div class="span4">
+					@helper.inputDate(
+						transactionForm("sender.personalIdExpireDate"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG121","Expired date"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> ""
+						, 'maxlength -> 10
+					)
+				</div>
+				<div class="span4">
+					@helper.select(
+						transactionForm("sender.personalIdCountry.name"),
+						options(models.Country.options),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG246","Issuing country"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+					)
+				</div>
+			</div>
+			<div class="row">
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.occupation"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG124","Occupation"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> ""
+					)
+				</div>
+				<div class="span4">
+					@helper.inputText(
+						transactionForm("sender.cityName"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG062","City"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> ""
+					)
+				</div>
+				<div class="span4">
+					@helper.inputDate(
+						transactionForm("sender.birthDate"),
+						'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG057","Date of birth"),
+						'_showConstraints -> false,
+						'readOnly -> "true",
+						'class -> "required"
+						, 'maxlength -> 10
+					)
+				</div>
+			</div>
+		</fieldset>
+		
+		@dynamicOr("editTransaction", String.valueOf(transaction.id)) {
+			@formReceiver(transaction, true)
+		} {
+			@formReceiver(transaction, false)
+		}
+		
+	}
+}}
+</div>
+} {
+<script type="text/javascript" src='@routes.Assets.at("javascripts/transaction.js")'></script>
+}
+
+
+
+@formReceiver(transaction: models.Transaction, isEditable: scala.Boolean) = {
+<fieldset class="span12 form-change-customer" data-prefix="beneficiary">
+	<legend>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG058","Receiver information")</legend>
+		<div class="row">
+		<div class="control-group span4">
+			@helper.inputText(
+				transactionForm("beneficiary.idToken"),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG050","Customer ID"),
+				'_showConstraints -> false,
+				'class -> ""
+				, Symbol(isEditable match { case true => "noreadOnly" case _ => "readOnly"}) -> "true"
+			)
+		</div>
+		<div class="control-group span4">
+			@helper.inputText(
+				transactionForm("beneficiary.firstName"),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG051","First name"),
+				'_showConstraints -> false,
+				'_class -> "required",
+				'class -> "required"
+				, Symbol(isEditable match { case true => "nodisabled" case _ => "disabled"}) -> "disabled"
+			)
+		</div>
+		<div class="control-group span4">
+			@helper.inputText(
+				transactionForm("beneficiary.lastName"),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG052","Last name"),
+				'_showConstraints -> false,
+				'_class -> "required",
+				'class -> "required"
+				, Symbol(isEditable match { case true => "nodisabled" case _ => "disabled"}) -> "disabled"
+			)
+		</div>
+	</div>
+	<div class="row">
+		<div class="control-group span4">
+			@helper.inputText(
+				transactionForm("beneficiary.phoneNumber"),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number"),
+				'_showConstraints -> false,
+				'_class -> "required",
+				'class -> "required"
+				, Symbol(isEditable match { case true => "nodisabled" case _ => "disabled"}) -> "disabled"
+			)
+		</div>
+		<div class="control-group span4">
+			@helper.inputText(
+				transactionForm("beneficiary.address"),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG122","Address"),
+				'_showConstraints -> false,
+				'_class -> "",
+				'class -> "disabled"
+				, Symbol(isEditable match { case true => "nodisabled" case _ => "disabled"}) -> "disabled"
+			)
+		</div>
+		<div class="control-group span4">
+			@helper.select(
+				transactionForm("beneficiary.country.code"),
+				options(models.Country.options),
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG056","Nationality"), 
+				'_showConstraints -> false,
+				'_class -> "required",
+				'class -> "disabled"
+				, Symbol(isEditable match { case true => "nodisabled" case _ => "disabled"}) -> "disabled"
+			)
+		</div>
+	</div>
+</fieldset>
+<div class="span12">
+	@if(isEditable) {
+		<div class="form-actions">
+				<input type="reset" class="btn" value='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG068","Reset")'/>
+				<button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG260","Change") <i class="icon-white icon-arrow-right"></i></button>
+		</div>
+	} else {
+		@message("warn", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG259","Cannot change transaction, only registered sender operator can change this transaction"))
+	}
+</div>
+
+<div class="modal fade hide" id="change-dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG258","Change confirmation")</h3>
+    </div>
+	<form method="GET" class="form-vertical" data-remote="true">
+		<div class="modal-body">
+			<div class="control-groups">
+				<p class="ban">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG257","Are you sure you want to change this transaction?")</p>
+				<dl class="dl-horizontal dl-aligned">
+					<dt><label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG026","Transaction ID")</label></dt>
+					<dd>@transaction.idToken</dd>
+					<dt><label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG199","Sender name")</label></dt>
+					<dd>@transaction.sender.fullName</dd>
+					<dt><label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG042","Sending amount")</label></dt>
+					<dd>@transaction.senderAmountFormat</dd>
+				</dl>
+			</div>
+			<hr/>
+			<div class="control-groups">
+				<center style="text-align: center;">
+					<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG242","Please input PIN below:")</label>
+					<div class="control-group">
+						<div class="input">
+							<input id="auth1" type="password" name="auth1" class="required" minlength="4" maxlength="4" placeholder="PIN" style="text-align: center;"/>
+						</div>
+					</div>
+				</center>
+			</div>
+			<p class="container-info"></p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+			<button type="submit" class="btn btn-primary" data-disable-with="Processing..." data-enable-with="Proceed">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG074","Proceed")</button>
+		</div>
+	</form>
+</div>
+}

@@ -1,0 +1,144 @@
+@(currentPage: com.avaje.ebean.Page[models.Bank], currentSortBy: String, currentOrder: String, currentFilter: String)
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+        }
+        } else {
+            order = "asc"
+        }
+    }
+    routes.Banks.list(newPage, sortBy, order, currentFilter)
+}
+
+@header(key:String, title:String) = {
+<th class="@key" style="text-align: center;">
+	@if(key && key.length > 0) {
+	<a href="@link(currentPage.getPageIndex, key)" style="white-space: nowrap;">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@layout("Manage List of Bank"){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG391","Manage List of Bank")</h1>
+</div>
+
+<div class="row">
+	<div class="span12">
+		<div class="well">
+			<form action="@link(0, "name")" method="GET" class="form-search">
+				<div class="input-append">
+					<input type="search" id="searchbox" name="f" class="search-query span4" value="@currentFilter" placeholder='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG488","Search by Bank ID / Swift Code / Name...")'><button type="submit" class="btn" style="border-radius:0px;"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+					<a class="btn success" href="@routes.Banks.create().toString()"><i class="icon-plus"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG392","Add New Bank")</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@partial.flash_alert()
+
+<div class="row">
+    <div class="span7">
+
+        @if(currentPage.getTotalRowCount == 0){
+            <div class="well">
+                <em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG280","Data results are not found")</em>
+            </div>
+        } else {
+            <table class="bank table table-bordered table-striped table-condensed">
+                <thead>
+                    <tr>
+                        @header("id", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG365","ID"))
+                        @header("code", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG064","Swift Code"))
+                        @header("name", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG060","Bank Name"))
+                        @header("", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG105","Action"))
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(bank <- currentPage.getList) {
+                        <tr>
+                            <td style="text-align: center;">@bank.id</td>
+							<td style="text-align: center;">@bank.code</td>
+                            <td>@bank.name</td>
+							<td class="actions" style="text-align: center;;">
+								<a href="@routes.Banks.summary(bank.id)" class="btn-detail btn-bank-detail" data-remote="true">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG108","Detail")</a>
+								<a href="@routes.Banks.edit(bank.id)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG112","Edit")</a>
+							</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div id="pagination" class="pagination pagination-right">
+                <ul>
+					<li>
+						<a class="btn" href="@routes.Banks.csv().toString()"><i class="icon-download-alt"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG128","Export as CSV")</a>
+					</li>
+                    @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    } else {
+                    <li class="prev">
+                        <a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+                    </li>
+                    }
+
+                   <li class="current">
+                       <a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+                   </li>
+
+                    @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    } else {
+                    <li class="next">
+                        <a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+	<div class="span5">
+	   <div class="well" id="bank-detail-container">
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG393","You can view detail of bank by clicking 'Detail' on the desired row of bank")
+		</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+<!--
+	(function() {
+	  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+	  $(__bind(function() {
+	    var $detailContainer;
+	    $detailContainer = $("#bank-detail-container");
+	    return $('a.btn-bank-detail').on('ajax:beforeSend', function() {
+	      return $detailContainer.loading();
+	    }).on('ajax:success', function(e, data) {
+	      return $detailContainer.html(data);
+	    }).on('ajax:error', function(e, err) {
+	      return $detailContainer.html(e);
+	    });
+	  }, this));
+	}).call(this);
+//-->
+</script>
+
+}

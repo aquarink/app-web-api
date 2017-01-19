@@ -1,0 +1,152 @@
+@(err: String, transaction: models.Transaction)
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Receive money receipt"){
+
+<div id="receive-receipt" class="body-print">
+<div class="page-header">
+    <h2 class="center"><img src="@routes.Corporate.logo(session.get("corporateCode"), "small")" style="float:left;height:50px;"/>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG456","Receive money receipt")<img src="/assets/images/doku_small.png" style="float:right;height:50px;"/></h2>
+</div>
+
+@partial.flash_alert()
+
+<div class="container-refund-inner">
+@if(err) {
+	<div class="row">
+		<div class="span12">
+			<div class="alert alert-error">@err</div>
+		</div>
+	</div>
+} else {
+	<div>
+		<div class="receipt-head">
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG225","Corporate name")</dt>
+						<dd>@transaction.beneficiaryAgent.corporate.name</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG226","Operator ID")</dt>
+						<dd>@transaction.beneficiaryAgent.idToken</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG227","Operator name")</dt>
+						<dd>@transaction.beneficiaryAgent.fullName</dd>
+					</dl>
+				</div>
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG122","Address")</dt>
+						<dd>@transaction.beneficiaryAgent.corporate.address</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone Number")</dt>
+						<dd>@transaction.beneficiaryAgent.corporate.phoneNumber</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG255","Fax")</dt>
+						<dd>@transaction.beneficiaryAgent.corporate.faxNumber</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+		
+		<div class="receipt-body">
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG228","Transaction type")</dt>
+						<dd>Receive money</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG040","Sending country")</dt>
+						<dd>@transaction.sender.country.name</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG041","Receive country")</dt>
+						<dd>@transaction.beneficiary.country.name</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG039","Service")</dt>
+						<dd>@transaction.channel.name</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG230","Date / Time")</dt>
+						<dd>@transaction.createdFormat</dd>
+					</dl>
+					
+				</div>
+				<div class="span6">
+					<div class="well well-receipt well-print">
+						<div class="well-inner">
+							<label>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG026","Transaction ID"):</label>
+							<h1>@transaction.idToken</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG073","Customer ID of receiver")</dt>
+						<dd>@transaction.beneficiary.idToken</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG201","Receiver name")</dt>
+						<dd>@transaction.beneficiary.fullName</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number")</dt>
+						<dd>@transaction.beneficiary.phoneNumber</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG042","Sending amount")</dt>
+						<dd>@transaction.senderAmountFormat</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG045","Exchange rate")</dt>
+						<dd>@transaction.forexReference.rate</dd>
+					</dl>
+				</div>
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG072","Customer ID of sender")</dt>
+						<dd>@transaction.sender.idToken</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG199","Sender name")</dt>
+						<dd>@transaction.sender.fullName</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG053","Phone number")</dt>
+						<dd>@transaction.sender.phoneNumber</dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG277","Sender address")</dt>
+						<dd>@transaction.sender.address</dd>
+					</dl>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned">
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG030","Status")</dt>
+						<dd><strong>@transaction.statusText</strong></dd>
+						<dt>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG207","Amount to receive")</dt>
+						<dd><strong>@transaction.beneficiaryAmountFormat</strong></dd>
+					</dl>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span6" style="">
+					<div class="span2 well" style="width: 70%;" >
+						<div style="height:30px"><br>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG233","Operator's Signature")</div>
+					</div>
+				</div>
+				<div class="span6" style="">
+					<div class="span2 well" style="width: 70%;" >
+						<div style="height:30px"><br>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG234","Customer's Signature")</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span6">
+					<dl class="dl-horizontal dl-aligned" style="font-size: 9pt;">
+						<dt style="overflow: visible;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG235","1. Please check all transaction information before leaving our branch.")</dt>
+						<dd></dd>
+						<dt style="overflow: visible;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG236","2. This is valid transaction receipt, please keep this carefully as your reference.")</dt>
+						<dd></dd>
+					</dl>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="span12">
+					<div class="form-actions invisible-print">
+						<button class="btn btn-print" type="print" data-target="#receive-receipt"><i class="icon-print"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG079","Print")</button>
+						<a href="@routes.Receive.create()" class="btn">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG457","Receive another money") <i class="icon-arrow-right"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+</div>
+</div>
+} {
+<script type="text/javascript" src='@routes.Assets.at("javascripts/transaction.js")'></script>
+}

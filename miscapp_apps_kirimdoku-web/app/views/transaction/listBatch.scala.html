@@ -1,0 +1,159 @@
+@(filter: String, currentPage: com.avaje.ebean.Page[models.Batch], currentSortBy: String, currentOrder: String)
+@import helper._
+@import helper.twitterBootstrap._
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@link(newPage:Int, newSortBy:String) = @{
+
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+            }
+        } else {
+            order = "asc"
+        }
+    }
+
+    routes.Transaction.listBatchInquiry(newPage, sortBy, order, filter)
+
+}
+
+
+@header(key:String, title:String) = {
+<th class="@key" style="text-align: center; vertical-align: middle;">
+	@if(key && key.length > 0) {
+	<a href="@link(currentPage.getPageIndex, key)">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@layout("Transactions Inquiry management"){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG498","Batch Upload management")</h1>
+</div>
+
+@partial.flash_alert()
+
+<div class="row">
+	<div class="span12">
+		<form action="@link(0, "name")" method="GET" class="form-search">
+			<div id="action" class="well">
+                <div class="input-append">
+					<input type="search" id="searchbox" name="filter" class="search-query span4" value="@filter" placeholder='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG513","Search by filename")'><button type="submit" class="btn" style="border-radius: 0px;"><i class="icon-search"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG100","Search")</button>
+					@restrict(la(as("operator"))) {
+					<a class="btn" href="@routes.BatchUpload.viewUpload()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG497","Batch Upload")</a>
+					}
+				</div>
+			</div>
+		</form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span10">
+		@if(currentPage.getTotalRowCount == 0){
+		<div class="well">
+			<em>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG271","There are no transaction data to be displayed")</em>
+		</div>
+		} else {
+		<table class="table transaction table-bordered table-striped table-condensed" style="text-align: center;">
+			<thead>
+			<tr>
+				@header("id", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG365","ID"))
+				@header("createDate", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG500","Create Date"))
+				@header("inquiryUpdateDate", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG502","Inquiry Update Date"))
+				@header("remitUpdateDate", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG509","Remit Update Date"))
+				@header("user", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG102","Agent ID"))
+				@header("fileName", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG501","File Name"))
+				@header("totalRow", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG503","Total Row"))
+				@header("totalRowInquiry", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG516","Total Row Inquiry"))
+				@header("totalRowRemit", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG517","Total Row Remit"))
+				@header("description", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG505","Description"))
+				@header("inquiry", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG506","Inquiry"))
+				@header("remit", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG514","Remit"))
+			</tr>
+			</thead>
+			<tbody>
+			@for(batch <- currentPage.getList) {
+			<tr>
+				<td style="text-align: center;">@batch.id</td>
+				<td style="text-align: center;">@doku.kirimdoku.util.CommonUtil.sdfDateTimes.format(batch.createDate)</td>
+				<td style="text-align: center;">
+					@if(batch.inquiryUpdateDate != null){
+				 		@doku.kirimdoku.util.CommonUtil.sdfDateTimes.format(batch.inquiryUpdateDate)
+				 	}
+				</td>
+				<td style="text-align: center;">
+					@if(batch.remitUpdateDate != null){
+				 		@doku.kirimdoku.util.CommonUtil.sdfDateTimes.format(batch.remitUpdateDate)
+				 	}
+				</td>
+				<td style="text-align: center;">@batch.user.getIdToken</td>
+				<td>@batch.fileName</td>
+				<td style="text-align: right;">@batch.totalRow</td>
+				<td style="text-align: right;">@batch.totalRowInquiry</td>
+				<td style="text-align: right;">@batch.totalRowRemit</td>
+				<td style="text-align: center;">
+				@if(batch.description != ""){
+					<a href="@routes.Transaction.showBatch(batch.id)" class="btn-detail btn-transaction-detail" data-remote="true">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG473","View")</a>
+				}
+				</td>
+				<td style="text-align: center;">
+				<a href='@routes.Transaction.showBatchDetail(batch.id, 0,"","i")' class="btn-detail btn-transaction-detail">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG108","Detail")</a>
+				</td>
+				<td style="text-align: center;">
+				@if(batch.state.equals('C')){
+					<a href='@routes.Transaction.showBatchDetail(batch.id, 0,"","r")' class="btn-detail btn-transaction-detail">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG108","Detail")</a>
+				}
+				</td>
+			</tr>
+			}
+			</tbody>
+		</table>
+
+		<div id="pagination" class="pagination pagination-right">
+			<ul>
+				@if(currentPage.hasPrev) {
+				<li class="prev">
+					<a href="@link(currentPage.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+				</li>
+				} else {
+				<li class="prev">
+					<a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+				</li>
+				}
+
+				<li class="current">
+					<a>Displaying @currentPage.getDisplayXtoYofZ(" to ", " of ")</a>
+				</li>
+
+				@if(currentPage.hasNext) {
+				<li class="next">
+					<a href="@link(currentPage.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+				</li>
+				} else {
+				<li class="next">
+					<a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+				</li>
+				}
+			</ul>
+		</div>
+		}
+	</div>
+	<div class="span2">
+		<pre id="transaction-detail-container" class="well" style="font-family: helvetica; font-size: 9pt;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG274","Click view detail for transaction detail")</pre>
+    </div>
+</div>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/transaction.js")'></script>
+}

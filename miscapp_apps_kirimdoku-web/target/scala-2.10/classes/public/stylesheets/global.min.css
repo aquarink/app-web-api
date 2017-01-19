@@ -1,0 +1,62 @@
+body{background:url(../images/grid-18px-masked.png) repeat-x;background-position:0 -150px;padding-top:82px;}
+.navbar .brand{padding-bottom:2px;padding-top:2px;}
+.navbar .nav{margin-top:21px;}.navbar .nav .role{float:right;margin-top:-14px;margin-right:12px;font-size:12px;}
+@media (max-width:980px){body{padding-top:0;}}section.content{margin-top:5px;}
+.label-transparent-important{color:#b94a48;background:transparent;font-size:13px;font-style:italic;background-color:transparent;}
+form .control-group input.input{height:40px;width:60px;}
+form label{font-weight:normal;}
+form .required>label{font-weight:bold;}
+form input[type=text].error{border:1px solid #ff3232;}
+form input[type=text].amount,form input[type=number].amount{text-align:right;}
+form input[type=text].amount::-webkit-outer-spin-button,form input[type=number].amount::-webkit-inner-spin-button{-webkit-appearance:none;}
+form .input-append input[type="radio"],form .input-prepend input[type="radio"]{margin:0px;}
+form .input-prepend input[type="text"],form .input-prepend input[type="number"]{width:auto;}
+form .input-append.date{padding:0px;white-space:nowrap;}form .input-append.date input[type=text]{width:183px;}
+form .form-actions button.btn,form .form-actions input.btn{min-width:95px;}
+form.form-horizontal .control-group{margin-bottom:0px;}
+form.form-horizontal .input{margin-bottom:9px;}form.form-horizontal .input .help-block{display:none;}
+@media (min-width:1200px){.form-horizontal .clearfix:not(.nolabel) label{float:left;width:120px;padding-top:5px;text-align:left;} .form-horizontal .clearfix:not(.nolabel) div.input{margin-left:130px;}}.myAccount{margin-left:10px;}
+#datetimeContainer{margin-top:7px;margin-right:10px;}
+header{margin-top:-16px;height:42px;}
+table td.centered{text-align:center;}
+.table td.right{text-align:right;}
+table td.left{text-align:left;}
+table td.centered{text-align:center;}
+table tr.bordered td{border-bottom:1px solid #DDD;}
+.table td.right{text-align:right;}
+table td.left{text-align:left;}
+table td.actions{text-align:right;white-space:nowrap;}table td.actions a{border-left:1px solid #cecece;padding-left:5px;padding-right:3px;display:inline-block;}
+table td.actions a:first-child{border-left:0px;}
+.alert{font-size:13pt;}
+.alert.alert-message{background:none;border-color:#f0f0f0;color:#A4A8AA;}
+pre{border:0px;background:none;}
+.summary{font-size:1.1em;font-family:Arial Narrow, Helvetica;}.summary dt{text-align:left;font-weight:normal;width:120px;}
+.summary dd{text-align:right;}
+.summary hr{margin:10px 0px;}
+dl dt{color:#999;font-weight:bold;font-size:12px;}
+dl dd{min-height:21px;}
+dl.dl-horizontal dt{color:#000;font-size:1em;width:160px;}
+dl.dl-aligned dt{color:#000;text-align:left;font-weight:normal;}
+dl.dl-aligned dd{text-align:left;}dl.dl-aligned dd pre{padding:0px;}
+dl.dl-aligned-right dd{text-align:right;}
+.step{font-size:17px;}.step .circle{width:62px;height:62px;line-height:62px;display:inline-block;border-radius:36px;-moz-border-radius:36px;-webkit-border-radius:36px;-khtml-border-radius:36px;font-size:36px;color:#888;text-shadow:0 1px 0 #fff;text-decoration:none;text-align:center;background:#F5F5F5;box-sizing:content-box;border:#f5f5f5 6px solid;}
+.step .circle:hover{border:rgba(0, 0, 0, 0) 6px double;}
+.step .circle.active{background:#E2F1F6;color:#2F4C4F;border:#f3fafd 6px solid;}
+.step .title{padding-top:20px;}
+label{font-weight:bold;}
+#transactionFormContainer .currency{width:60px;}
+.loading{text-align:center;color:#777;background:url('../images/loading.gif') no-repeat center;min-height:62px;}
+.center{text-align:center;}
+.left{text-align:left;}
+.right{text-align:right;}
+.page-header{padding-bottom:16pt;border-bottom:0px;background:url('/assets/images/separator.png') no-repeat bottom;}.page-header h1,.page-header h2,.page-header h3{font-weight:normal;}
+.page-header h1{font-size:27px;}
+.page-header-step h1{margin-top:25px;}
+.page-subheader{margin-top:10px;margin-bottom:5px;padding-bottom:5px;border-bottom:1px solid #EEE;}
+.content .btn .btn-primary,.content .btn .btn-alt,.content .btn .btn-cancel,.content .btn .btn-back{min-width:90px;}
+.btn-group .btn{min-width:90px;}
+.well{border-radius:12px;margin-bottom:10px;padding-bottom:10px;}.well fieldset legend{margin-bottom:4px;}
+.well-transparent{background:none;}
+.highlight{color:green;}
+fieldset{margin-bottom:20px;}
+pre{font-size:12px;font-family:helvetica;}

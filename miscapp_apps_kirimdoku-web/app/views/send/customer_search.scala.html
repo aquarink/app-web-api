@@ -1,0 +1,18 @@
+@(currentPage: com.avaje.ebean.Page[models.Customer])
+
+<div class="page-subheader">
+	<h4>Search Results (Name - MemberId - PersonalID)</h4>
+</div>
+
+@if(currentPage.getTotalRowCount<=0) {
+<div class="alert alert-message">No customers found by specified search</div>
+} else {
+<ul class="list-customers">
+@for(customer <- currentPage.getList) {
+	<li>
+		<div class="pull-right"><a href="#" class="select" data-customerId="@customer.id">Select</a></div>
+		@customer.fullName - @customer.id - @customer.personalIdType @customer.personalId
+	</li>
+}
+</ul>
+}

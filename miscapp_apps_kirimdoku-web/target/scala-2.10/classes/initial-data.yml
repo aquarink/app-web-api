@@ -1,0 +1,707 @@
+channels:
+    - !!models.Channel
+        code: 02
+        name: Cash to Cash
+
+corporates:
+    - !!models.Corporate
+        code: "DOK"
+        name: Doku
+        encryptionKey: "klnzmui@19091z81"
+        color1: "#800E0E"
+        color2: "#F0F0F0"
+    - !!models.Corporate
+        code: "AAA"
+        name: Simulator Agent
+        encryptionKey: "SIMULATORDEMOKEY"
+        color1: "#333"
+        color2: "#cecece"
+    - !!models.Corporate
+        code: "WAR"
+        name: Warindo
+        encryptionKey: "WAR1N@DO182uZ@@!"
+        color1: "#333"
+        color2: "#cecece"
+
+currencies:
+    - !!models.Currency
+        code: IDR
+    - !!models.Currency
+        code: USD
+    - !!models.Currency
+        code: AUD
+    - !!models.Currency
+        code: MYR
+    - !!models.Currency
+        code: SAR
+    - !!models.Currency
+        code: AED
+    - !!models.Currency
+        code: HKD
+
+forex_settings:
+    - !!models.ForexSetting
+        createdTime: 2012-08-04 15:10:10
+        spread: 1.0
+        threshold: 2.0
+
+forex:
+    - !!models.Forex
+        createdTime: 2012-08-04 13:50:01
+        origin: !!models.Currency
+            code: IDR
+        destination: !!models.Currency
+            code: IDR
+        rate: 1
+    - !!models.Forex
+        createdTime: 2012-08-04 14:30:10
+        origin: !!models.Currency
+            code: IDR
+        destination: !!models.Currency
+            code: USD
+        rate: 0.00010562
+    - !!models.Forex
+        createdTime: 2012-08-04 14:30:10
+        origin: !!models.Currency
+            code: USD
+        destination: !!models.Currency
+            code: IDR
+        rate: 9467.50000
+    - !!models.Forex
+        createdTime: 2012-08-04 14:30:10
+        origin: !!models.Currency
+            code: IDR
+        destination: !!models.Currency
+            code: AUD
+        rate: 0.00010107
+    - !!models.Forex
+        createdTime: 2012-08-04 14:30:10
+        origin: !!models.Currency
+            code: AUD
+        destination: !!models.Currency
+            code: IDR
+        rate: 9893.5400
+    - !!models.Forex
+        createdTime: 2012-08-04 14:30:10
+        origin: !!models.Currency
+            code: IDR
+        destination: !!models.Currency
+            code: MYR
+        rate: 0.00033160
+    - !!models.Forex
+        createdTime: 2012-08-04 15:10:10
+        origin: !!models.Currency
+            code: MYR
+        destination: !!models.Currency
+            code: IDR
+        rate: 3015.6100
+
+forex_references:
+    - !!models.ForexReference
+        createdTime: 2012-08-10 00:00:00
+        forex: !!models.Forex
+            id: 1
+        initialRate: 1
+        rate: 1
+    - !!models.ForexReference
+        createdTime: 2012-08-10 00:00:00
+        forex: !!models.Forex
+            id: 2
+        initialRate: 0.00010562
+        rate: 0.00010552
+    - !!models.ForexReference
+        createdTime: 2012-08-10 00:00:00
+        forex: !!models.Forex
+            id: 3
+        initialRate: 9467.50000
+        rate: 9466.50000
+    - !!models.ForexReference
+        createdTime: 2012-08-10 00:00:00
+        forex: !!models.Forex
+            id: 4
+        initialRate: 0.000101076
+        rate: 0.00010106
+    - !!models.ForexReference
+        createdTime: 2012-08-10 00:00:00
+        forex: !!models.Forex
+            id: 5
+        initialRate: 9893.5400
+        rate: 9892.5400
+    - !!models.ForexReference
+        createdTime: 2012-08-10 00:00:00
+        forex: !!models.Forex
+            id: 6
+        initialRate: 0.00033160
+        rate: 0.00033060
+    - !!models.ForexReference
+        createdTime: 2012-08-10 00:00:00
+        forex: !!models.Forex
+            id: 7
+        initialRate: 3015.6100
+        rate: 3014.6100
+
+
+countries:
+    - !!models.Country
+        code: ID
+        name: Indonesia
+        currency: !!models.Currency
+            code: IDR
+    - !!models.Country
+        code: MY
+        name: Malaysia
+        currency: !!models.Currency
+            code: MYR
+    - !!models.Country
+        code: AU
+        name: Australia
+        currency: !!models.Currency
+            code: AUD
+    - !!models.Country
+        code: SA
+        name: Saudi Arabia
+        currency: !!models.Currency
+            code: SAR
+    - !!models.Country
+        code: AE
+        name: United Arab Emirate
+        currency: !!models.Currency
+            code: AED
+
+fees:
+  - !!models.Fee
+      corporate: !!models.Corporate
+                   code: AAA
+      senderCountry: !!models.Country
+                       code: ID
+      beneficiaryCountry: !!models.Country
+                            code: ID
+      amount: 5000
+      currency: !!models.Currency
+                  code: IDR
+      description: Admin Fee
+      domainCorporate: !!models.Corporate
+                         code: AAA
+  - !!models.Fee
+      corporate: !!models.Corporate
+                   code: AAA
+      senderCountry: !!models.Country
+                       code: ID
+      beneficiaryCountry: !!models.Country
+                            code: AU
+      amount: 7000
+      currency: !!models.Currency
+                  code: IDR
+      description: Admin Fee
+      domainCorporate: !!models.Corporate
+                         code: AAA
+  - !!models.Fee
+      corporate: !!models.Corporate
+                   code: AAA
+      senderCountry: !!models.Country
+                       code: ID
+      beneficiaryCountry: !!models.Country
+                            code: AU
+      amount: 4000
+      currency: !!models.Currency
+                  code: IDR
+      description: Trans Fee
+      domainCorporate: !!models.Corporate
+                         code: DOK
+  - !!models.Fee
+      corporate: !!models.Corporate
+                   code: AAA
+      senderCountry: !!models.Country
+                       code: ID
+      beneficiaryCountry: !!models.Country
+                            code: MY
+      amount: 6000
+      currency: !!models.Currency
+                  code: IDR
+      description: Admin Fee
+      domainCorporate: !!models.Corporate
+                         code: AAA
+  - !!models.Fee
+      corporate: !!models.Corporate
+                   code: AAA
+      senderCountry: !!models.Country
+                       code: AU
+      beneficiaryCountry: !!models.Country
+                            code: ID
+      amount: 1.25
+      currency: !!models.Currency
+                  code: AUD
+      description: Admin Fee
+      domainCorporate: !!models.Corporate
+                         code: AAA
+
+cities:
+    - !!models.City
+        name: Jakarta
+        country: !!models.Country
+            code: ID
+    - !!models.City
+        name: Bandung
+        country: !!models.Country
+            code: ID
+    - !!models.City
+        name: Surabaya
+        country: !!models.Country
+            code: ID
+    - !!models.City
+        name: Kuala Lumpur
+        country: !!models.Country
+            code: MY
+    - !!models.City
+        name: Canberra
+        country: !!models.Country
+            code: AU
+    - !!models.City
+        name: Riyadh
+        country: !!models.Country
+            code: SA
+    - !!models.City
+        name: Abu Dhabi
+        country: !!models.Country
+            code: AE
+
+security_roles:
+    - !!models.SecurityRole
+        role: "admin"
+        description: "Doku Admin"
+    - !!models.SecurityRole
+        role: "finance"
+        description: "Doku Finance"
+    - !!models.SecurityRole
+        role: "mainagent"
+        description: "Main Agent"
+    - !!models.SecurityRole
+        role: "supervisor"
+        description: "Supervisor"
+    - !!models.SecurityRole
+        role: "operator"
+        description: "Operator"
+
+users:
+    - !!models.User
+        email: faiq@doku.com
+        firstName: Faiq
+        lastName: Bratawidjaja
+        password: blitzkrieg321
+        personalIdType: CITIZENID
+        personalId: 12992019201
+        address: Plaza Asia suite
+        birthDate: 1982-01-02
+        postalCode: 12050
+        phoneNumber: 62899000081
+        faxNumber: 62899000082
+        gender: MALE
+        isAdmin: true
+        status: ACTIVE
+        corporate:
+            code: DOK
+        country:
+            code: ID
+        city:
+            id: 1
+        roles:
+            - !!models.SecurityRole
+                role: "admin"
+    - !!models.User
+        firstName: Bayu
+        lastName: Sembada
+        email: bayu.sembada@mobiledoku.com
+        password: blitzkrieg321
+        personalIdType: CITIZENID
+        personalId: 72218218
+        address: Plaza Asia suite
+        birthDate: 1982-01-02
+        postalCode: 12050
+        phoneNumber: 62899000082
+        faxNumber: 62899000084
+        gender: MALE
+        status: ACTIVE
+        supervisor:
+            id: 1
+        corporate:
+            code: AAA
+        country:
+            code: ID
+        city:
+            id: 1
+        roles:
+            - !!models.SecurityRole
+                role: "mainagent"
+    - !!models.User
+        firstName: Lukman
+        lastName: Hakim
+        email: lukman.hakim@mobiledoku.com
+        password: blitzkrieg321
+        address: Jalan Pramuka VI No. 71B
+        personalIdType: CITIZENID
+        personalId: 12891281091
+        birthDate: 1980-01-02
+        postalCode: 12056
+        phoneNumber: 62899111111
+        faxNumber: 62899111113
+        gender: MALE
+        status: ACTIVE
+        supervisor:
+            id: 2
+        corporate:
+            code: AAA
+        country:
+            code: ID
+        city:
+            id: 1
+        roles:
+            - !!models.SecurityRole
+                role: "supervisor"
+    - !!models.User
+        firstName: Widhie
+        lastName: Prihatna
+        email: widhie.prihatna@mobiledoku.com
+        password: blitzkrieg321
+        address: Jalan Pramuka VI No. 71B
+        birthDate: 1980-01-02
+        postalCode: 12056
+        phoneNumber: 62899111111
+        faxNumber: 62899111112
+        gender: MALE
+        status: ACTIVE
+        supervisor:
+            id: 2
+        corporate:
+            code: AAA
+        country:
+            code: AU
+        city:
+            id: 1
+        roles:
+            - !!models.SecurityRole
+                role: "supervisor"
+    - !!models.User
+        firstName: Fauzi
+        lastName: Assegaff
+        email: fauzi@doku.com
+        password: blitzkrieg321
+        personalIdType: CITIZENID
+        personalId: 728127189
+        address: Jalan Pramuka VI No. 71B
+        birthDate: 1984-05-06
+        postalCode: 12056
+        phoneNumber: 628991123311
+        faxNumber: 6221871718
+        gender: FEMALE
+        status: ACTIVE
+        supervisor:
+            id: 3
+        corporate:
+            code: AAA
+        country:
+            code: ID
+        city:
+            id: 1
+        roles:
+            - !!models.SecurityRole
+                role: "operator"
+    - !!models.User
+        firstName: Sigit
+        lastName: Nurseto
+        email: sigit@doku.com
+        password: blitzkrieg321
+        address: Jalan Canberra Raya 77
+        birthDate: 1980-01-02
+        postalCode: 12056
+        phoneNumber: 62899111111
+        faxNumber: 622288819100
+        gender: FEMALE
+        status: ACTIVE
+        supervisor:
+            id: 3
+        corporate:
+            code: AAA
+        country:
+            code: AU
+        city:
+            id: 5
+        roles:
+            - !!models.SecurityRole
+                role: "operator"
+    - !!models.User
+        firstName: Marijose
+        lastName: Prihatna
+        email: prihatna.marijosa@doku.com
+        password: blitzkrieg321
+        address: Jalan Canberra Raya 77
+        birthDate: 1980-01-02
+        postalCode: 12056
+        phoneNumber: 62899111111
+        gender: FEMALE
+        status: ACTIVE
+        supervisor:
+            id: 4
+        corporate:
+            code: AAA
+        country:
+            code: AU
+        city:
+            id: 5
+        roles:
+            - !!models.SecurityRole
+                role: "operator"
+    - !!models.User
+        firstName: Mark
+        lastName: Zuckerberg
+        email: dodo@agent.com
+        password: 123
+        city: !!models.City
+                id: 1
+        address: Jalan Pramuka VI No. 71B
+        birthDate: 1984-05-06
+        postalCode: 12056
+        phoneNumber: 628991123311
+        gender: FEMALE
+        isAdmin: true
+        status: ACTIVE
+        corporate: !!models.Corporate
+                        code: WAR
+        country: !!models.Country
+                      code: ID
+        supervisor: !!models.User
+                      email: dodo@supervisor.com
+        roles:
+            - !!models.SecurityRole
+                role: "admin"
+    - !!models.User
+        firstName: Amanaro
+        lastName: Brin
+        email: dodo@mainagent.com
+        password: 123
+        city: !!models.City
+                id: 1
+        address: Jalan Pramuka VI No. 71B
+        birthDate: 1980-01-02
+        postalCode: 12056
+        phoneNumber: 62899111121
+        gender: MALE
+        status: ACTIVE
+        corporate: !!models.Corporate
+                        code: WAR
+        country: !!models.Country
+                      code: ID
+        roles:
+            - !!models.SecurityRole
+                role: "mainagent"
+    - !!models.User
+        firstName: Sergey
+        lastName: Page
+        email: dodo@supervisor.com
+        password: 123
+        city: !!models.City
+                id: 1
+        address: Jalan Pramuka VI No. 71B
+        birthDate: 1980-01-02
+        postalCode: 12056
+        phoneNumber: 6289911231
+        gender: FEMALE
+        status: INACTIVE
+        corporate: !!models.Corporate
+                        code: WAR
+        country: !!models.Country
+                      code: ID
+        roles:
+            - !!models.SecurityRole
+                role: "supervisor"
+customers:
+    - !!models.Customer
+        firstName: Fadhil
+        lastName: Bayonair
+        gender: MALE
+        address: Jalan Merdeka Raya No.5
+        country:
+            code: ID
+        cityName: "Jakarta"
+        birthDate: 1984-02-12
+        #birthPlace: Jakarta
+        personalIdType: CITIZENID
+        personalId: 728127189
+        personalIdCountry:
+          code: ID
+        personalIdIssueDate: '2012-05-01'
+        personalIdExpireDate: '2017-05-01'
+        phoneNumber: 62899272626111
+        postalCode: 12450
+        email: bayu.sembada@mobiledoku.com
+    - !!models.Customer
+        firstName: Cialuk
+        lastName: Banara
+        gender: MALE
+        address: Jalan Bandung Cilegon 2
+        country:
+            code: ID
+        cityName: "Bandung"
+        birthDate: 1980-06-17
+        #birthPlace: Madiun
+        personalIdType: CITIZENID
+        personalId: 28192719827198
+        personalIdCountry:
+          code: ID
+        personalIdIssueDate: '2012-05-01'
+        personalIdExpireDate: '2017-05-01'
+        phoneNumber: 6289927817291
+        postalCode: 12455
+        email: widhie@mobiledoku.com
+    - !!models.Customer
+        firstName: Trackie
+        lastName: Gundara
+        gender: FEMALE
+        address: Jalan Ampera tujuh lima No 88
+        country:
+            code: ID
+        cityName: "Canberra"
+        birthDate: 1977-04-04
+        #birthPlace: Madiun
+        personalIdType: DRIVERLICENSE
+        personalId: 8000020222
+        personalIdCountry:
+          code: ID
+        personalIdIssueDate: '2012-05-01'
+        personalIdExpireDate: '2017-05-01'
+        phoneNumber: 628772222221
+        postalCode: 12455
+        email: faiq@doku.com
+    - !!models.Customer
+        firstName: Cilemang
+        lastName: Malangsia
+        gender: FEMALE
+        address: Jalan Makmur No. 35
+        country:
+            code: MY
+        cityName: "Kuala Lumpur"
+        birthDate: 1987-01-04
+        #birthPlace: Surabaya
+        personalIdType: PASSPORTID
+        personalId: 120009888001
+        personalIdCountry:
+          code: MY
+        personalIdIssueDate: '2007-01-15'
+        personalIdExpireDate: '2011-01-15'
+        phoneNumber: 628998082898
+        postalCode: 12042
+        email: fauzi.assegaff@gmail.com
+    - !!models.Customer
+        firstName: Mickey
+        lastName: Jacksnoite
+        gender: MALE
+        address: Jalan Ciledug Raya No 77
+        country:
+            code: AU
+        cityName: "Sydney"
+        birthDate: 1987-08-08
+        #birthPlace: Tangerang
+        personalIdType: CITIZENID
+        personalIdCountry:
+          code: AU
+        personalIdIssueDate: '2011-11-01'
+        personalIdExpireDate: '2013-11-01'
+        personalId: 5555689222222
+        phoneNumber: 628123488971
+        postalCode: 12041
+        email: xigitech@gmail.com
+
+news:
+    - !!models.News
+        content: "Hari ini, Jumat, 31 Agustus 2012, Bank Indonesia dan Ikatan Sarjana Ekonomi Indonesia (ISEI) menerbitkan sebuah buku berjudul Koordinasi dan Interaksi Kebijakan Fiskal-Moneter: Tantangan ke Depan.
+
+Penerbitan buku ini untuk mengisi kekosongan bahan bacaan yang mengulas koordinasi kebijakan Fiskal dan Moneter. Apalagi pada akhir 2011 seiring dengan dibentuknya Otoritas Jasa Keuangan akan mengubah pola pengelolaan sistem keuangan dan juga mempengaruhi koordinasi kebijakan fiskal dan moneter. Sementara itu masih banyak pihak di Indonesia yang belum memahami dengan baik koordinasi kebijakan fiskal dan moneter. Oleh karena itu diterbitkannya buku ini diharapkan akan dapat memenuhi kebutuhan masyarakat, akademisi, peneliti ekonomi, serta pengambil kebijakan yang ingin memahami dengan lebih baik koordinasi kebijakan fiskal dan moneter serta perkembangannya di Indonesia.
+
+Buku ini merupakan kumpulan berbagai tulisan dari para penulis yang memiliki berbagai latar belakang, baik otoritas terkait ataupun mantan otoritas terkait, serta akademisi yang menggeluti dan memiliki keahlian di bidang kebijakan fiskal dan moneter. Tulisan yang disajikan dalam buku ini mencakup sejarah, perkembangan masa kini, studi empiris, masalah dan tantangan yang dihadapi serta perkembangan kedepan koordinasi kebijakan fiskal dan moneter di Indonesia.
+
+Selamat membaca."
+        published: true
+        corporate: !!models.Corporate
+                     code: AAA
+
+    - !!models.News
+        content: 'Ulang tahun ASEAN ke-45 pada Agustus 2012 seyogyanya menjadi alarm call bagi kita akan bakal hadirnya Masyarakat Ekonomi ASEAN (MEA) pada 2015. Sayangnya, meski kurang dari tiga tahun, banyak dari kita belum memahami MEA secara utuh.
+
+MEA ingin mewujudkan ASEAN sebuah pasar tunggal dan basis produksi yang diyakini dapat menekan biaya transaksi dan memaksimalkan manfaat dari perdagangan. Proses integrasi sendiri akan dilakukan secara bertahap sesuai dengan kesiapan masing-masing.
+
+Pemerintah menunjuk Kantor Menko sebagai koordinator pelaksanaan komitmen Indonesia dalam cetak biru MEA atas dasar Inpres No.11/2011. Bank Indonesia (BI) turut aktif dalam pelaksanaan komitmen nasional itu khususnya di sektor perbankan dan sistem pembayaran nasional. Peran itu mencakup kebijakan menguatkan ketahanan dan daya saing kedua sektor serta keterlibatan dalam forum negosiasi dan kerjasama ASEAN untuk mengawal kepentingan nasional.
+
+Lantas, apa dampak MEA pada kehidupan kita? Bagaimana kesiapan kita? Dan bagaimana kita dapat memanfaatkan kelebihan skala ekonomi sebagai basis memperoleh keuntungan?
+
+Silahkan simak informasi tersebut dengan mengakses halaman www.bi.go.id/geraiinfo.'
+        published: true
+        corporate: !!models.Corporate
+                     code: AAA
+
+    - !!models.News
+        content: 'Ribuan pulau yang indah menguntai di Khatulistiwa adalah karunia Tuhan Yang Maha Esa kepada negeri ini, Indonesia. Keindahan alam nusantara, barisan pegunungan, danau, sungai yang meliuk melukisi dan pantai-pantai samudera yang menginspirasi. Hutan hujan yang tinggi menjulang dan sawah ladang yang padinya kuning membentang. Keindahan alam Indonesia. Dan keindahan kearifan lokal yang menjuntai bak mutu manikam, yang dari setiapnya memancarkan pesona dari rasa mensyukuri karunia. Mewujud dalam keindahan seni budaya, sastra bertutur dengan lisan dan dengan bayang-bayang, gerak tari, busana tradisionil, batik dan kerajinan, prosesi tradisi, lantunan nada maupun keindahan bangunan khas negeri, candi dan arca. 
+<p align="justify">Dalam rangkaian peringatan HUT ke-67 RI tahun 2012, USF IPEBI menyelenggarakan lomba foto Bank Indonesia Tahun 2012 dengan tema <b>“Cinta Indonesia”</b>. USF mengajak masyarakat pecinta fotografi untuk dapat ikut mensyukuri keindahan alam dan seni budaya Indonesia, untuk mengabadikan keindahan alam indonesia dan keindahan seni budaya Indonesia itu dalam bentuk seni foto, dan membangkitkan inspirasi. 
+</p><p align="justify">Lomba dibagi ke dalam 2 (dua) kategori, yaitu:<br><b><u>Kategori A:</u></b> Keindahan Alam Indonesia (lanskap, arsitektur tradisional)<br><b><u>Kategori B:</u></b> Seni Budaya Indonesia (seni tari, musik, prosesi budaya dan tradisi, wayang, seni batik, kerajinan) 
+</p><p align="justify">Peserta boleh mengikuti dua kategori, dengan maksimal jumlah foto 5 lembar untuk masing-masing kategori. <br>Persyaratan Lomba sbb: 
+</p><ol>
+<li>Peserta terbuka untuk umum. 
+</li><li>Peserta dapat mengirimkan foto cetak berwarna atau hitam putih maksimal 5 lembar untuk masing-masing kategori dengan ukuran sisi terpanjang minimal 25 cm dan maksimal 30 cm. 
+</li><li>Peserta diwajibkan menuliskan nama obyek dan lokasi obyek foto, judul foto, nama peserta sesuai identitas yang masih berlaku, alamat, nomor telepon, dan email (jika ada) pada selembar kertas dan ditempelkan di bagian belakang setiap foto. 
+</li><li>Peserta bertanggungjawab apabila dikemudian hari terdapat tuntutan dari pihak lain manapun atas penggunaan fasilitas, lokasi, model dan obyek lainnya di dalam foto. 
+</li><li>Foto belum pernah diikutsertakan atau menjadi juara pada perlombaan foto. 
+</li><li>Foto tidak diperkenankan mengandung unsur provokatif, pornografi dan SARA. Panitia berhak untuk mendiskualifikasi foto yang dianggap mengandung unsur-unsur tersebut. 
+</li><li>Olah digital diperkenankan sepanjang tidak melakukan penggabungan 2 foto atau lebih ke dalam satu foto, tidak menambahkan frame atau atribut apapun pada foto dan foto harus memenuhi sisi panjang kertas. 
+</li><li>Hadiah masing-masing kategori sbb: 
+<ul type="square">
+<li>1 hadiah pertama&nbsp;Rp.5.000.000,- 
+</li><li>1 hadiah kedua Rp.4.000.000,- 
+</li><li>1 hadiah ketiga Rp.3.000.000,-&nbsp; 
+</li><li>5 hadiah harapan masing-masing Rp.500.000,- </li></ul>
+</li><li>Hadiah sudah termasuk kompensasi atas penggunaan foto-foto pemenang untuk keperluan penyelenggara, sedangkan hak cipta tetap milik fofografer. Pajak hadiah ditanggung pemenang. 
+</li><li>Dewan juri: 
+<ul type="square">
+<li>Bp. Oscar Motuloh (KBN Antara) 
+</li><li>Bp. Ferry Ardianto (Profesional) 
+</li><li>Bp. Janu Dewandaru (USF-IPEBI) </li></ul>
+</li><li>Keputusan dewan juri mutlak dan tidak dapat diganggu gugat. 
+</li><li>Pengumuman pemenang direncanakan pada pertengahan bulan Oktober 2012 di website Bank Indonesia. 
+</li><li>Pemenang lomba foto akan dihubungi panitia dan wajib menyerahkan file foto hires dan persyaratan lainnya yang akan ditentukan panitia. 
+</li><li>Informasi lomba dapat menghubungi <b>Sdr. Dedy Sutardi</b> di nomor Hp.<b>0812-9829-8770</b>; <strong>PIN BB.26CB8E6F.</strong> 
+</li><li>Foto selambat-lambatnya telah diterima Panitia pada Jumat, 28 September 2012 pukul 12.00&nbsp;WIB (keterlambatan pengiriman oleh pihak ekspedisi menjadi tanggung jawab peserta). 
+</li><li>Foto dikirimkan dalam sampul tertutup, dituliskan kategori yang diikuti pada sampul bagian kiri atas dan ditujukan kepada Panitia Lomba Foto Bank Indonesia 2012 dengan alamat: <br>Sdri. Evi Eliza <br>Bank Indonesia <br>Menara Sjafruddin Prawiranegara lantai 4 <br>Jl. M.H. Thamrin No.2<br>JAKARTA PUSAT 10350 <br>Telp. 021 3818294 </li></ol></span>'
+        published: true
+        corporate: !!models.Corporate
+                     code: AAA
+
+
+    - !!models.News
+        content: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut risus velit. Nam in nisi ipsum, quis aliquet magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam tortor augue, cursus vitae consectetur vitae, ullamcorper a lorem. Integer et urna nulla, eu sagittis enim. Maecenas ac ligula sed lacus molestie tempor. Donec id ultricies mi. Donec ornare, eros in consectetur gravida, sem elit ullamcorper mauris, sit amet scelerisque odio neque sit amet metus. Proin ac arcu sem, nec pulvinar dolor. Integer euismod posuere tellus, vel ultrices lacus dignissim a. Suspendisse vel metus nibh. Cras tincidunt pharetra lacinia. Integer ut sem enim, et blandit quam. Vestibulum in mauris eros. Vestibulum elit risus, suscipit ac placerat consequat, eleifend in lorem. Nulla facilisi.
+        published: true
+        corporate: !!models.Corporate
+                     code: AAA
+
+    - !!models.News
+        content: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut risus velit. Nam in nisi ipsum, quis aliquet magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam tortor augue, cursus vitae consectetur vitae, ullamcorper a lorem. Integer et urna nulla, eu sagittis enim. Maecenas ac ligula sed lacus molestie tempor. Donec id ultricies mi. Donec ornare, eros in consectetur gravida, sem elit ullamcorper mauris, sit amet scelerisque odio neque sit amet metus. Proin ac arcu sem, nec pulvinar dolor. Integer euismod posuere tellus, vel ultrices lacus dignissim a. Suspendisse vel metus nibh. Cras tincidunt pharetra lacinia. Integer ut sem enim, et blandit quam. Vestibulum in mauris eros. Vestibulum elit risus, suscipit ac placerat consequat, eleifend in lorem. Nulla facilisi.
+        published: true
+        corporate: !!models.Corporate
+                     code: AAA
+
+    - !!models.News
+        content: Warindo News Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut risus velit. Nam in nisi ipsum, quis aliquet magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam tortor augue, cursus vitae consectetur vitae, ullamcorper a lorem. Integer et urna nulla, eu sagittis enim. Maecenas ac ligula sed lacus molestie tempor. Donec id ultricies mi. Donec ornare, eros in consectetur gravida, sem elit ullamcorper mauris, sit amet scelerisque odio neque sit amet metus. Proin ac arcu sem, nec pulvinar dolor. Integer euismod posuere tellus, vel ultrices lacus dignissim a. Suspendisse vel metus nibh. Cras tincidunt pharetra lacinia. Integer ut sem enim, et blandit quam. Vestibulum in mauris eros. Vestibulum elit risus, suscipit ac placerat consequat, eleifend in lorem. Nulla facilisi.
+        published: true
+        corporate: !!models.Corporate
+                     code: WAR
+
+    - !!models.News
+        content: Warindo News 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut risus velit. Nam in nisi ipsum, quis aliquet magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam tortor augue, cursus vitae consectetur vitae, ullamcorper a lorem. Integer et urna nulla, eu sagittis enim. Maecenas ac ligula sed lacus molestie tempor. Donec id ultricies mi. Donec ornare, eros in consectetur gravida, sem elit ullamcorper mauris, sit amet scelerisque odio neque sit amet metus. Proin ac arcu sem, nec pulvinar dolor. Integer euismod posuere tellus, vel ultrices lacus dignissim a. Suspendisse vel metus nibh. Cras tincidunt pharetra lacinia. Integer ut sem enim, et blandit quam. Vestibulum in mauris eros. Vestibulum elit risus, suscipit ac placerat consequat, eleifend in lorem. Nulla facilisi.
+        published: true
+        corporate: !!models.Corporate
+                     code: WAR
+
+    - !!models.News
+        content: Warindo News 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut risus velit. Nam in nisi ipsum, quis aliquet magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam tortor augue, cursus vitae consectetur vitae, ullamcorper a lorem. Integer et urna nulla, eu sagittis enim. Maecenas ac ligula sed lacus molestie tempor. Donec id ultricies mi. Donec ornare, eros in consectetur gravida, sem elit ullamcorper mauris, sit amet scelerisque odio neque sit amet metus. Proin ac arcu sem, nec pulvinar dolor. Integer euismod posuere tellus, vel ultrices lacus dignissim a. Suspendisse vel metus nibh. Cras tincidunt pharetra lacinia. Integer ut sem enim, et blandit quam. Vestibulum in mauris eros. Vestibulum elit risus, suscipit ac placerat consequat, eleifend in lorem. Nulla facilisi.
+        published: true
+        corporate: !!models.Corporate
+                     code: WAR
+
+
+

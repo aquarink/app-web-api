@@ -1,0 +1,119 @@
+@(page: com.avaje.ebean.Page[models.AuditLog], currentSortBy: String, currentOrder: String, filterUserId: String, filterTag: String)
+
+
+@link(newPage:Int, newSortBy:String) = @{
+    var sortBy = currentSortBy
+    var order = currentOrder
+
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+            }
+        } else {
+            order = "asc"
+        }
+    }
+
+    routes.Audit.admin_index(newPage, sortBy, order, filterUserId, filterTag)
+}
+
+@header(key:String, title:String) = {
+<th class="@key">
+	@if(key && key.length > 0) {
+	<a href="@link(page.getPageIndex, key)">@title</a>
+	} else {
+	@title
+	}
+</th>
+}
+
+@layout("Audit Log"){
+<div class="page-header">
+  <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG470","Backend User Audit Log Viewer")</h1>
+</div>
+
+@partial.flash_alert()
+
+<div class="filter-container">
+	<form action="@link(0, "id")" method="GET" id="form-filter">
+		<div class="row">
+		</div>
+		<div id="filter-action" class="form-actions-nowell" style="margin-bottom: 20px;">
+			<!-- <a class="btn primary" id="submit-filter">Filter</a>-->
+		</div>
+	</formaccount.number>
+</div>
+
+<div>
+    <table class="transaction table-bordered table-striped table-condensed" style="width:100%;text-align: center;">
+        <thead>
+			<tr>
+				@header("createdTime", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG474","Time"))
+				@header("user", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG310","User"))
+				@header("tag", doku.kirimdoku.util.MultiLanguage.getLanguage("LANG471","Tag"))
+				@header(null, doku.kirimdoku.util.MultiLanguage.getLanguage("LANG177","Message"))
+				@header(null, doku.kirimdoku.util.MultiLanguage.getLanguage("LANG472","Data"))
+			</tr>
+        </thead>
+        <tbody>
+			@for(audit <- page.getList) {
+			<tr>
+				<td class="left">@audit.createdTime</td>
+				@if(audit.user != null) {
+				<td class="left">@audit.user.email</td>
+				} else {
+				<td class="left"></td>
+				}
+				<td class="left">@audit.tag</td>
+				<td class="left">@audit.message</td>
+				<td class="left">
+					<a href="#audit-dialog-@audit.id" data-toggle="modal">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG473","View")</a>
+					<div class="modal fade hide" id="audit-dialog-@audit.id">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">×</button>
+							<h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG475","Data detail")</h3>
+						</div>
+						<div class="modal-body">
+							<pre>
+							@audit.data
+							</pre>
+						</div>
+					</div>
+				</td>
+			</tr>
+			}
+		</tbody>
+	</table>
+    <div id="pagination" class="pagination pagination-right">
+        <ul>
+            @if(page.hasPrev) {
+            <li class="prev">
+                <a href="@link(page.getPageIndex - 1, null)">&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+            </li>
+            } else {
+            <li class="prev">
+                <a>&larr; @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG272","Previous")</a>
+            </li>
+            }
+
+            <li class="current">
+                <a>Displaying @page.getDisplayXtoYofZ(" to ", " of ")</a>
+            </li>
+
+            @if(page.hasNext) {
+            <li class="next">
+                <a href="@link(page.getPageIndex + 1, null)">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+            </li>
+            } else {
+            <li class="next">
+                 <a>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG273","Next") &rarr;</a>
+            </li>
+            }
+        </ul>
+    </div>
+</div>
+}

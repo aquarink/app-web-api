@@ -1,0 +1,73 @@
+@(myForm: Form[Tools.FeedbackForm])
+@import helper._
+@import helper.twitterBootstrap._
+
+@layout("Feedback Form"){
+<div class="page-header">
+    <h2>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG174","Feedback Form")</h2>
+</div>
+<div class="row">
+
+    <div class="span6 offset2" id="sendContainer">
+        <div id="transactionFormContainer" class="step1 row">
+
+            @if(myForm.hasGlobalErrors) {
+            <p class="alert alert-error">
+            @myForm.globalError().message
+            </p>
+            }
+
+			@if(flash.contains("error")) {
+            <p class="alert alert-error">
+            @flash.get("error")
+            </p>
+            }
+            
+            @if(flash.contains("success")) {
+            <p class="alert alert-success">
+            @flash.get("success")
+            </p>
+            }
+
+            @helper.form(routes.Tools.feedbackSubmit, 'id -> "feedbackForm", 'method -> "POST", 'class -> "form-vertical") {
+                <div class="control-group">
+                    @helper.inputText(myForm("subject"),
+                    '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG175","Subject")
+                    , 'class -> "required span6 subject"
+                    , 'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG176","Subject your feedback")
+                    , 'autocomplete -> "off"
+                    , '_showConstraints -> false)
+                </div>
+                <div class="control-group">
+                    @helper.textarea(myForm("body"),
+                    '_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG177","Message")
+                    , 'rows -> "5"
+                    , 'class -> "required span6 body"
+					, 'rows -> "8"
+                    , 'placeholder -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG178","Your message here")
+                    , 'autocomplete -> "off"
+                    , '_help -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG179","Please define your feedback accurately, so that our customer service can respond to you quickly")
+                    , '_showConstraints -> false)
+                 </div>
+
+                <div class="form-actions">
+                    <input type="submit" id="feedbackSubmit" class="btn btn-primary" data-disable-with="Sending..." value='@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG180","Send Feedback")'/>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="span4">
+        <div id="summary" class="well boxed">
+            <!-- SUMMARY SIDEBAR HERE -->
+			@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG181","In order to improving our services, we are very welcome if you give us feedback. Please decide the subject (Operational or Technical) and then write your feedback. Feedback will sent to our Customer Service directly, and we will reply your feedback after we analyze as soon as possible.")
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/tools.js")'></script>
+<script type="text/javascript">
+	$(function() {
+			/*  window.initCheckFxRate();*/
+	});
+</script>
+}

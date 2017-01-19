@@ -1,0 +1,67 @@
+@(myForm: Form[models.Channel], edit:Boolean=false, banks: java.util.List[models.Bank], channelBanks: java.util.Map[String, String])
+@import helper._
+@import helper.twitterBootstrap._
+
+@import be.objectify.deadbolt.java.DeadboltViewSupport
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@readOnly = {
+	@if(edit && !DeadboltViewSupport.viewRestrict(la(as("doku"), as("mainagent"), as("supervisor")), null)) {
+	readonly="readonly"
+	} else {
+	}
+}
+
+@if(myForm.hasGlobalErrors) {
+<p class="error">
+    @myForm.globalError.message
+</p>
+}
+
+@if(flash.contains("success")) {
+<p class="success">
+    @flash.get("success")
+</p>
+}
+
+@input(myForm("agent.id"), '_label -> null) {(id, name, value, args) =>
+<input type="hidden" name="@name" value="@{value ?: session.get("userId")}"/>
+}
+<input type="hidden" name="channelCode" value="@myForm.get().code"> 
+<div class="well">
+	<fieldset class="fieldset">
+	<div class="control-group">
+		<div class="row-fluid">
+			<div class="span6">
+				@input(myForm("name"),
+				'_showConstraints -> false,
+				'_label -> doku.kirimdoku.util.MultiLanguage.getLanguage("LANG399","Service Name"),
+				'_class -> "required",
+				'placeholder -> "Name"
+				) { (id, name, value, args) =>
+				<input type="text" id="@id" name="@name" value="@value" @readOnly @toHtmlArgs(args)>
+				}
+			</div>
+			<div class="span6">
+				&nbsp;
+			</div>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="row-fluid">
+			<div class="span6">
+				<label for="name" style="font-weight: bold;">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG404","Available Bank")</label>
+				<ul style="list-style-type: none;columns: 3;padding: 3px;margin: 0px;width: 720px;">
+				@for(bank <- banks) {
+					<li style="width: 400px; padding: 5px;">
+                     	<input type="checkbox" class="bankAvaliable" name="bankId[]" id="bankId_@bank.id" value="@bank.id" @if(channelBanks.contains(bank.id)) { checked="checked" }>&nbsp;@bank.name
+                	</li>
+                }
+                </ul>
+			</div>
+		</div>
+	</div>
+	</fieldset>
+</div>
+<br>

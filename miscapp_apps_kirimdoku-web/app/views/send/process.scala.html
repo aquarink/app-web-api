@@ -1,0 +1,44 @@
+@(err: String, result: org.codehaus.jackson.JsonNode)
+@import helper._
+
+@layout("Confirmation"){
+<div class="page-header">
+   <h2>Send money processing</h2>
+</div>
+
+<script type="text/javascript">
+<!--
+	$(window).bind('beforeunload',function(){
+	
+	    //save info somewhere
+	
+	   return 'are you sure you want to leave?';
+	
+	});
+//-->
+</script>
+
+
+@if(err != null) {
+  <div class="alert alert-block alert-error">
+	<h4 style="text-align: center">
+		<img src="@routes.Assets.at("images/alert-error.png")"/>
+		@err
+	</h4>
+  </div>
+}
+
+@if(result == null) {
+<a class="btn btn-back" onclick="window.history.back()"><i class="icon-arrow-left"></i> Back</a>
+} else {
+
+<div class="row">
+  <div class="span12">
+    <div class="loading">
+    </div>
+  </div>
+</div>
+
+}
+
+}

@@ -1,0 +1,41 @@
+@(form: Form[controllers.User.DemoteForm], user: models.User)
+
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal">×</button>
+	<h3>Confirmation</h3>
+</div>
+@helper.form(routes.User.updateRoleDemote(user.corporate.code, user.id)) {
+	<div class="modal-body">
+		<div class="control-groups">
+			<p>Are you sure you want to demote this user? Give a reason</p>
+
+			@helper.inputText(form("reason"),
+			'_label -> "Give a reason",
+			'class -> "required",
+			'placeholder -> "",
+			'_showConstraints -> false)
+		</div>
+		<div class="control-groups">
+			@helper.select(
+			form("parentSupervisor.id"),
+			helper.options(models.User.optionsSupervisorAlternativeForUser(user)),
+			'_label -> "His/her new supervisor",
+			'_showConstraints -> false,
+			'class -> "required"
+			)
+		</div>
+		<div class="control-groups">
+			@helper.select(
+			form("agentSupervisor.id"),
+			helper.options(models.User.optionsSupervisorAlternativeForUser(user)),
+			'_label -> "Agents under his/her will be moved to supervisor",
+			'_showConstraints -> false,
+			'class -> "required"
+			)
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+		<button type="submit" class="btn btn-primary">Proceed</button>
+	</div>
+}

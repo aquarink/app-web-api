@@ -1,0 +1,193 @@
+@(title:String="", breadcrumbs:Seq[(String, String)]=null)(content: Html)
+@import views.Breadcrumb
+
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Blitzkrieg - @title</title>
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap-responsive.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/global.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/admin.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/subnav.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/forex.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/datepicker.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/colorpicker.css")">
+        <link rel="stylesheet" href="@routes.User.css(Long.parseLong(session.get("userId")))">
+		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+
+		<script src="@routes.Assets.at("javascripts/modernizr.custom.45033.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/rails.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/moment.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/bootstrap/bootstrap-colorpicker.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/jquery.validate.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/jquery.maskedinput.min.js")" type="text/javascript" charset="utf-8"></script>
+		<script src="@routes.Assets.at("javascripts/jquery.inputmask.bundle.min.js")" type="text/javascript" charset="utf-8"></script>
+		<script src="@routes.Assets.at("javascripts/jquery.chainedSelects.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/form.js")" type="text/javascript"></script>
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]--.min
+
+		<!-- Le fav and touch icons -->
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+
+		<style type="text/css">
+			.navbar-inner, .navbar .dropdown-menu {
+				background-image: -moz-linear-gradient(top, #3C4152, @session.get("color1"));
+				background-image: -ms-linear-gradient(top, #3C4152, @session.get("color1"));
+				background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#3C4152), to(@session.get("color1")));
+				background-image: -webkit-linear-gradient(top, #3C4152, @session.get("color1"));
+				background-image: -o-linear-gradient(top, #3C4152, @session.get("color1"));
+				background-image: linear-gradient(top, #3C4152, @session.get("color1"));
+				filter: progid:dximagetransform.microsoft.gradient(startColorstr='#3C4152', endColorstr='@session.get("color1")', GradientType=0);
+			}
+			.navbar .dropdown-menu::after {
+				border-bottom: 6px solid @session.get("color1");
+			}
+
+			.navbar .divider-vertical {
+				background-color: @session.get("color1");
+				border-right: 1px solid @session.get("color1");
+			}
+
+			.navbar .nav > li a, .role {
+				text-shadow: 0px 0px 0px #000;
+				color: @session.get("color2");
+			}
+		</style>
+	</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+			<a class="brand">
+              <img src="@routes.Corporate.logo(session.get("corporateCode"), "small")" width=60/>
+            </a>
+
+            <div class="nav-collapse collapse">
+                <ul class="nav nav-pills">
+                    <li><a href="@routes.Corporate.admin_index()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG190","Corporates management")</a></li>
+					@restrict(la(as("admin"))) {
+					<li><a href="@routes.Customer.list()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG278","Customers management")</a></li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG469","Operation") <b class="caret"></b></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="@routes.Transaction.admin_refund()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG468","Authorize full refund")</a></li>
+							<li><a href="@routes.Banks.list()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG391","Manage List of Bank")</a></li>
+							<li><a href="@routes.Channels.list()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG467","Manage Bank Routing")</a></li>
+						</ul>
+					</li>
+					}
+                    <li><a href="@routes.Report.list()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG017","Report")</a></li>
+                    <li><a href="@routes.Transaction.admin_list()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG008","Transaction")</a></li>
+					@restrict(la(as("finance"))) {
+                    
+			        <li><a href="@routes.SetupCutOffTime.view()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG442","Setup Cut-Off Time")</a></li>
+			        <li><a href="@routes.SettlementReport.list()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG444","Settlement Report")</a></li>
+					}
+					@restrict(la(as("admin"))) {
+                    <li><a href="@routes.Audit.admin_index()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG466","User Audit")</a></li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="@routes.Dashboard.admin_index()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG465","Blacklist") <b class="caret"></b></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="@routes.CustomerBan.admin_interdictions()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG194","Interdictions list")</a></li>
+							<li><a href="@routes.CustomerBan.admin_list()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG193","Banned list")</a></li>
+							<li><a href="@routes.Suspicious.admin_index()">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG195","Suspicious list")</a></li>
+						</ul>
+					</li>
+					}
+                </ul>
+
+                <ul class="nav pull-right">
+                    <li class="divider-vertical"></li>
+                    <li><img src="@routes.User.photo(Long.parseLong(session.get("userId")), "small")" height="35px" width="35px"/></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span style='font-style: italic;'>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG021","Hello"), </span> @session.get("userDisplayName")<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="@routes.User.show(session.get("corporateCode"), Long.parseLong(session.get("userId")))"><i class="icon-user"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG022","My Account")</a>
+                            </li>
+                            <li>
+                                <a href="@routes.Login.admin_logout"><i class="icon-user"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG023","Sign out")</a>
+                            </li>
+                        </ul>
+						<span class="role">
+						@restrict(la(as("admin"))) {
+						Admin
+						}
+						@restrict(la(as("finance"))) {
+						Finance
+						}
+						@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG250","of") @session.get("corporateCode")
+						</span>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<header visible-desktop>
+    <div class="pull-right" id="datetimeContainer">
+        <span id="datetime">Date</span>
+    </div>
+	<div>
+		@if(breadcrumbs != null) {
+		@Html(Breadcrumb.build(breadcrumbs))
+		} else {
+		@Html(Breadcrumb.parse(request.uri))
+		}
+    </div>
+
+    <!-- <h1>Group : @session.get("group")</h1> -->
+
+</header>
+
+<div class="container">
+	<section class="content">
+		@content
+	</section>
+</div>
+<script src="@routes.Assets.at("javascripts/global.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/typeahead.min.js")" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function() {
+			$("#datetime").timeTicker();
+		});
+		$.fn.timeTicker = function() {
+			this.each(function(i, el) {
+				var updateTime = function() {
+					$(el).html(moment().format('dddd, MMMM Do YYYY, h:mm:ss a'));
+					setTimeout(updateTime, 1000);
+				};
+				updateTime()
+			});
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+@(helper: controllers.helpers.BatchUploadHelper)
+
+
+@layout("Batch Upload"){
+
+<div class="page-header">
+    <h1>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG497","Batch Upload")</h1>
+</div>
+
+@partial.flash_alert()
+<div class="row">
+	<div class="span12">
+		<div id="transaction-detail-container">
+			<table>
+				<tbody>
+					<tr>
+						<th style="text-align: left;" colspan="2">Result Summary Batch Upload<br><hr></th>
+					</tr>
+					<tr>
+						<th style="text-align: left; width: 70px;">Filename :</th>
+						<td>@helper.getFileUploadFileName()</td>
+					</tr>
+					<tr>
+						<th style="text-align: left;">Total row :</th>
+						<td>
+						@if(helper.getTotalRow() > 0){
+							@helper.getTotalRow()						
+						}</td>
+					</tr>
+					<tr>
+						<th style="text-align: left; vertical-align: top;">List error :</th>
+						<td>@helper.getErrorDescription()</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+    </div>
+	<div class="span12">
+		<div class="form-actions invisible-print noprint">
+			<a class="btn" href="@routes.BatchUpload.viewUpload()"><i class="icon-arrow-left"></i> @doku.kirimdoku.util.MultiLanguage.getLanguage("LANG511","Upload another csv")</a>
+			@if(helper.getBatch() != null){
+				<a class="btn" href='@routes.Transaction.showBatchDetail(helper.getBatch().id, 0, "", "i")'>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG512","View Inquiry Data") <i class="icon-arrow-right"></i></a>
+			}
+		</div>
+	</div>
+</div>
+
+} {
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/transaction.css")">
+<script type="text/javascript" src='@routes.Assets.at("javascripts/transaction.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/send.js")'></script>
+}

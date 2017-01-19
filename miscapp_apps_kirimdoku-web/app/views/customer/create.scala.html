@@ -1,0 +1,32 @@
+@(myForm: Form[models.Customer])
+@layout("Customer") {
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/customer.css")">
+	@partial.flash_alert()
+    <div class="span8 offset2">
+		@helper.form(routes.Customer.save, 'autoComplete -> "off", 'class -> "row form form-horizontal") {
+            <div class="page-subheader">
+                <h3>@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG524","Add New Customer")</h3>
+            </div>
+
+            @customer.formBody(myForm)
+
+            <div class="form-actions">
+                <a href="@routes.Customer.list()" class="btn btn-inverse">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG127","Cancel")</a>
+                <button type="submit" class="btn btn-primary">@doku.kirimdoku.util.MultiLanguage.getLanguage("LANG126","Save")</button>
+            </div>
+        }
+    </div>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.chainedSelects.js")'></script>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/customer.js")'></script>
+	
+	<script>
+		$( function() {
+			$( "#personalIdExpireDate" ).datepicker();
+			}
+		);
+		$( function() {
+			$( "#personalIdIssueDate" ).datepicker();
+			}
+		);
+	</script>
+}
